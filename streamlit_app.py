@@ -8,6 +8,7 @@ from base64 import decodebytes
 from io import BytesIO
 import numpy as np
 import matplotlib.pyplot as plt
+from streamlit_webrtc import webrtc_streamer
 
 ##########
 ##### Set up sidebar.
@@ -20,7 +21,9 @@ uploaded_file = st.sidebar.file_uploader('',
                                          type=['png', 'jpg', 'jpeg'],
                                          accept_multiple_files=False)
 
-st.sidebar.write('[Find additional images on Roboflow.](https://public.roboflow.com/object-detection/bccd/)')
+#st.sidebar.write('[Find additional images on Roboflow.](https://public.roboflow.com/object-detection/bccd/)')
+
+webrtc_streamer(key="example")
 
 ## Add in sliders.
 confidence_threshold = st.sidebar.slider('Confidence threshold: What is the minimum acceptable confidence level for displaying a bounding box?', 0.0, 1.0, 0.5, 0.01)
@@ -35,12 +38,16 @@ image = Image.open('./images/streamlit_logo.png')
 st.sidebar.image(image,
                  use_column_width=True)
 
+image = Image.open('./images/NoliAlonsoPathLabSystemsLogo.png')
+st.sidebar.image(image,
+                 use_column_width=True)
+
 ##########
 ##### Set up main app.
 ##########
 
 ## Title.
-st.write('# Peripheral Blood Cell Object Detection')
+st.write('# Peripheral White Blood Cell Identifier')
 
 ## Pull in default image or user-selected image.
 if uploaded_file is None:
