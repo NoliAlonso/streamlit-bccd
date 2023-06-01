@@ -47,6 +47,8 @@ st.sidebar.image(image,
 ## Title.
 st.write('# Peripheral Smear: White Blood Cell Identifier')
 
+img_str = None  # Initialize img_str variable
+
 if page == 'Camera':
     st.subheader("Take a picture:")
     img_file_buffer = st.file_uploader("Image capture:", type=["png", "jpg", "jpeg"], accept_multiple_files=False)
