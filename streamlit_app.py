@@ -47,9 +47,9 @@ st.sidebar.image(image,
 ##########
 
 ## Title.
-st.write('# Peripheral White Blood Cell Identifier')
+st.write('# Peripheral Smear: White Blood Cell Identifier')
 
-img_file_buffer = st.camera_input("Take a picture")
+img_file_buffer = st.camera_input("Image capture:")
 
 if img_file_buffer is not None:
     # To read image file buffer with OpenCV:
@@ -58,7 +58,7 @@ if img_file_buffer is not None:
 
     # Check the type of cv2_img:
     # Should output: <class 'numpy.ndarray'>
-    st.write(type(cv2_img))
+    #st.write(type(cv2_img))
 
     # Check the shape of cv2_img:
     # Should output shape: (height, width, channels)
@@ -85,9 +85,13 @@ webrtc_streamer(
 
 ## Pull in default image or user-selected image.
 if uploaded_file is None:
-    # Default image.
-    url = 'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/im_0000_20230601_124318.jpg?raw=true'
-    image = Image.open(requests.get(url, stream=True).raw)
+    if img_file_buffer is None:
+        # Default image.
+        url = 'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/im_0000_20230601_124318.jpg?raw=true'
+        image = Image.open(requests.get(url, stream=True).raw)
+        
+    else:
+        image = Image.open(cv2_img)
 
 else:
     # User-selected image.
