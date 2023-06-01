@@ -45,7 +45,7 @@ st.sidebar.image(image,
 ## Title.
 st.write('# Peripheral Smear: White Blood Cell Identifier')
 
-if page = 'Capture':
+if page == 'Capture':
     st.subheader("Take a picture with your camera:")
     img_file_buffer = st.camera_input("Image capture:")
 
@@ -63,20 +63,15 @@ if page = 'Capture':
         st.write(cv2_img.shape)
 
 else:
-    if page = 'Upload':
+    if page == 'Upload':
         st.subheader('Select an image to upload.')
         uploaded_file = st.file_uploader('', type=['png', 'jpg', 'jpeg'], accept_multiple_files=False)
 
         ## Pull in default image or user-selected image.
         if uploaded_file is None:
-            if img_file_buffer is None:
-                # Default image.
+            # Default image.
                 url = 'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/im_0000_20230601_124318.jpg?raw=true'
                 image = Image.open(requests.get(url, stream=True).raw)
-        
-            else:
-                image = Image.open(cv2_img)
-
         else:
             # User-selected image.
             image = Image.open(uploaded_file)
