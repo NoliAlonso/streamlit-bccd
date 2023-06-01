@@ -1,5 +1,7 @@
 ###### Requirements ######
-streamlit==1.11.1
+streamlit
+streamlit-webrtc
+opencv-python-headless
 requests
 pillow
 numpy==1.22.0

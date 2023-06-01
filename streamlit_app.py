@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_webrtc import webrtc_streamer
 import requests
 import base64
 import io
@@ -8,7 +9,6 @@ from base64 import decodebytes
 from io import BytesIO
 import numpy as np
 import matplotlib.pyplot as plt
-from streamlit_webrtc import webrtc_streamer
 
 ##########
 ##### Set up sidebar.
