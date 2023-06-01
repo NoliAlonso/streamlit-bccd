@@ -20,7 +20,7 @@ import cv2
 
 page_names = ['Capture', 'Upload']
 
-page = st.radio('Select', page_names)
+page = st.sidebar.radio('Choose image source', page_names)
 
 ## Add in sliders.
 confidence_threshold = st.sidebar.slider('Confidence threshold: What is the minimum acceptable confidence level for displaying a bounding box?', 0.0, 1.0, 0.5, 0.01)
