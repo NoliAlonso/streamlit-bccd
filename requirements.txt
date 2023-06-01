@@ -4,5 +4,5 @@ streamlit-webrtc
 opencv-python-headless
 requests
 pillow
-numpy==1.22.0
-matplotlib==3.3.2
+numpy
+matplotlib
