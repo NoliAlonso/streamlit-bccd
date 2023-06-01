@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer
 import requests
 import base64
 import io
@@ -18,7 +17,7 @@ import cv2
 
 # Add in location to select image.
 
-page_names = ['Camera', 'Upload']
+page_names = ['Camera', 'Upload', 'Real-Time']
 
 page = st.sidebar.radio('Choose image source', page_names)
 
