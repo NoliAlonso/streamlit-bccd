@@ -49,28 +49,17 @@ st.write('# Peripheral Smear: White Blood Cell Identifier')
 
 if page == 'Camera':
     st.subheader("Take a picture:")
-    img_file_buffer = st.camera_input("Image capture:")
+    img_file_buffer = st.file_uploader("Image capture:", type=["png", "jpg", "jpeg"], accept_multiple_files=False)
 
     if img_file_buffer is not None:
-        # To read image file buffer with OpenCV:
-        bytes_data = img_file_buffer.getvalue()
-        cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
-
-        # Check the type of cv2_img:
-        # Should output: <class 'numpy.ndarray'>
-        #st.write(type(cv2_img))
-
-        # Check the shape of cv2_img:
-        # Should output shape: (height, width, channels)
-        #st.write(cv2_img.shape)
+        # To read image file buffer with PIL:
+        image = Image.open(img_file_buffer)
+        cv2_img = np.array(image.convert("RGB"))
 
         # Convert to JPEG Buffer.
         buffered = io.BytesIO()
-        cv2_img.save(buffered, quality=95, format='JPEG')
-
-        # Base 64 encode.
-        img_str = base64.b64encode(buffered.getvalue())
-        img_str = img_str.decode('ascii')
+        image.save(buffered, format='JPEG')
+        img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
 
 else:
     if page == 'Upload':
@@ -80,20 +69,18 @@ else:
         ## Pull in default image or user-selected image.
         if uploaded_file is None:
             # Default image.
-                url = 'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/im_0000_20230601_124318.jpg?raw=true'
-                image = Image.open(requests.get(url, stream=True).raw)
+            url = 'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/im_0000_20230601_124318.jpg?raw=true'
+            response = requests.get(url)
+            image = Image.open(io.BytesIO(response.content))
         else:
             # User-selected image.
             image = Image.open(uploaded_file)
 
         # Convert to JPEG Buffer.
         buffered = io.BytesIO()
-        image.save(buffered, quality=95, format='JPEG')
+        image.save(buffered, format='JPEG')
+        img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
 
-        # Base 64 encode.
-        img_str = base64.b64encode(buffered.getvalue())
-        img_str = img_str.decode('ascii')
-        
 ## Subtitle.
 st.write('### Inferenced Image')
 
