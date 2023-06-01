@@ -18,17 +18,13 @@ import cv2
 
 # Add in location to select image.
 
-st.sidebar.write('#### Select an image to upload.')
-uploaded_file = st.sidebar.file_uploader('',
-                                         type=['png', 'jpg', 'jpeg'],
-                                         accept_multiple_files=False)
+page_names = ['Capture', 'Upload']
 
-#st.sidebar.write('[Find additional images on Roboflow.](https://public.roboflow.com/object-detection/bccd/)')
+page = st.radio('Select', page_names)
 
 ## Add in sliders.
 confidence_threshold = st.sidebar.slider('Confidence threshold: What is the minimum acceptable confidence level for displaying a bounding box?', 0.0, 1.0, 0.5, 0.01)
 overlap_threshold = st.sidebar.slider('Overlap threshold: What is the maximum amount of overlap permitted between visible bounding boxes?', 0.0, 1.0, 0.5, 0.01)
-
 
 image = Image.open('./images/roboflow_logo.png')
 st.sidebar.image(image,
@@ -49,60 +45,48 @@ st.sidebar.image(image,
 ## Title.
 st.write('# Peripheral Smear: White Blood Cell Identifier')
 
-img_file_buffer = st.camera_input("Image capture:")
+if page = 'Capture':
+    st.subheader("Take a picture with your camera:")
+    img_file_buffer = st.camera_input("Image capture:")
 
-if img_file_buffer is not None:
-    # To read image file buffer with OpenCV:
-    bytes_data = img_file_buffer.getvalue()
-    cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
+    if img_file_buffer is not None:
+        # To read image file buffer with OpenCV:
+        bytes_data = img_file_buffer.getvalue()
+        cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
 
-    # Check the type of cv2_img:
-    # Should output: <class 'numpy.ndarray'>
-    #st.write(type(cv2_img))
+        # Check the type of cv2_img:
+        # Should output: <class 'numpy.ndarray'>
+        #st.write(type(cv2_img))
 
-    # Check the shape of cv2_img:
-    # Should output shape: (height, width, channels)
-    st.write(cv2_img.shape)
+        # Check the shape of cv2_img:
+        # Should output shape: (height, width, channels)
+        st.write(cv2_img.shape)
 
-##
+if page = 'Upload':
+    st.subheader('Select an image to upload.')
+    uploaded_file = st.file_uploader('', type=['png', 'jpg', 'jpeg'], accept_multiple_files=False)
 
-def callback(frame):
-    img = frame.to_ndarray(format="bgr24")
-
-    img = cv2.cvtColor(cv2.Canny(img, confidence_threshold, overlap_threshold), cv2.COLOR_GRAY2BGR)
-
-    return av.VideoFrame.from_ndarray(img, format="bgr24")
-
-
-webrtc_streamer(
-    key="example",
-    video_frame_callback=callback,
-    rtc_configuration={  # Add this line
-        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-    }
-)
-
-
-## Pull in default image or user-selected image.
-if uploaded_file is None:
-    if img_file_buffer is None:
-        # Default image.
-        url = 'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/im_0000_20230601_124318.jpg?raw=true'
-        image = Image.open(requests.get(url, stream=True).raw)
+    ## Pull in default image or user-selected image.
+    if uploaded_file is None:
+        if img_file_buffer is None:
+            # Default image.
+            url = 'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/im_0000_20230601_124318.jpg?raw=true'
+            image = Image.open(requests.get(url, stream=True).raw)
         
-    else:
-        image = Image.open(cv2_img)
+        else:
+            image = Image.open(cv2_img)
 
-else:
-    # User-selected image.
-    image = Image.open(uploaded_file)
+    else:
+        # User-selected image.
+        image = Image.open(uploaded_file)
+
 
 ## Subtitle.
 st.write('### Inferenced Image')
 
 # Convert to JPEG Buffer.
 buffered = io.BytesIO()
-image.save(buffered, quality=90, format='JPEG')
+image.save(buffered, quality=95, format='JPEG')
 
 # Base 64 encode.
 img_str = base64.b64encode(buffered.getvalue())
