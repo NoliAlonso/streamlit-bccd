@@ -107,46 +107,53 @@ if img_str is not None:  # Check if img_str is defined
         'Content-Type': 'application/x-www-form-urlencoded'
     })
 
-    image = Image.open(io.BytesIO(r.content))
+    if r.ok:
+        try:
+            image = Image.open(io.BytesIO(r.content))
 
-    # Convert to JPEG Buffer.
-    buffered = io.BytesIO()
-    image.save(buffered, quality=90, format='JPEG')
+            # Convert to JPEG Buffer.
+            buffered = io.BytesIO()
+            image.save(buffered, quality=90, format='JPEG')
 
-    # Display image.
-    st.image(image,
-             use_column_width=True)
+            # Display image.
+            st.image(image,
+                     use_column_width=True)
 
-    ## Construct the URL to retrieve JSON.
-    upload_url = ''.join([
-        'https://detect.roboflow.com/peripheralbloodsmear/12',
-        '?api_key=oDkrH1XmBTgm5SIRerW7'
-    ])
+            ## Construct the URL to retrieve JSON.
+            upload_url = ''.join([
+                'https://detect.roboflow.com/peripheralbloodsmear/12',
+                '?api_key=oDkrH1XmBTgm5SIRerW7'
+            ])
 
-    ## POST to the API.
-    r = requests.post(upload_url,
-                      data=img_str,
-                      headers={
-        'Content-Type': 'application/x-www-form-urlencoded'
-    })
+            ## POST to the API.
+            r = requests.post(upload_url,
+                              data=img_str,
+                              headers={
+                'Content-Type': 'application/x-www-form-urlencoded'
+            })
 
-    ## Save the JSON.
-    output_dict = r.json()
+            ## Save the JSON.
+            output_dict = r.json()
 
-    ## Generate list of confidences.
-    confidences = [box['confidence'] for box in output_dict['predictions']]
+            ## Generate list of confidences.
+            confidences = [box['confidence'] for box in output_dict['predictions']]
 
-    ## Summary statistics section in main app.
-    st.write('### Summary Statistics')
-    st.write(f'Number of Bounding Boxes (ignoring overlap thresholds): {len(confidences)}')
-    st.write(f'Average Confidence Level of Bounding Boxes: {(np.round(np.mean(confidences),4))}')
+            ## Summary statistics section in main app.
+            st.write('### Summary Statistics')
+            st.write(f'Number of Bounding Boxes (ignoring overlap thresholds): {len(confidences)}')
+            st.write(f'Average Confidence Level of Bounding Boxes: {(np.round(np.mean(confidences),4))}')
 
-    ## Histogram in main app.
-    st.write('### Histogram of Confidence Levels')
-    fig, ax = plt.subplots()
-    ax.hist(confidences, bins=10, range=(0.0,1.0))
-    st.pyplot(fig)
+            ## Histogram in main app.
+            st.write('### Histogram of Confidence Levels')
+            fig, ax = plt.subplots()
+            ax.hist(confidences, bins=10, range=(0.0,1.0))
+            st.pyplot(fig)
 
-    ## Display the JSON in main app.
-    st.write('### JSON Output')
-    st.write(r.json())
+            ## Display the JSON in main app.
+            st.write('### JSON Output')
+            st.write(r.json())
+
+        except IOError:
+            st.write("Error: Failed to open the image from the API response.")
+    else:
+        st.write("Error: API request failed.")
