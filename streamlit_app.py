@@ -21,7 +21,6 @@ import cv2
 page_names = ['Camera', 'Upload', 'Real-Time']
 
 page = st.sidebar.radio('Choose image source', page_names)
-print(1)
 
 ###
 
@@ -40,7 +39,7 @@ st.sidebar.image(image,
 image = Image.open('./images/NoliAlonsoPathLabSystemsLogo.png')
 st.sidebar.image(image,
                  use_column_width=True)
-print(4)
+
 ##########
 ##### Set up main app.
 ##########
@@ -64,11 +63,10 @@ if page == 'Camera':
         image.save(buffered, format='JPEG')
         img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
 
-    print(11)
 else:
     if page == 'Upload':
         st.subheader('Select an image to upload.')
-        uploaded_file = st.file_uploader('', type=['png', 'jpg', 'jpeg'], accept_multiple_files=False)
+        uploaded_file = st.file_uploader('AnImage', type=['png', 'jpg', 'jpeg'], accept_multiple_files=False)
 
         ## Pull in default image or user-selected image.
         if uploaded_file is None:
@@ -84,8 +82,6 @@ else:
         buffered = io.BytesIO()
         image.save(buffered, format='JPEG')
         img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
-    print(12)
-
 
 if img_str is not None:  # Check if img_str is defined
 
@@ -102,9 +98,7 @@ if img_str is not None:  # Check if img_str is defined
         '&stroke=2',
         '&labels=True'
     ])
-
-    print(13)
-
+    
     ## POST to the API.
     r = requests.post(upload_url,
                       data=img_str,
@@ -136,9 +130,7 @@ if img_str is not None:  # Check if img_str is defined
                               headers={
                 'Content-Type': 'application/x-www-form-urlencoded'
             })
-
-            print(13)
-
+            
             ## Save the JSON.
             output_dict = r.json()
 
