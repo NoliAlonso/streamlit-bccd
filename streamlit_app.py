@@ -9,6 +9,8 @@ from base64 import decodebytes
 from io import BytesIO
 import numpy as np
 import matplotlib.pyplot as plt
+import av
+import cv2
 
 ##########
 ##### Set up sidebar.
@@ -22,8 +24,6 @@ uploaded_file = st.sidebar.file_uploader('',
                                          accept_multiple_files=False)
 
 #st.sidebar.write('[Find additional images on Roboflow.](https://public.roboflow.com/object-detection/bccd/)')
-
-webrtc_streamer(key="example")
 
 ## Add in sliders.
 confidence_threshold = st.sidebar.slider('Confidence threshold: What is the minimum acceptable confidence level for displaying a bounding box?', 0.0, 1.0, 0.5, 0.01)
@@ -48,6 +48,17 @@ st.sidebar.image(image,
 
 ## Title.
 st.write('# Peripheral White Blood Cell Identifier')
+
+
+def callback(frame):
+    img = frame.to_ndarray(format="bgr24")
+
+    img = cv2.cvtColor(cv2.Canny(img, 100, 200), cv2.COLOR_GRAY2BGR)
+
+    return av.VideoFrame.from_ndarray(img, format="bgr24")
+
+webrtc_streamer(key="example", video_frame_callback=callback)
+
 
 ## Pull in default image or user-selected image.
 if uploaded_file is None:
