@@ -45,7 +45,7 @@ st.write('# Blood Cell Count Object Detection')
 ## Pull in default image or user-selected image.
 if uploaded_file is None:
     # Default image.
-    url = 'https://github.com/matthewbrems/streamlit-bccd/blob/master/BCCD_sample_images/BloodImage_00038_jpg.rf.6551ec67098bc650dd650def4e8a8e98.jpg?raw=true'
+    url = 'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/BloodImage_00038_jpg.rf.6551ec67098bc650dd650def4e8a8e98.jpg?raw=true'
     image = Image.open(requests.get(url, stream=True).raw)
 
 else:
@@ -65,8 +65,8 @@ img_str = img_str.decode('ascii')
 
 ## Construct the URL to retrieve image.
 upload_url = ''.join([
-    'https://infer.roboflow.com/rf-bccd-bkpj9--1',
-    '?access_token=vbIBKNgIXqAQ',
+    'https://detect.roboflow.com/peripheralbloodsmear/12',
+    '?api_key=oDkrH1XmBTgm5SIRerW7',
     '&format=image',
     f'&overlap={overlap_threshold * 100}',
     f'&confidence={confidence_threshold * 100}',
@@ -93,8 +93,8 @@ st.image(image,
 
 ## Construct the URL to retrieve JSON.
 upload_url = ''.join([
-    'https://infer.roboflow.com/rf-bccd-bkpj9--1',
-    '?access_token=vbIBKNgIXqAQ'
+    'https://detect.roboflow.com/peripheralbloodsmear/12',
+    '?api_key=oDkrH1XmBTgm5SIRerW7'
 ])
 
 ## POST to the API.
