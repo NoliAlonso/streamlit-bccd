@@ -40,7 +40,7 @@ st.sidebar.image(image,
 ##########
 
 ## Title.
-st.write('# Blood Cell Count Object Detection')
+st.write('# Peripheral Blood Cell Object Detection')
 
 ## Pull in default image or user-selected image.
 if uploaded_file is None:
