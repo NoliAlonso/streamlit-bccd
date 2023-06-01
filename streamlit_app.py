@@ -83,67 +83,70 @@ else:
         image.save(buffered, format='JPEG')
         img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
 
-## Subtitle.
-st.write('### Inferenced Image')
 
-## Construct the URL to retrieve image.
-upload_url = ''.join([
-    'https://detect.roboflow.com/peripheralbloodsmear/12',
-    '?api_key=oDkrH1XmBTgm5SIRerW7',
-    '&format=image',
-    f'&overlap={overlap_threshold * 100}',
-    f'&confidence={confidence_threshold * 100}',
-    '&stroke=2',
-    '&labels=True'
-])
+if img_str is not None:  # Check if img_str is defined
 
-## POST to the API.
-r = requests.post(upload_url,
-                  data=img_str,
-                  headers={
-    'Content-Type': 'application/x-www-form-urlencoded'
-})
+    ## Subtitle.
+    st.write('### Inferenced Image')
 
-image = Image.open(io.BytesIO(r.content))
+    ## Construct the URL to retrieve image.
+    upload_url = ''.join([
+        'https://detect.roboflow.com/peripheralbloodsmear/12',
+        '?api_key=oDkrH1XmBTgm5SIRerW7',
+        '&format=image',
+        f'&overlap={overlap_threshold * 100}',
+        f'&confidence={confidence_threshold * 100}',
+        '&stroke=2',
+        '&labels=True'
+    ])
 
-# Convert to JPEG Buffer.
-buffered = io.BytesIO()
-image.save(buffered, quality=90, format='JPEG')
+    ## POST to the API.
+    r = requests.post(upload_url,
+                      data=img_str,
+                      headers={
+        'Content-Type': 'application/x-www-form-urlencoded'
+    })
 
-# Display image.
-st.image(image,
-         use_column_width=True)
+    image = Image.open(io.BytesIO(r.content))
 
-## Construct the URL to retrieve JSON.
-upload_url = ''.join([
-    'https://detect.roboflow.com/peripheralbloodsmear/12',
-    '?api_key=oDkrH1XmBTgm5SIRerW7'
-])
+    # Convert to JPEG Buffer.
+    buffered = io.BytesIO()
+    image.save(buffered, quality=90, format='JPEG')
 
-## POST to the API.
-r = requests.post(upload_url,
-                  data=img_str,
-                  headers={
-    'Content-Type': 'application/x-www-form-urlencoded'
-})
+    # Display image.
+    st.image(image,
+             use_column_width=True)
 
-## Save the JSON.
-output_dict = r.json()
+    ## Construct the URL to retrieve JSON.
+    upload_url = ''.join([
+        'https://detect.roboflow.com/peripheralbloodsmear/12',
+        '?api_key=oDkrH1XmBTgm5SIRerW7'
+    ])
 
-## Generate list of confidences.
-confidences = [box['confidence'] for box in output_dict['predictions']]
+    ## POST to the API.
+    r = requests.post(upload_url,
+                      data=img_str,
+                      headers={
+        'Content-Type': 'application/x-www-form-urlencoded'
+    })
 
-## Summary statistics section in main app.
-st.write('### Summary Statistics')
-st.write(f'Number of Bounding Boxes (ignoring overlap thresholds): {len(confidences)}')
-st.write(f'Average Confidence Level of Bounding Boxes: {(np.round(np.mean(confidences),4))}')
+    ## Save the JSON.
+    output_dict = r.json()
 
-## Histogram in main app.
-st.write('### Histogram of Confidence Levels')
-fig, ax = plt.subplots()
-ax.hist(confidences, bins=10, range=(0.0,1.0))
-st.pyplot(fig)
+    ## Generate list of confidences.
+    confidences = [box['confidence'] for box in output_dict['predictions']]
 
-## Display the JSON in main app.
-st.write('### JSON Output')
-st.write(r.json())
+    ## Summary statistics section in main app.
+    st.write('### Summary Statistics')
+    st.write(f'Number of Bounding Boxes (ignoring overlap thresholds): {len(confidences)}')
+    st.write(f'Average Confidence Level of Bounding Boxes: {(np.round(np.mean(confidences),4))}')
+
+    ## Histogram in main app.
+    st.write('### Histogram of Confidence Levels')
+    fig, ax = plt.subplots()
+    ax.hist(confidences, bins=10, range=(0.0,1.0))
+    st.pyplot(fig)
+
+    ## Display the JSON in main app.
+    st.write('### JSON Output')
+    st.write(r.json())
