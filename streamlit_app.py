@@ -104,7 +104,7 @@ r = requests.post(upload_url,
     'Content-Type': 'application/x-www-form-urlencoded'
 })
 
-image = Image.open(BytesIO(r.content))
+image = Image.open(io.BytesIO(r.content))
 
 # Convert to JPEG Buffer.
 buffered = io.BytesIO()
