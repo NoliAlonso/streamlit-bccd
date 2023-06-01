@@ -18,9 +18,11 @@ import cv2
 
 # Add in location to select image.
 
-page_names = ['Capture', 'Upload']
+page_names = ['Camera', 'Upload']
 
 page = st.sidebar.radio('Choose image source', page_names)
+
+###
 
 ## Add in sliders.
 confidence_threshold = st.sidebar.slider('Confidence threshold: What is the minimum acceptable confidence level for displaying a bounding box?', 0.0, 1.0, 0.5, 0.01)
@@ -45,8 +47,8 @@ st.sidebar.image(image,
 ## Title.
 st.write('# Peripheral Smear: White Blood Cell Identifier')
 
-if page == 'Capture':
-    st.subheader("Take a picture with your camera:")
+if page == 'Camera':
+    st.subheader("Take a picture:")
     img_file_buffer = st.camera_input("Image capture:")
 
     if img_file_buffer is not None:
@@ -60,7 +62,15 @@ if page == 'Capture':
 
         # Check the shape of cv2_img:
         # Should output shape: (height, width, channels)
-        st.write(cv2_img.shape)
+        #st.write(cv2_img.shape)
+
+        # Convert to JPEG Buffer.
+        buffered = io.BytesIO()
+        cv2_img.save(buffered, quality=95, format='JPEG')
+
+        # Base 64 encode.
+        img_str = base64.b64encode(buffered.getvalue())
+        img_str = img_str.decode('ascii')
 
 else:
     if page == 'Upload':
@@ -76,17 +86,16 @@ else:
             # User-selected image.
             image = Image.open(uploaded_file)
 
+        # Convert to JPEG Buffer.
+        buffered = io.BytesIO()
+        image.save(buffered, quality=95, format='JPEG')
 
+        # Base 64 encode.
+        img_str = base64.b64encode(buffered.getvalue())
+        img_str = img_str.decode('ascii')
+        
 ## Subtitle.
 st.write('### Inferenced Image')
-
-# Convert to JPEG Buffer.
-buffered = io.BytesIO()
-image.save(buffered, quality=95, format='JPEG')
-
-# Base 64 encode.
-img_str = base64.b64encode(buffered.getvalue())
-img_str = img_str.decode('ascii')
 
 ## Construct the URL to retrieve image.
 upload_url = ''.join([
