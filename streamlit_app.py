@@ -89,11 +89,12 @@ else:
             if image is not None:
                 st.image(image)
                 bytes_data = image.getvalue()
-                cv2_img = np.array(image.convert("RGB"))
+                pil_image = Image.open(io.BytesIO(bytes_data)).convert("RGB")
+                cv2_img = np.array(pil_image)
 
                 # Convert to JPEG Buffer.
                 buffered = io.BytesIO()
-                image.save(buffered, format='JPEG')
+                pil_image.save(buffered, format='JPEG')
                 img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
 
 
