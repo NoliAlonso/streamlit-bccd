@@ -86,16 +86,6 @@ else:
         if page == 'Real-Time':
             image = camera_input_live()
 
-            if image is not None:
-                st.image(image)
-                bytes_data = image.getvalue()
-                cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
-
-                # Convert to JPEG Buffer.
-                buffered = io.BytesIO()
-                image.save(buffered, format='JPEG')
-                img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
-
 
 if img_str is not None:  # Check if img_str is defined
 
