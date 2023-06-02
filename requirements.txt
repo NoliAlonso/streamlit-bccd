@@ -1,6 +1,7 @@
 ###### Requirements ######
 streamlit
 streamlit-webrtc
+streamlit-camera-input-live
 opencv-python-headless
 requests
 pillow

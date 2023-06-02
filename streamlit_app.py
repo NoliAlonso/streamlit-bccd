@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer
+from camera_input_live import camera_input_live
 import requests
 import base64
 import io
@@ -18,7 +19,7 @@ import cv2
 
 # Add in location to select image.
 
-page_names = ['Camera', 'Upload', 'Real-Time']
+page_names = ['Use camera', 'Upload picture', 'Real-Time']
 
 page = st.sidebar.radio('Choose image source', page_names)
 
@@ -49,9 +50,8 @@ st.write('# Peripheral Smear: White Blood Cell Identifier')
 
 img_str = None  # Initialize img_str variable
 
-if page == 'Camera':
-    st.subheader("Take a picture:")
-    img_file_buffer = st.camera_input("Point and shoot:")
+if page == 'Use camera':
+    img_file_buffer = st.camera_input("Take a picture:")
 
     if img_file_buffer is not None:
         # To read image file buffer with PIL:
@@ -64,9 +64,8 @@ if page == 'Camera':
         img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
 
 else:
-    if page == 'Upload':
-        st.subheader('Select an image to upload.')
-        uploaded_file = st.file_uploader('AnImage', type=['png', 'jpg', 'jpeg'], accept_multiple_files=False)
+    if page == 'Upload picture':
+        uploaded_file = st.file_uploader('Select an image:', type=['png', 'jpg', 'jpeg'], accept_multiple_files=False)
 
         ## Pull in default image or user-selected image.
         if uploaded_file is None:
@@ -82,6 +81,21 @@ else:
         buffered = io.BytesIO()
         image.save(buffered, format='JPEG')
         img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
+
+    else:
+        if page == 'Real-Time':
+            image = camera_input_live()
+
+            if image is not None:
+                st.image(image)
+                bytes_data = image.getvalue()
+                cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
+
+                # Convert to JPEG Buffer.
+                buffered = io.BytesIO()
+                image.save(buffered, format='JPEG')
+                img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
+
 
 if img_str is not None:  # Check if img_str is defined
 
