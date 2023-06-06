@@ -181,7 +181,7 @@ if img_str is not None:  # Check if img_str is defined
                 for row in table_data:
                     if row[0] == label:
                         row[1] = label_counts[label]
-                          break
+                        break
                     else:
                       table_data.append([label, label_counts[label]])
 
