@@ -169,19 +169,7 @@ if img_str is not None:  # Check if img_str is defined
             ## Display the JSON in main app.
             st.write('### JSON Output')
             st.write(r.json())
-            
-            # Update label counts
-            for box in output_dict['predictions']:
-                label = box['label']
-                label_counts[label] = label_counts.get(label, 0) + 1
 
-            # Display label counts in a table
-            st.write('### Label Counts')
-            table_data = [[label, count] for label, count in label_counts.items()]
-            st.table(table_data)
-            
-            ## Generate list of confidences.
-            confidences = [box['confidence'] for box in output_dict['predictions']]
             
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
