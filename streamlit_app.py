@@ -177,11 +177,23 @@ if img_str is not None:  # Check if img_str is defined
             for box in output_dict['predictions']:
                 label = box['class']
                 label_counts[label] = label_counts.get(label, 0) + 1
-                table_data.append([label, label_counts[label]])
+                # Update count in table_data
+                for row in table_data:
+                    if row[0] == label:
+                        row[1] = label_counts[label]
+                          break
+                    else:
+                      table_data.append([label, label_counts[label]])
 
-            # Calculate and append totals
+            # Calculate total count
             total_count = sum(label_counts.values())
-            table_data.append(["Total", total_count])
+            # Update total count in table_data
+            for row in table_data:
+                if row[0] == "Total":
+                    row[1] = total_count
+                    break
+                else:
+                    table_data.append(["Total", total_count])
                 
             # Display label counts in a table
             st.write('### Label Counts')
