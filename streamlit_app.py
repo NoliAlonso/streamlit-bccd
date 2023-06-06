@@ -93,19 +93,21 @@ else:
                 cv2_img = np.array(pil_image)
 
                 if cv2_img.size > 0:  # Check if the image is not empty
-                    # Perform calculations or operations on cv2_img
-                    mean_value = np.mean(cv2_img)
+                    # Display the "Infer" button
+                    if st.button("Infer"):
+                        # Perform calculations or operations on cv2_img
+                        mean_value = np.mean(cv2_img)
 
-                    if np.isnan(mean_value):  # Check if the mean value is NaN (invalid)
-                        # Handle the case of invalid value
-                        mean_value = 0.0  # Set a default value or perform a different action
+                        if np.isnan(mean_value):  # Check if the mean value is NaN (invalid)
+                            # Handle the case of invalid value
+                            mean_value = 0.0  # Set a default value or perform a different action
 
-                    # Convert to JPEG Buffer.
-                    buffered = io.BytesIO()
-                    pil_image.save(buffered, format='JPEG')
-                    img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
-                    # Further processing with img_str and mean_value if needed
-                    ...
+                        # Convert to JPEG Buffer.
+                        buffered = io.BytesIO()
+                        pil_image.save(buffered, format='JPEG')
+                        img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
+                        # Further processing with img_str and mean_value if needed
+                        ...
                 else:
                     # Handle the case of an empty image
                     img_str = ""
