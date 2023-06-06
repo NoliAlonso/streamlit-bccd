@@ -19,15 +19,15 @@ import cv2
 
 # Add in location to select image.
 
-page_names = ['Use camera', 'Upload picture', 'Real-Time']
+page_names = ['Take picture', 'Upload picture', 'Real-Time']
 
 page = st.sidebar.radio('Choose image source', page_names)
 
 ###
 
 ## Add in sliders.
-confidence_threshold = st.sidebar.slider('Confidence threshold: What is the minimum acceptable confidence level for displaying a bounding box?', 0.0, 1.0, 0.5, 0.01)
-overlap_threshold = st.sidebar.slider('Overlap threshold: What is the maximum amount of overlap permitted between visible bounding boxes?', 0.0, 1.0, 0.5, 0.01)
+confidence_threshold = st.sidebar.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
+overlap_threshold = st.sidebar.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
 
 image = Image.open('./images/roboflow_logo.png')
 st.sidebar.image(image,
@@ -46,11 +46,11 @@ st.sidebar.image(image,
 ##########
 
 ## Title.
-st.write('# Peripheral Smear: White Blood Cell Identifier')
+st.write('# White Blood Cell Identifier and Counter')
 
 img_str = None  # Initialize img_str variable
 
-if page == 'Use camera':
+if page == 'Take picture':
     img_file_buffer = st.camera_input("Take a picture:")
 
     if img_file_buffer is not None:
