@@ -81,7 +81,7 @@ else:
 
             ## Construct the URL 
             url = ''.join([
-                'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images',
+                'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/',
                 option,
                 '?raw=true'
             ])
