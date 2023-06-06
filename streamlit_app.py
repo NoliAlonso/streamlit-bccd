@@ -51,6 +51,9 @@ st.write('# White Blood Cell Identifier & Counter')
 img_str = None  # Initialize img_str variable
 label_counts = {}
 
+# Create table header
+table_data = [["WBC", "Count"]]
+
 if page == 'Take picture':
     img_file_buffer = st.camera_input("Take a picture:")
 
@@ -174,12 +177,16 @@ if img_str is not None:  # Check if img_str is defined
             for box in output_dict['predictions']:
                 label = box['class']
                 label_counts[label] = label_counts.get(label, 0) + 1
+                table_data.append([label, label_counts[label]])
 
+            # Calculate and append totals
+            total_count = sum(label_counts.values())
+            table_data.append(["Total", total_count])
+                
             # Display label counts in a table
             st.write('### Label Counts')
-            table_data = [[label, count] for label, count in label_counts.items()]
             st.table(table_data)
-            
+                        
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
     else:
