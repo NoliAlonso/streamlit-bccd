@@ -74,7 +74,18 @@ else:
         ## Pull in default image or user-selected image.
         if uploaded_file is None:
             # Default image.
-            url = 'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/im_0000_20230601_124318.jpg?raw=true'
+            st.divider()
+            option = st.selectbox(
+                'Select a test image:',
+                ('im_0000_20230601_124318.jpg', 'im_0000_20230601_124844.jpg', 'im_0000_20230601_124933.jpg', 'im_0000_20230601_125012.jpg', 'im_0000_20230601_125124.jpg'))
+
+            ## Construct the URL 
+            url = ''.join([
+                'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images',
+                option,
+                '?raw=true'
+            ])
+            
             response = requests.get(url)
             image = Image.open(io.BytesIO(response.content))
         else:
@@ -172,32 +183,6 @@ if img_str is not None:  # Check if img_str is defined
             ## Display the JSON in main app.
             st.write('### JSON Output')
             st.write(r.json())
-
-            # Update label counts using JSON output
-            for box in output_dict['predictions']:
-                label = box['class']
-                label_counts[label] = label_counts.get(label, 0) + 1
-                # Update count in table_data
-                for row in table_data:
-                    if row[0] == label:
-                        row[1] = label_counts[label]
-                        break
-                    else:
-                      table_data.append([label, label_counts[label]])
-
-            # Calculate total count
-            total_count = sum(label_counts.values())
-            # Update total count in table_data
-            for row in table_data:
-                if row[0] == "Total":
-                    row[1] = total_count
-                    break
-                else:
-                    table_data.append(["Total", total_count])
-                
-            # Display label counts in a table
-            st.write('### Label Counts')
-            st.table(table_data)
                         
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
