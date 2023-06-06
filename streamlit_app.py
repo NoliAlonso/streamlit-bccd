@@ -178,6 +178,10 @@ if img_str is not None:  # Check if img_str is defined
             
             ## Generate list of confidences.
             confidences = [box['confidence'] for box in output_dict['predictions']]
+            
+            ## Display the JSON in main app.
+            st.write('### JSON Output')
+            st.write(r.json())
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
