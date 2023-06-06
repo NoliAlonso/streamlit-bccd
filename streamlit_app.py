@@ -46,9 +46,10 @@ st.sidebar.image(image,
 ##########
 
 ## Title.
-st.write('# White Blood Cell Identifier and Counter')
+st.write('# White Blood Cell Identifier & Counter')
 
 img_str = None  # Initialize img_str variable
+label_counts = {}
 
 if page == 'Take picture':
     img_file_buffer = st.camera_input("Take a picture:")
@@ -108,6 +109,7 @@ else:
                         img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
                         # Further processing with img_str and mean_value if needed
                         ...
+                        
                 else:
                     # Handle the case of an empty image
                     img_str = ""
@@ -164,23 +166,18 @@ if img_str is not None:  # Check if img_str is defined
             ## Save the JSON.
             output_dict = r.json()
 
+            # Update label counts
+            for box in output_dict['predictions']:
+                label = box['label']
+                label_counts[label] = label_counts.get(label, 0) + 1
+
+            # Display label counts in a table
+            st.write('### Label Counts')
+            table_data = [[label, count] for label, count in label_counts.items()]
+            st.table(table_data)
+            
             ## Generate list of confidences.
             confidences = [box['confidence'] for box in output_dict['predictions']]
-
-            ## Summary statistics section in main app.
-            st.write('### Summary Statistics')
-            st.write(f'Number of Bounding Boxes (ignoring overlap thresholds): {len(confidences)}')
-            st.write(f'Average Confidence Level of Bounding Boxes: {(np.round(np.mean(confidences),4))}')
-
-            ## Histogram in main app.
-            st.write('### Histogram of Confidence Levels')
-            fig, ax = plt.subplots()
-            ax.hist(confidences, bins=10, range=(0.0,1.0))
-            st.pyplot(fig)
-
-            ## Display the JSON in main app.
-            st.write('### JSON Output')
-            st.write(r.json())
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
