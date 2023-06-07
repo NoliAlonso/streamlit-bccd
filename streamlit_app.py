@@ -4,7 +4,7 @@ from camera_input_live import camera_input_live
 import requests
 import base64
 import io
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 import glob
 from base64 import decodebytes
 from io import BytesIO
@@ -244,6 +244,38 @@ if img_str is not None:  # Check if img_str is defined
             ## Display the JSON in main app.
             st.write('### JSON Output')
             st.write(r.json())
+
+            draw = ImageDraw.Draw(image)
+            font = ImageFont.load_default()
+
+            for box in output_dict.detections:
+                color = "#4892EA"
+                x1 = box['x'] - box['width'] / 2
+                x2 = box['x'] + box['width'] / 2
+                y1 = box['y'] - box['height'] / 2
+                y2 = box['y'] + box['height'] / 2
+
+                draw.rectangle([
+                    x1, y1, x2, y2
+                ], outline=color, width=5)
+
+                if True:
+                    text = box['class']
+                    text_size = font.getsize(text)
+
+                    # set button size + 10px margins
+                    button_size = (text_size[0]+20, text_size[1]+20)
+                    button_img = Image.new('RGBA', button_size, color)
+                    # put text on button with 10px margins
+                    button_draw = ImageDraw.Draw(button_img)
+                    button_draw.text((10, 10), text, font=font, fill=(255,255,255,255))
+
+                    # put button on source image in position (0, 0)
+                    image.paste(button_img, (int(x1), int(y1)))
+            st.image(image,
+                     use_column_width=True)
+
+            ###
 
             # Iterate through the predictions and count the occurrences of each class
             for prediction in output_dict['predictions']:
