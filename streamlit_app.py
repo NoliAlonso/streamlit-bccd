@@ -48,22 +48,21 @@ if 'count' not in st.session_state:
 
 def increment_counter(increment_value=0):
     st.session_state.count += increment_value
-    st.session_state.last_updated = datetime.datetime.now().time()
+    st.session_state.last_updated = datetime.datetime.now().ctime()
 
 def decrement_counter(decrement_value=0):
     st.session_state.count -= decrement_value
-    st.session_state.last_updated = datetime.datetime.now().time()
-
+    st.session_state.last_updated = datetime.datetime.now().ctime()
 
 
 # Create a dataframe from the class counts dictionary
 dfCount = pd.DataFrame(list(class_counts.items()), columns=['Class', 'Count'])
 
-st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 
 # Display the updated dataframe
 st.sidebar.write(dfCount)
 
+st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 
 st.sidebar.divider()
 
