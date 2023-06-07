@@ -248,7 +248,7 @@ if img_str is not None:  # Check if img_str is defined
             draw = ImageDraw.Draw(image)
             font = ImageFont.load_default()
 
-            for box in output_dict.detections:
+            for box in output_dict.predictions:
                 color = "#4892EA"
                 x1 = box['x'] - box['width'] / 2
                 x2 = box['x'] + box['width'] / 2
