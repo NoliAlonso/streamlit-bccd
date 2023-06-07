@@ -202,7 +202,7 @@ if img_str is not None:  # Check if img_str is defined
         '&format=image',
         f'&overlap={overlap_threshold * 100}',
         f'&confidence={confidence_threshold * 100}',
-        '&stroke=20',
+        '&stroke=10',
         '&labels=True'
     ])
     
@@ -246,9 +246,7 @@ if img_str is not None:  # Check if img_str is defined
             st.write(r.json())
 
             draw = ImageDraw.Draw(image)
-            #font = ImageFont.load_default()
-            # Load a PIL font file with size 10
-            font = ImageFont.load("helvR08.pil")
+            font = ImageFont.truetype("/fonts/Roboto-Regular.ttf", 10)
 
             for prediction in output_dict['predictions']:
                 color = "#4892EA"
@@ -259,7 +257,7 @@ if img_str is not None:  # Check if img_str is defined
 
                 draw.rectangle([
                     x1, y1, x2, y2
-                ], outline=color, width=5)
+                ], outline=color, width=10)
 
                 if True:
                     text = prediction['class']
