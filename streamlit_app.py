@@ -19,7 +19,7 @@ import pandas as pd
 ##### Set up sidebar.
 ##########
 
-st.sidebar.write('# WBC Identifier & Differential Count')
+st.sidebar.write('# WBC AI')
 
 st.sidebar.divider()
 
@@ -39,10 +39,8 @@ st.sidebar.divider()
 
 if 'count' not in st.session_state:
     st.session_state.last_updated = datetime.time(0,0)
-    
-st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 
-st.sidebar.title('Counter Example using Callbacks with kwargs')
+st.sidebar.title('WBC Diff Count:')
 if 'count' not in st.session_state:
     st.session_state.count = 0
 
@@ -53,6 +51,7 @@ def decrement_counter(decrement_value=0):
     st.session_state.count -= decrement_value
 
 st.sidebar.write('Count = ', st.session_state.count)
+st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 
 st.sidebar.divider()
 
