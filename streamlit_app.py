@@ -143,23 +143,6 @@ else:
 
 st.divider()
 
-if 'count' not in st.session_state:
-    st.session_state.count = 0
-    st.session_state.last_updated = datetime.time(0,0)
-
-def update_counter():
-    st.session_state.count += st.session_state.increment_value
-    st.session_state.last_updated = datetime.datetime.now().time()
-
-with st.form(key='my_form'):
-    st.number_input('Enter a value', value=0, step=1, key='increment_value')
-    submit = st.form_submit_button(label='Update', on_click=update_counter)
-
-st.write('Current Count = ', st.session_state.count)
-st.write('Last Updated = ', st.session_state.last_updated)
-
-st.divider()
-
 if img_str is not None:  # Check if img_str is defined
 
     ## Subtitle.
@@ -254,6 +237,19 @@ if img_str is not None:  # Check if img_str is defined
 
             # Display the updated dataframe
             st.write(df)
+
+            st.divider()
+
+            if 'count' not in st.session_state:
+                st.session_state.last_updated = datetime.time(0,0)
+
+            def update_counter():
+                st.session_state.last_updated = datetime.datetime.now().time()
+
+            with st.form(key='my_form'):
+                submit = st.form_submit_button(label='Update', on_click=update_counter)
+    
+            st.write('Last Updated = ', st.session_state.last_updated)
                         
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
