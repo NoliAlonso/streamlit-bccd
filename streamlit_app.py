@@ -58,8 +58,7 @@ def decrement_counter(decrement_value=0):
 # Create a dataframe from the class counts dictionary
 dfCount = pd.DataFrame(list(class_counts.items()), columns=['Cell', 'Count'])
 
-# Display the updated dataframe without the index column
-st.sidebar.dataframe(dfCount, index=False)
+st.sidebar.table(dfCount)
 
 # Display the updated dataframe
 st.sidebar.write(dfCount)
