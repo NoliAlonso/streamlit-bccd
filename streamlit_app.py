@@ -212,8 +212,8 @@ if img_str is not None:  # Check if img_str is defined
             output_dict = r.json()
 
             ## Display the JSON in main app.
-            st.write('### JSON Output')
-            st.write(r.json())
+            #st.write('### JSON Output')
+            #st.write(r.json())
 
             # Iterate through the predictions and count the occurrences of each class
             for prediction in r.json()['predictions']:
@@ -226,7 +226,33 @@ if img_str is not None:  # Check if img_str is defined
             # Create a dataframe from the class counts dictionary
             df = pd.DataFrame(list(class_counts.items()), columns=['Class', 'Count'])
 
-            # Display the dataframe
+            # Iterate through the dataframe and create form buttons for each class
+            for index, row in df.iterrows():
+                class_name = row['Class']
+                count = row['Count']
+    
+                # Create a form for each class
+                with st.form(key=f'form_{class_name}'):
+                    st.write(f"{class_name}: {count}")
+        
+                    # Add buttons to increment and decrement the count
+                    col1, col2 = st.beta_columns(2)
+        
+                    with col1:
+                        if st.form_submit_button(label='+'):
+                            count += 1
+                    with col2:
+                        if st.form_submit_button(label='-'):
+                            if count > 0:
+                                count -= 1
+        
+                    # Update the dataframe with the new count
+                    df.loc[index, 'Count'] = count
+    
+                # Add a divider between each class form
+                st.markdown('---')
+
+            # Display the updated dataframe
             st.write(df)
                         
         except IOError:
