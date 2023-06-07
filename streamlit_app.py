@@ -247,8 +247,7 @@ if img_str is not None:  # Check if img_str is defined
             st.write(r.json())
 
             draw = ImageDraw.Draw(image)
-            #font = ImageFont.load_default()
-            font = ImageFont.truetype("Roboto-Regular.ttf", 40)
+            font = ImageFont.load_default()
 
             for prediction in output_dict['predictions']:
                 color = "#4892EA"
@@ -262,7 +261,8 @@ if img_str is not None:  # Check if img_str is defined
                 ], outline=color, width=10)
 
                 if True:
-                    text = prediction['class']
+                    #text = prediction['class']
+                    text = output_dict['image']
                     text_size = font.getbbox(text)
 
                     # set button size + 10px margins
