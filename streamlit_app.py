@@ -19,7 +19,7 @@ import pandas as pd
 ##### Set up sidebar.
 ##########
 
-st.sidebar.write('# WBC AI')
+st.sidebar.write('# Doc Noli\'s WBC AI')
 
 st.sidebar.divider()
 
@@ -28,14 +28,18 @@ page_names = ['Take picture', 'Upload picture', 'Real-Time']
 
 page = st.sidebar.radio('Choose image source', page_names)
 
-###
+##########
 st.sidebar.divider()
 
 ## Add in sliders.
 confidence_threshold = st.sidebar.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
 overlap_threshold = st.sidebar.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
 
+##########
 st.sidebar.divider()
+
+# Create a dictionary to store class counts
+class_counts = {}
 
 if 'count' not in st.session_state:
     st.session_state.last_updated = datetime.time(0,0)
@@ -50,10 +54,16 @@ def increment_counter(increment_value=0):
 def decrement_counter(decrement_value=0):
     st.session_state.count -= decrement_value
 
+
+# Create a dataframe from the class counts dictionary
+dfCount = pd.DataFrame(list(class_counts.items()), columns=['Class', 'Count'])
+
 st.sidebar.write('Count = ', st.session_state.count)
 st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 
 st.sidebar.divider()
+
+########## Logos
 
 image = Image.open('./images/roboflow_logo.png')
 st.sidebar.image(image,
@@ -77,12 +87,6 @@ st.write('# WBC Identifier & Differential Count')
 st.divider()
 
 img_str = None  # Initialize img_str variable
-
-# Create a dictionary to store class counts
-class_counts = {}
-
-# Create table header
-table_data = [["WBC", "Count"]]
 
 if page == 'Take picture':
     img_file_buffer = st.camera_input("Take a picture:")
@@ -173,7 +177,7 @@ if img_str is not None:  # Check if img_str is defined
         '&format=image',
         f'&overlap={overlap_threshold * 100}',
         f'&confidence={confidence_threshold * 100}',
-        '&stroke=2',
+        '&stroke=5',
         '&labels=True'
     ])
     
@@ -217,7 +221,7 @@ if img_str is not None:  # Check if img_str is defined
             #st.write(r.json())
 
             # Iterate through the predictions and count the occurrences of each class
-            for prediction in r.json()['predictions']:
+            for prediction in output_dict['predictions']:
                 class_name = prediction['class']
                 if class_name in class_counts:
                     class_counts[class_name] += 1
