@@ -52,12 +52,6 @@ def increment_counter(increment_value=0):
 def decrement_counter(decrement_value=0):
     st.session_state.count -= decrement_value
 
-st.sidebar.button('Increment', on_click=increment_counter,
-    kwargs=dict(increment_value=5))
-
-st.sidebar.button('Decrement', on_click=decrement_counter,
-    kwargs=dict(decrement_value=1))
-
 st.sidebar.write('Count = ', st.session_state.count)
 
 st.sidebar.divider()
@@ -259,6 +253,13 @@ if img_str is not None:  # Check if img_str is defined
     
                 # Add a divider between each class form
                 st.markdown('---')
+
+
+            st.button('Increment', on_click=increment_counter,
+                kwargs=dict(increment_value=1))
+
+            st.button('Decrement', on_click=decrement_counter,
+                kwargs=dict(decrement_value=1))
 
             # Display the updated dataframe
             st.write(df)
