@@ -82,8 +82,9 @@ if class_counts:
         st.sidebar.button('+', on_click=increment_count, args=(cell,)) # Add an increment button
         st.sidebar.button('-', on_click=decrement_count, args=(cell,)) # Add a decrement button
 
-
-st.sidebar.write('Last Updated = ', st.session_state.last_updated)
+    st.sidebar.write('Last Updated = ', st.session_state.last_updated)
+else:
+    st.sidebar.write('None');
 
 st.sidebar.divider()
 
