@@ -56,7 +56,7 @@ def decrement_counter(decrement_value=0):
 
 
 # Create a dataframe from the class counts dictionary
-dfCount = pd.DataFrame(list(class_counts.items()), columns=['Cell', 'Count'])
+dfCount = pd.DataFrame(list(class_counts.items()), columns=['Cell', 'Count'], index=False)
 
 
 # Display the updated dataframe
