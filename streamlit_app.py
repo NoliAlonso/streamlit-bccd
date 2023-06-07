@@ -13,12 +13,13 @@ import matplotlib.pyplot as plt
 import av
 import cv2
 import datetime
+import pandas as pd
 
 ##########
 ##### Set up sidebar.
 ##########
 
-st.sidebar.write('# WBC ID & Counting App')
+st.sidebar.write('# WBC Identifier & Differential Count')
 
 st.sidebar.divider()
 
@@ -33,6 +34,8 @@ st.sidebar.divider()
 ## Add in sliders.
 confidence_threshold = st.sidebar.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
 overlap_threshold = st.sidebar.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
+
+st.sidebar.divider()
 
 image = Image.open('./images/roboflow_logo.png')
 st.sidebar.image(image,
@@ -51,12 +54,14 @@ st.sidebar.image(image,
 ##########
 
 ## Title.
-st.write('# WBC Identifier & Counter')
+st.write('# WBC Identifier & Differential Count')
 
 st.divider()
 
 img_str = None  # Initialize img_str variable
-label_counts = {}
+
+# Create a dictionary to store class counts
+class_counts = {}
 
 # Create table header
 table_data = [["WBC", "Count"]]
@@ -209,6 +214,20 @@ if img_str is not None:  # Check if img_str is defined
             ## Display the JSON in main app.
             st.write('### JSON Output')
             st.write(r.json())
+
+            # Iterate through the predictions and count the occurrences of each class
+            for prediction in r.json()['predictions']:
+                class_name = prediction['class']
+                if class_name in class_counts:
+                    class_counts[class_name] += 1
+                else:
+                    class_counts[class_name] = 1
+
+            # Create a dataframe from the class counts dictionary
+            df = pd.DataFrame(list(class_counts.items()), columns=['Class', 'Count'])
+
+            # Display the dataframe
+            st.write(df)
                         
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
