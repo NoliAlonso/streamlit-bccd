@@ -246,7 +246,9 @@ if img_str is not None:  # Check if img_str is defined
             st.write(r.json())
 
             draw = ImageDraw.Draw(image)
-            font = ImageFont.load_default()
+            # Load a TrueType font with size 20
+            font = ImageFont.truetype("arial.ttf", 20)
+            
 
             for prediction in output_dict['predictions']:
                 color = "#4892EA"
