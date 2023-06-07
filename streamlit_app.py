@@ -14,6 +14,7 @@ import av
 import cv2
 import datetime
 import pandas as pd
+import os
 
 ##########
 ##### Set up sidebar.
@@ -245,8 +246,13 @@ if img_str is not None:  # Check if img_str is defined
             st.write('### JSON Output')
             st.write(r.json())
 
+            if os.path.exists("/fonts/Roboto-Regular.ttf"):
+                print("Font file exists")
+            else:
+                print("Font file does not exist")
+
             draw = ImageDraw.Draw(image)
-            font = ImageFont.truetype("/fonts/Roboto-Regular.ttf", 10)
+            font = ImageFont.load_default()
 
             for prediction in output_dict['predictions']:
                 color = "#4892EA"
