@@ -37,6 +37,19 @@ overlap_threshold = st.sidebar.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
 
 st.sidebar.divider()
 
+if 'count' not in st.session_state:
+    st.session_state.last_updated = datetime.time(0,0)
+
+def update_counter():
+    st.session_state.last_updated = datetime.datetime.now().time()
+
+    with st.form(key='my_form'):
+        submit = st.form_submit_button(label='Update', on_click=update_counter)
+    
+    st.write('Last Updated = ', st.session_state.last_updated)
+
+st.sidebar.divider()
+
 image = Image.open('./images/roboflow_logo.png')
 st.sidebar.image(image,
                  use_column_width=True)
@@ -237,19 +250,6 @@ if img_str is not None:  # Check if img_str is defined
 
             # Display the updated dataframe
             st.write(df)
-
-            st.divider()
-
-            if 'count' not in st.session_state:
-                st.session_state.last_updated = datetime.time(0,0)
-
-            def update_counter():
-                st.session_state.last_updated = datetime.datetime.now().time()
-
-            with st.form(key='my_form'):
-                submit = st.form_submit_button(label='Update', on_click=update_counter)
-    
-            st.write('Last Updated = ', st.session_state.last_updated)
                         
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
