@@ -24,7 +24,7 @@ if 'count' not in st.session_state:
 
 def update_counter():
     st.session_state.count += st.session_state.increment_value
-    st.session_state.last_updated = st.session_state.update_time
+    st.session_state.last_updated = datetime.datetime.now().time()
 
 with st.sidebar.form(key='my_form'):
     st.number_input('Enter a value', value=0, step=1, key='increment_value')
