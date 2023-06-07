@@ -58,37 +58,29 @@ def decrement_counter(decrement_value=0):
 # Create a dataframe from the class counts dictionary
 dfCount = pd.DataFrame(list(class_counts.items()), columns=['Cell', 'Count'])
 
-# CSS to inject contained in a string
-hide_dataframe_row_index = """
-<style>
-.row_heading.level0 {display:none}
-.blank {display:none}
-</style>
-"""
-
-# Inject CSS with Markdown
-st.markdown(hide_dataframe_row_index, unsafe_allow_html=True)
-
-# Display the updated dataframe
-st.sidebar.write(dfCount)
+# Check if the class counts dictionary is empty
+if class_counts:
+    # Display the updated dataframe
+    # Display the updated dataframe
+    st.sidebar.write(dfCount)
 
 
-# Define a function to increment a cell count by 1
-def increment_count(cell):
-    st.session_state.class_counts[cell] += 1
-    st.session_state.last_updated = datetime.datetime.now().ctime()
+    # Define a function to increment a cell count by 1
+    def increment_count(cell):
+        st.session_state.class_counts[cell] += 1
+        st.session_state.last_updated = datetime.datetime.now().ctime()
 
-# Define a function to decrement a cell count by 1
-def decrement_count(cell):
-    st.session_state.class_counts[cell] -= 1
-    st.session_state.last_updated = datetime.datetime.now().ctime()
+    # Define a function to decrement a cell count by 1
+    def decrement_count(cell):
+        st.session_state.class_counts[cell] -= 1
+        st.session_state.last_updated = datetime.datetime.now().ctime()
 
-# Loop through each row of the dataframe and add buttons
-for i in range(len(dfCount)):
-    cell = dfCount.iloc[i, 0] # Get the cell name
-    st.sidebar.write(cell) # Display the cell name
-    st.sidebar.button('+', on_click=increment_count, args=(cell,)) # Add an increment button
-    st.sidebar.button('-', on_click=decrement_count, args=(cell,)) # Add a decrement button
+    # Loop through each row of the dataframe and add buttons
+    for i in range(len(dfCount)):
+        cell = dfCount.iloc[i, 0] # Get the cell name
+        st.sidebar.write(cell) # Display the cell name
+        st.sidebar.button('+', on_click=increment_count, args=(cell,)) # Add an increment button
+        st.sidebar.button('-', on_click=decrement_count, args=(cell,)) # Add a decrement button
 
 
 st.sidebar.write('Last Updated = ', st.session_state.last_updated)
