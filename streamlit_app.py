@@ -44,9 +44,9 @@ def update_counter():
     st.session_state.last_updated = datetime.datetime.now().time()
 
     with st.form(key='my_form'):
-        submit = st.form_submit_button(label='Update', on_click=update_counter)
+        submit = st.sidebar.form_submit_button(label='Update', on_click=update_counter)
     
-    st.write('Last Updated = ', st.session_state.last_updated)
+    st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 
 st.sidebar.divider()
 
