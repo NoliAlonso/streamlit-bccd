@@ -84,7 +84,7 @@ if class_counts:
 
     st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 else:
-    st.sidebar.write('None');
+    st.sidebar.write('Not started.');
 
 st.sidebar.divider()
 
@@ -202,7 +202,7 @@ if img_str is not None:  # Check if img_str is defined
         '&format=image',
         f'&overlap={overlap_threshold * 100}',
         f'&confidence={confidence_threshold * 100}',
-        '&stroke=5',
+        '&stroke=20',
         '&labels=True'
     ])
     
@@ -242,8 +242,8 @@ if img_str is not None:  # Check if img_str is defined
             output_dict = r.json()
 
             ## Display the JSON in main app.
-            #st.write('### JSON Output')
-            #st.write(r.json())
+            st.write('### JSON Output')
+            st.write(r.json())
 
             # Iterate through the predictions and count the occurrences of each class
             for prediction in output_dict['predictions']:
