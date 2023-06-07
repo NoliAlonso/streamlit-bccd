@@ -246,13 +246,9 @@ if img_str is not None:  # Check if img_str is defined
             st.write('### JSON Output')
             st.write(r.json())
 
-            if os.path.exists("/fonts/Roboto-Regular.ttf"):
-                print("Font file exists")
-            else:
-                print("Font file does not exist")
-
             draw = ImageDraw.Draw(image)
-            font = ImageFont.load_default()
+            #font = ImageFont.load_default()
+            font = ImageFont.truetype("Roboto-Regular.ttf", 10)
 
             for prediction in output_dict['predictions']:
                 color = "#4892EA"
