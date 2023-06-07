@@ -41,28 +41,28 @@ st.sidebar.divider()
 # Create a dictionary to store class counts
 class_counts = {}
 
+st.sidebar.title('WBC Diff Count:')
+
 if 'count' not in st.session_state:
     st.session_state.last_updated = datetime.time(0,0)
 
-st.sidebar.title('WBC Diff Count:')
-if 'count' not in st.session_state:
-    st.session_state.count = 0
-
 def increment_counter(increment_value=0):
     st.session_state.count += increment_value
+    st.session_state.last_updated = datetime.datetime.now().time()
 
 def decrement_counter(decrement_value=0):
     st.session_state.count -= decrement_value
+    st.session_state.last_updated = datetime.datetime.now().time()
+
 
 
 # Create a dataframe from the class counts dictionary
 dfCount = pd.DataFrame(list(class_counts.items()), columns=['Class', 'Count'])
 
-st.sidebar.write('Count = ', st.session_state.count)
 st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 
 # Display the updated dataframe
-st.write(dfCount)
+st.sidebar.write(dfCount)
 
 
 st.sidebar.divider()
