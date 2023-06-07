@@ -26,9 +26,9 @@ def update_counter():
     st.session_state.count += st.session_state.increment_value
     st.session_state.last_updated = st.session_state.update_time
 
-with st.form(key='my_form'):
-    st.sidebar.number_input('Enter a value', value=0, step=1, key='increment_value')
-    submit = st.sidebar.form_submit_button(label='Update', on_click=update_counter)
+with st.sidebar.form(key='my_form'):
+    st.number_input('Enter a value', value=0, step=1, key='increment_value')
+    submit = st.form_submit_button(label='Update', on_click=update_counter)
 
 st.sidebar.write('Current Count = ', st.session_state.count)
 st.sidebar.write('Last Updated = ', st.session_state.last_updated)
