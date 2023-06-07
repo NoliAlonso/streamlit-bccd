@@ -236,7 +236,7 @@ if img_str is not None:  # Check if img_str is defined
                     st.write(f"{class_name}: {count}")
         
                     # Add buttons to increment and decrement the count
-                    col1, col2 = st.beta_columns(2)
+                    col1, col2 = st.columns(2)
         
                     with col1:
                         if st.form_submit_button(label='+'):
