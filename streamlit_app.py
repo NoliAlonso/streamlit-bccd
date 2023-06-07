@@ -265,7 +265,7 @@ if img_str is not None:  # Check if img_str is defined
                     text_size = font.getbbox(text)
 
                     # set button size + 10px margins
-                    button_size = (text_size[0]+20, text_size[1]+20)
+                    button_size = (text_size[0]+50, text_size[1]+50)
                     button_img = Image.new('RGBA', button_size, color)
                     # put text on button with 10px margins
                     button_draw = ImageDraw.Draw(button_img)
