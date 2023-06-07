@@ -18,20 +18,9 @@ import datetime
 ##### Set up sidebar.
 ##########
 
-if 'count' not in st.session_state:
-    st.session_state.count = 0
-    st.session_state.last_updated = datetime.time(0,0)
+st.sidebar.write('# WBC ID & Counting App')
 
-def update_counter():
-    st.session_state.count += st.session_state.increment_value
-    st.session_state.last_updated = datetime.datetime.now().time()
-
-with st.sidebar.form(key='my_form'):
-    st.number_input('Enter a value', value=0, step=1, key='increment_value')
-    submit = st.form_submit_button(label='Update', on_click=update_counter)
-
-st.sidebar.write('Current Count = ', st.session_state.count)
-st.sidebar.write('Last Updated = ', st.session_state.last_updated)
+st.sidebar.divider()
 
 # Add in location to select image.
 page_names = ['Take picture', 'Upload picture', 'Real-Time']
@@ -39,6 +28,7 @@ page_names = ['Take picture', 'Upload picture', 'Real-Time']
 page = st.sidebar.radio('Choose image source', page_names)
 
 ###
+st.sidebar.divider()
 
 ## Add in sliders.
 confidence_threshold = st.sidebar.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
@@ -61,7 +51,9 @@ st.sidebar.image(image,
 ##########
 
 ## Title.
-st.write('# White Blood Cell Identifier & Counter')
+st.write('# WBC Identifier & Counter')
+
+st.divider()
 
 img_str = None  # Initialize img_str variable
 label_counts = {}
@@ -143,6 +135,25 @@ else:
                     # Handle the case of an empty image
                     img_str = ""
                     mean_value = 0.0
+
+st.divider()
+
+if 'count' not in st.session_state:
+    st.session_state.count = 0
+    st.session_state.last_updated = datetime.time(0,0)
+
+def update_counter():
+    st.session_state.count += st.session_state.increment_value
+    st.session_state.last_updated = datetime.datetime.now().time()
+
+with st.form(key='my_form'):
+    st.number_input('Enter a value', value=0, step=1, key='increment_value')
+    submit = st.form_submit_button(label='Update', on_click=update_counter)
+
+st.write('Current Count = ', st.session_state.count)
+st.write('Last Updated = ', st.session_state.last_updated)
+
+st.divider()
 
 if img_str is not None:  # Check if img_str is defined
 
