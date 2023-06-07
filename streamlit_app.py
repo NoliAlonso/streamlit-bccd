@@ -58,10 +58,25 @@ def decrement_counter(decrement_value=0):
 # Create a dataframe from the class counts dictionary
 dfCount = pd.DataFrame(list(class_counts.items()), columns=['Cell', 'Count'])
 
-st.sidebar.table(dfCount)
-
 # Display the updated dataframe
 st.sidebar.write(dfCount)
+
+
+# Define a function to increment a cell count by 1
+def increment_count(cell):
+    st.session_state.class_counts[cell] += 1
+
+# Define a function to decrement a cell count by 1
+def decrement_count(cell):
+    st.session_state.class_counts[cell] -= 1
+
+# Loop through each row of the dataframe and add buttons
+for i in range(len(dfCount)):
+    cell = dfCount.iloc[i, 0] # Get the cell name
+    st.sidebar.write(cell) # Display the cell name
+    st.sidebar.button('+', on_click=increment_count, args=(cell,)) # Add an increment button
+    st.sidebar.button('-', on_click=decrement_count, args=(cell,)) # Add a decrement button
+
 
 st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 
