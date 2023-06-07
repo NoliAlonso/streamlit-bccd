@@ -248,19 +248,19 @@ if img_str is not None:  # Check if img_str is defined
             draw = ImageDraw.Draw(image)
             font = ImageFont.load_default()
 
-            for box in output_dict.predictions:
+            for prediction in output_dict['predictions']:
                 color = "#4892EA"
-                x1 = box['x'] - box['width'] / 2
-                x2 = box['x'] + box['width'] / 2
-                y1 = box['y'] - box['height'] / 2
-                y2 = box['y'] + box['height'] / 2
+                x1 = prediction['x'] - prediction['width'] / 2
+                x2 = prediction['x'] + prediction['width'] / 2
+                y1 = prediction['y'] - prediction['height'] / 2
+                y2 = prediction['y'] + prediction['height'] / 2
 
                 draw.rectangle([
                     x1, y1, x2, y2
                 ], outline=color, width=5)
 
                 if True:
-                    text = box['class']
+                    text = prediction['class']
                     text_size = font.getsize(text)
 
                     # set button size + 10px margins
