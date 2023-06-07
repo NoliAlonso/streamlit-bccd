@@ -248,7 +248,7 @@ if img_str is not None:  # Check if img_str is defined
 
             draw = ImageDraw.Draw(image)
             #font = ImageFont.load_default()
-            font = ImageFont.truetype("Roboto-Regular.ttf", 20)
+            font = ImageFont.truetype("Roboto-Regular.ttf", 40)
 
             for prediction in output_dict['predictions']:
                 color = "#4892EA"
