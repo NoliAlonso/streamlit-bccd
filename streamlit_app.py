@@ -61,6 +61,10 @@ dfCount = pd.DataFrame(list(class_counts.items()), columns=['Class', 'Count'])
 st.sidebar.write('Count = ', st.session_state.count)
 st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 
+# Display the updated dataframe
+st.write(dfCount)
+
+
 st.sidebar.divider()
 
 ########## Logos
@@ -264,8 +268,7 @@ if img_str is not None:  # Check if img_str is defined
             st.button('Decrement', on_click=decrement_counter,
                 kwargs=dict(decrement_value=1))
 
-            # Display the updated dataframe
-            st.write(df)
+            
                         
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
