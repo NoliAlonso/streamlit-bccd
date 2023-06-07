@@ -58,6 +58,17 @@ def decrement_counter(decrement_value=0):
 # Create a dataframe from the class counts dictionary
 dfCount = pd.DataFrame(list(class_counts.items()), columns=['Cell', 'Count'])
 
+# CSS to inject contained in a string
+hide_dataframe_row_index = """
+<style>
+.row_heading.level0 {display:none}
+.blank {display:none}
+</style>
+"""
+
+# Inject CSS with Markdown
+st.markdown(hide_dataframe_row_index, unsafe_allow_html=True)
+
 # Display the updated dataframe
 st.sidebar.write(dfCount)
 
@@ -65,10 +76,12 @@ st.sidebar.write(dfCount)
 # Define a function to increment a cell count by 1
 def increment_count(cell):
     st.session_state.class_counts[cell] += 1
+    st.session_state.last_updated = datetime.datetime.now().ctime()
 
 # Define a function to decrement a cell count by 1
 def decrement_count(cell):
     st.session_state.class_counts[cell] -= 1
+    st.session_state.last_updated = datetime.datetime.now().ctime()
 
 # Loop through each row of the dataframe and add buttons
 for i in range(len(dfCount)):
@@ -273,15 +286,6 @@ if img_str is not None:  # Check if img_str is defined
                     # Update the dataframe with the new count
                     df.loc[index, 'Count'] = count
     
-                # Add a divider between each class form
-                st.markdown('---')
-
-
-            st.button('Increment', on_click=increment_counter,
-                kwargs=dict(increment_value=1))
-
-            st.button('Decrement', on_click=decrement_counter,
-                kwargs=dict(decrement_value=1))
 
             
                         
