@@ -31,6 +31,9 @@ page = st.sidebar.radio('Choose image source', page_names)
 ##########
 st.sidebar.divider()
 
+confidence_threshold = 0.5
+overlap_threshold = 0.5
+
 with st.sidebar.expander("Adjust confidence and overlap:"):
     confidence_threshold = st.sidebar.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
     overlap_threshold = st.sidebar.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
