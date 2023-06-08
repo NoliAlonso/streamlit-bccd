@@ -62,6 +62,10 @@ def SubmitJSONdataframe():
     for index, row in df_grouped.iterrows():
         # Use get method to handle cases where the class name is not already in the dictionary
         st.session_state.class_counts[row['class']] = st.session_state.class_counts.get(row['class'], 0) + row['count']
+    st.session_state.last_updated = datetime.time(0,0)
+
+def ResetAll():
+    st.session_state.class_counts = {}
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
 # Create a dataframe from the class counts dictionary
@@ -110,6 +114,9 @@ if st.session_state.class_counts:
     st.sidebar.write('Count last updated at ', st.session_state.last_updated)
 else:
     st.sidebar.write('Inference an image to begin.');
+
+with st.form(key='resetform'):
+    reset_button = st.form_submit_button(label='Reset', on_click=ResetAll)
 
 st.sidebar.divider()
 
