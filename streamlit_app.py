@@ -249,7 +249,7 @@ if img_str is not None:  # Check if img_str is defined
             #font = ImageFont.load_default()
 
             font_path = "Roboto-Bold.ttf"  # Replace with the path to your desired font file
-            font_size = 80  # Set the desired font size
+            font_size = 60  # Set the desired font size
 
             # Load the custom font with the desired size
             font = ImageFont.truetype(font_path, font_size)
@@ -266,7 +266,7 @@ if img_str is not None:  # Check if img_str is defined
                 ], outline=color, width=10)
 
                 if True:
-                    text = prediction['class']
+                    text = f"{prediction['class']} ({prediction['confidence']*100:.2f}%)"
                     # Get the bounding box of the text using the loaded font
                     text_bbox = font.getbbox(text)
 
