@@ -111,9 +111,18 @@ if st.session_state.class_counts:
             with col3:
                 st.button(':heavy_minus_sign:', on_click=decrement_count, args=(cell,), key=f"decrement_{i}") # Add a decrement button
 
+    st.sidebar.divider()
+
     st.sidebar.write('Count last updated at ', st.session_state.last_updated)
 else:
     st.sidebar.write('Inference an image to begin.');
+
+st.sidebar.divider()
+
+st.sidebar.write('Add cell to count:')
+#add classes, classname - button that adds 1 
+
+st.sidebar.divider()
 
 with st.sidebar.form(key='resetform'):
     reset_button = st.form_submit_button(label='Reset', on_click=ResetAll)
@@ -149,7 +158,6 @@ if page == 'Take picture':
     if img_file_buffer is not None:
         # To read image file buffer with PIL:
         image = Image.open(img_file_buffer)
-        cv2_img = np.array(image.convert("RGB"))
 
         # Convert to JPEG Buffer.
         buffered = io.BytesIO()
@@ -176,6 +184,7 @@ else:
             
                 response = requests.get(url)
                 image = Image.open(io.BytesIO(response.content))
+
                 # Convert to JPEG Buffer.
                 buffered = io.BytesIO()
                 image.save(buffered, format='JPEG')
@@ -183,6 +192,7 @@ else:
         else:
             # User-selected image.
             image = Image.open(uploaded_file)
+
             # Convert to JPEG Buffer.
             buffered = io.BytesIO()
             image.save(buffered, format='JPEG')
