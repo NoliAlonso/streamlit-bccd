@@ -59,26 +59,35 @@ def SubmitedJSON():
 dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
 dfCount.columns = ['Cell', 'Count']
 
+# Define a function to increment a cell count by 1
+def increment_count(cell):
+    st.session_state.class_counts[cell] += 1
+    st.session_state.last_updated = datetime.datetime.now().ctime()
+# Define a function to decrement a cell count by 1
+def decrement_count(cell):
+    st.session_state.class_counts[cell] -= 1
+    st.session_state.last_updated = datetime.datetime.now().ctime()
+
 # Check if the class counts dictionary is empty
 if st.session_state.class_counts:
-    # Display the updated dataframe
-    st.sidebar.dataframe(dfCount, use_container_width=True, hide_index=True)
-    # Define a function to increment a cell count by 1
-    def increment_count(cell):
-        st.session_state.class_counts[cell] += 1
-        st.session_state.last_updated = datetime.datetime.now().ctime()
-    # Define a function to decrement a cell count by 1
-    def decrement_count(cell):
-        st.session_state.class_counts[cell] -= 1
-        st.session_state.last_updated = datetime.datetime.now().ctime()
-    # Loop through each row of the dataframe and add buttons
-    for i in range(len(dfCount)):
-        cell = dfCount.iloc[i, 0] # Get the cell name
-        st.sidebar.write(cell) # Display the cell name
-        # Pass a unique key argument to each button widget
-        st.sidebar.button('+', on_click=increment_count, args=(cell,), key=f"increment_{i}") # Add an increment button
-        st.sidebar.button('-', on_click=decrement_count, args=(cell,), key=f"decrement_{i}") # Add a decrement button
-    st.sidebar.write('Last Updated = ', st.session_state.last_updated)
+    with st.sidebar.container():
+        
+        col1, col2, col3 = st.sidebar.columns(3)
+
+        with col1:
+            # Display the updated dataframe
+            st.dataframe(dfCount, use_container_width=True, hide_index=True)
+       
+        # Loop through each row of the dataframe and add buttons
+        for i in range(len(dfCount)):
+            cell = dfCount.iloc[i, 0] # Get the cell name
+            # Pass a unique key argument to each button widget
+            with col2:
+                st.button('+', on_click=increment_count, args=(cell,), key=f"increment_{i}") # Add an increment button
+            with col3:
+                st.button('-', on_click=decrement_count, args=(cell,), key=f"decrement_{i}") # Add a decrement button
+
+        st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 else:
     st.sidebar.write('Not started.');
 
@@ -103,7 +112,7 @@ st.sidebar.image(image,
 ##########
 
 ## Title.
-st.write('# WBC Identifier & Differential Count')
+st.write('# AI WBC ID & Diff Count')
 
 st.divider()
 
@@ -128,11 +137,9 @@ else:
 
         ## Pull in default image or user-selected image.
         if uploaded_file is None:
-            if st.checkbox("Try a test image", value=False):
-                # Default image.
-                st.divider()
+            if st.checkbox("Default test image", value=False):
                 option = st.selectbox(
-                    'Select a test image:',
+                    'Select an image:',
                     ('im_0000_20230601_124318.jpg', 'im_0001_20230601_124844.jpg', 'im_0002_20230601_124933.jpg', 'im_0003_20230601_125012.jpg', 'im_0004_20230601_125124.jpg'))
 
                 ## Construct the URL 
