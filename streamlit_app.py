@@ -132,21 +132,22 @@ else:
 
         ## Pull in default image or user-selected image.
         if uploaded_file is None:
-            # Default image.
-            st.divider()
-            option = st.selectbox(
-                'Select a test image:',
-                ('im_0000_20230601_124318.jpg', 'im_0001_20230601_124844.jpg', 'im_0002_20230601_124933.jpg', 'im_0003_20230601_125012.jpg', 'im_0004_20230601_125124.jpg'))
+            if st.checkbox("Try test images", value=True):
+                # Default image.
+                st.divider()
+                option = st.selectbox(
+                    'Select a test image:',
+                    ('im_0000_20230601_124318.jpg', 'im_0001_20230601_124844.jpg', 'im_0002_20230601_124933.jpg', 'im_0003_20230601_125012.jpg', 'im_0004_20230601_125124.jpg'))
 
-            ## Construct the URL 
-            url = ''.join([
-                'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/',
-                option,
-                '?raw=true'
-            ])
+                ## Construct the URL 
+                url = ''.join([
+                    'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/',
+                    option,
+                    '?raw=true'
+                ])
             
-            response = requests.get(url)
-            image = Image.open(io.BytesIO(response.content))
+                response = requests.get(url)
+                image = Image.open(io.BytesIO(response.content))
         else:
             # User-selected image.
             image = Image.open(uploaded_file)
