@@ -1,4 +1,16 @@
-﻿import streamlit as st
+﻿# load config
+import json
+with open('Roboflow_config.json') as f:
+    config = json.load(f)
+
+    ROBOFLOW_API_KEY = config["ROBOFLOW_API_KEY"]
+    ROBOFLOW_MODEL = config["ROBOFLOW_MODEL"]
+    ROBOFLOW_SIZE = config["ROBOFLOW_SIZE"]
+
+    FRAMERATE = config["FRAMERATE"]
+    BUFFER = config["BUFFER"]
+
+import streamlit as st
 from streamlit_webrtc import webrtc_streamer
 from camera_input_live import camera_input_live
 import requests
@@ -189,12 +201,13 @@ else:
                             # Handle the case of invalid value
                             mean_value = 0.0  # Set a default value or perform a different action
 
-                        # Convert to JPEG Buffer.
-                        buffered = io.BytesIO()
-                        pil_image.save(buffered, format='JPEG')
-                        img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
-                        # Further processing with img_str and mean_value if needed
-                        ...
+                        else:
+                            # Convert to JPEG Buffer.
+                            buffered = io.BytesIO()
+                            pil_image.save(buffered, format='JPEG')
+                            img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
+                            # Further processing with img_str and mean_value if needed
+                            ...
                         
                 else:
                     # Handle the case of an empty image
@@ -212,9 +225,12 @@ if img_str is not None:  # Check if img_str is defined
     st.write('### Inferenced Image')
 
     ## Construct the URL to retrieve image.
+    # (if running locally replace https://detect.roboflow.com/ with eg http://127.0.0.1:9001/)
     upload_url = ''.join([
-        'https://detect.roboflow.com/peripheralbloodsmear/12',
-        '?api_key=oDkrH1XmBTgm5SIRerW7',
+        'https://detect.roboflow.com/',
+        ROBOFLOW_MODEL,
+        '?api_key=',
+        ROBOFLOW_API_KEY,
         '&format=image',
         f'&overlap={overlap_threshold * 100}',
         f'&confidence={confidence_threshold * 100}',
@@ -242,8 +258,10 @@ if img_str is not None:  # Check if img_str is defined
 
             ## Construct the URL to retrieve JSON.
             upload_url = ''.join([
-                'https://detect.roboflow.com/peripheralbloodsmear/12',
-                '?api_key=oDkrH1XmBTgm5SIRerW7'
+                'https://detect.roboflow.com/',
+                ROBOFLOW_MODEL,
+                '?api_key=',
+                ROBOFLOW_API_KEY
             ])
 
             ## POST to the API.
