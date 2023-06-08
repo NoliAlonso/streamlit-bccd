@@ -55,7 +55,32 @@ def decrement_counter(decrement_value=0):
     st.session_state.count -= decrement_value
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
-    
+
+# Create a dataframe from the class counts dictionary
+dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
+
+# Check if the class counts dictionary is empty
+if st.session_state.class_counts:
+    # Display the updated dataframe
+    st.sidebar.dataframe(dfCount, use_container_width=True)
+    # Define a function to increment a cell count by 1
+    def increment_count(cell):
+        st.session_state.class_counts[cell] += 1
+        st.session_state.last_updated = datetime.datetime.now().ctime()
+    # Define a function to decrement a cell count by 1
+    def decrement_count(cell):
+        st.session_state.class_counts[cell] -= 1
+        st.session_state.last_updated = datetime.datetime.now().ctime()
+    # Loop through each row of the dataframe and add buttons
+    for i in range(len(dfCount)):
+        cell = dfCount.iloc[i, 0] # Get the cell name
+        st.sidebar.write(cell) # Display the cell name
+        # Pass a unique key argument to each button widget
+        st.sidebar.button('+', on_click=increment_count, args=(cell,), key=f"increment_{i}") # Add an increment button
+        st.sidebar.button('-', on_click=decrement_count, args=(cell,), key=f"decrement_{i}") # Add a decrement button
+    st.sidebar.write('Last Updated = ', st.session_state.last_updated)
+else:
+    st.sidebar.write('Not started.');
 
 st.sidebar.divider()
 
@@ -279,32 +304,6 @@ if img_str is not None:  # Check if img_str is defined
                     st.session_state.class_counts[row['class']] = st.session_state.class_counts.get(row['class'], 0) + row['count']
                 st.success('Added to the diff count', icon="✅")
 
-            # Create a dataframe from the class counts dictionary
-            dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
-
-            # Check if the class counts dictionary is empty
-            if st.session_state.class_counts:
-                # Display the updated dataframe
-                st.sidebar.dataframe(dfCount, use_container_width=True)
-                # Define a function to increment a cell count by 1
-                def increment_count(cell):
-                    st.session_state.class_counts[cell] += 1
-                    st.session_state.last_updated = datetime.datetime.now().ctime()
-                # Define a function to decrement a cell count by 1
-                def decrement_count(cell):
-                    st.session_state.class_counts[cell] -= 1
-                    st.session_state.last_updated = datetime.datetime.now().ctime()
-                # Loop through each row of the dataframe and add buttons
-                for i in range(len(dfCount)):
-                    cell = dfCount.iloc[i, 0] # Get the cell name
-                    st.sidebar.write(cell) # Display the cell name
-                    # Pass a unique key argument to each button widget
-                    st.sidebar.button('+', on_click=increment_count, args=(cell,), key=f"increment_{i}") # Add an increment button
-                    st.sidebar.button('-', on_click=decrement_count, args=(cell,), key=f"decrement_{i}") # Add a decrement button
-                st.sidebar.write('Last Updated = ', st.session_state.last_updated)
-                st.session_state.last_updated = datetime.datetime.now().ctime()
-            else:
-                st.sidebar.write('Not started.');
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
