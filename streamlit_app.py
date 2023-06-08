@@ -122,6 +122,7 @@ st.write(titlemessage)
 st.divider()
 
 img_str = None  # Initialize img_str variable
+mean_value = 0.0
 
 if page == 'Take picture':
     img_file_buffer = st.camera_input("Take a picture:")
@@ -166,7 +167,7 @@ else:
             # Convert to JPEG Buffer.
             buffered = io.BytesIO()
             image.save(buffered, format='JPEG')
-            img_str = base64.b64encode(buffered.getvalue()).decode('ascii')        
+            img_str = base64.b64encode(buffered.getvalue()).decode('ascii')   
 
     else:
         if page == 'Real-Time':
@@ -197,7 +198,7 @@ else:
                         
                 else:
                     # Handle the case of an empty image
-                    img_str = ""
+                    img_str = None
                     mean_value = 0.0
 
 st.divider()
