@@ -308,7 +308,7 @@ if img_str is not None:  # Check if img_str is defined
 
             with st.form(key='my_form'):
                 submit_button = st.form_submit_button(label='Add to diff count', on_click=SubmitedJSON)
-                st.checkbox(key='Uplo', value=False)
+                st.checkbox("Use test images", value=False, key='Uplo')
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
