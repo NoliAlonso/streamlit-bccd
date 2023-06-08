@@ -246,10 +246,13 @@ if img_str is not None:  # Check if img_str is defined
             st.write(r.json())
 
             draw = ImageDraw.Draw(image)
-            font = ImageFont.load_default()
+            #font = ImageFont.load_default()
 
-            enlarged_image = image.resize((2*image.width, 2*image.height))
+            font_path = "Roboto-Bold.ttf"  # Replace with the path to your desired font file
+            font_size = 50  # Set the desired font size
 
+            # Load the custom font with the desired size
+            font = ImageFont.truetype(font_path, font_size)
 
             for prediction in output_dict['predictions']:
                 color = "#4892EA"
@@ -267,27 +270,15 @@ if img_str is not None:  # Check if img_str is defined
                     text_size = font.getbbox(text)
 
                     # set button size + 10px margins
-                    #button_size = (text_size[0]+20, text_size[1]+20)
-                    button_width = text_size[0] + 40  # Increase the width of the button
-                    button_height = text_size[1] + 40  # Increase the height of the button
-
-                    button_size = (button_width, button_height)
-
+                    button_size = (text_size[0]+40, text_size[1]+40)
                     button_img = Image.new('RGBA', button_size, color)
-
-                    enlarged_image.paste(button_img, (int(2*x1), int(2*y1)))
                     # put text on button with 10px margins
                     button_draw = ImageDraw.Draw(button_img)
-
-                    text_x = (button_width - text_size[0]) // 2  # Center the text horizontally within the button
-                    text_y = (button_height - text_size[1]) // 2  # Center the text vertically within the button
-                    button_draw.text((text_x, text_y), text, font=font, fill=(255, 255, 255, 255))
-                    #button_draw.text((10, 10), text, font=font, fill=(255,255,255,255))
+                    button_draw.text((10, 10), text, font=font, fill=(255,255,255,255))
 
                     # put button on source image in position (0, 0)
                     image.paste(button_img, (int(x1), int(y1)))
-            #st.image(image, use_column_width=True)
-            st.image(enlarged_image, use_column_width=True)
+            st.image(image, use_column_width=True)
 
             ###
 
