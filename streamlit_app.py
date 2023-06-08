@@ -298,9 +298,10 @@ if img_str is not None:  # Check if img_str is defined
             # Create a dataframe from the JSON output
             dfR = pd.DataFrame(output_dict['predictions'])
             dfR = dfR.groupby('class').size().reset_index(name='Count')
+            st.write(dfR)
 
             # Add a button to add the dfR dataframe data to the class_counts dictionary
-            if st.button('Add Data to class_counts'):
+            if st.button('Add results to the diff count.'):
                 for index, row in dfR.iterrows():
                     class_name = row['class']
                     count = row['Count']
