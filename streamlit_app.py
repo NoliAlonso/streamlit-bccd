@@ -339,17 +339,18 @@ if img_str is not None:  # Check if img_str is defined
 
             ###
 
-           # Create a dataframe from the JSON output of the image inference
+            # Create a dataframe from the JSON output of the image inference
             df = pd.json_normalize(output_dict['predictions'])            
 
-            # Group by 'class' and get their counts
-            df_grouped = df.groupby('class').size().reset_index(name='count')
+            if not df.empty:
+                # Group by 'class' and get their counts
+                df_grouped = df.groupby('class').size().reset_index(name='count')
 
-            # Display the dataframe
-            st.dataframe(df_grouped, use_container_width=True, hide_index=True)
+                # Display the dataframe
+                st.dataframe(df_grouped, use_container_width=True, hide_index=True)
 
-            with st.form(key='my_form'):
-                submit_button = st.form_submit_button(label='Add to diff count', on_click=SubmitJSONdataframe)
+                with st.form(key='my_form'):
+                    submit_button = st.form_submit_button(label='Add to diff count', on_click=SubmitJSONdataframe)
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
