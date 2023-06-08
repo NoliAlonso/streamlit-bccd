@@ -1,4 +1,5 @@
-﻿import streamlit as st
+﻿from turtle import onclick
+import streamlit as st
 from streamlit_webrtc import webrtc_streamer
 from camera_input_live import camera_input_live
 import requests
@@ -301,13 +302,13 @@ if img_str is not None:  # Check if img_str is defined
             st.dataframe(df_grouped, use_container_width=True, hide_index=True)
 
             # Create a submit button
-            if st.button('Submit', SubmitedJSON):
+            if st.button('Submit', onclick=SubmitedJSON):
                 # Add the dataframe data to the class_counts dictionary
                 for index, row in df_grouped.iterrows():
                     # Use get method to handle cases where the class name is not already in the dictionary
                     st.session_state.class_counts[row['class']] = st.session_state.class_counts.get(row['class'], 0) + row['count']
                 st.success('Added to the diff count', icon="✅")
-
+                
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
