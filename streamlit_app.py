@@ -62,7 +62,7 @@ dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['cl
 # Check if the class counts dictionary is empty
 if st.session_state.class_counts:
     # Display the updated dataframe
-    st.sidebar.dataframe(dfCount, use_container_width=True)
+    st.sidebar.dataframe(dfCount, use_container_width=True, hide_index=True)
     # Define a function to increment a cell count by 1
     def increment_count(cell):
         st.session_state.class_counts[cell] += 1
