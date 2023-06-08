@@ -14,7 +14,6 @@ import av
 import cv2
 import datetime
 import pandas as pd
-import os
 
 ##########
 ##### Set up sidebar.
@@ -247,7 +246,16 @@ if img_str is not None:  # Check if img_str is defined
             st.write(r.json())
 
             draw = ImageDraw.Draw(image)
-            font = ImageFont.load_default()
+            #font = ImageFont.load_default()
+            font_size_in_pixels = 30  # Set the desired font size in pixels
+            dpi = 96  # Standard DPI for screen displays
+
+            # Convert font size from pixels to points
+            font_size_in_points = font_size_in_pixels * 72 / dpi
+
+            # Create a new font with the desired size
+            font = ImageFont.truetype("Roboto-Regular.ttf", int(font_size_in_points))
+
 
             for prediction in output_dict['predictions']:
                 color = "#4892EA"
@@ -261,8 +269,7 @@ if img_str is not None:  # Check if img_str is defined
                 ], outline=color, width=10)
 
                 if True:
-                    #text = prediction['class']
-                    text = output_dict['image']
+                    text = prediction['class']
                     text_size = font.getbbox(text)
 
                     # set button size + 10px margins
