@@ -137,7 +137,7 @@ else:
 
         ## Pull in default image or user-selected image.
         if uploaded_file is None:
-            if st.checkbox("Use test images", value=False):
+            if st.checkbox1("Use test images", value=False):
                 option = st.selectbox(
                     'Select an image:',
                     ('im_0000_20230601_124318.jpg', 'im_0001_20230601_124844.jpg', 'im_0002_20230601_124933.jpg', 'im_0003_20230601_125012.jpg', 'im_0004_20230601_125124.jpg'))
@@ -308,7 +308,7 @@ if img_str is not None:  # Check if img_str is defined
 
             with st.form(key='my_form'):
                 submit_button = st.form_submit_button(label='Add to diff count', on_click=SubmitedJSON)
-                st.checkbox.value(False)
+                st.checkbox1(value=False)
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
