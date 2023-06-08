@@ -291,11 +291,11 @@ if img_str is not None:  # Check if img_str is defined
             ###
 
            # Create a dataframe from the JSON output of the image inference
-            df = pd.json_normalize(output_dict['predictions'])
-            df.columns = ['Cell', 'Count']
+            df = pd.json_normalize(output_dict['predictions'])            
 
             # Group by 'class' and get their counts
             df_grouped = df.groupby('class').size().reset_index(name='count')
+            df_grouped.columns = ['Cell', 'Count']
 
             # Display the dataframe
             st.dataframe(df_grouped, use_container_width=True, hide_index=True)
