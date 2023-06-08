@@ -241,8 +241,8 @@ if img_str is not None:  # Check if img_str is defined
             output_dict = r.json()
 
             ## Display the JSON in main app.
-            st.write('### JSON Output')
-            st.write(r.json())
+            #st.write('### JSON Output')
+            #st.write(r.json())
 
             draw = ImageDraw.Draw(image)
             #font = ImageFont.load_default()
@@ -295,41 +295,20 @@ if img_str is not None:  # Check if img_str is defined
                 else:
                     class_counts[class_name] = 1
 
-            # Create a dataframe from the class counts dictionary
-            dfR = pd.DataFrame(list(class_counts.items()), columns=['Class', 'Count'])
+            # Create a dataframe from the JSON output
+            dfR = pd.DataFrame(output_dict['predictions'])
+            dfR = dfR.groupby('class').size().reset_index(name='Count')
 
-            # Iterate through the dataframe and create form buttons for each class
-            for index, row in dfR.iterrows():
-                class_name = row['Class']
-                count = row['Count']
+            # Add a button to add the dfR dataframe data to the class_counts dictionary
+            if st.button('Add Data to class_counts'):
+                for index, row in dfR.iterrows():
+                    class_name = row['class']
+                    count = row['Count']
 
-                # Create a form for each class
-                with st.form(key=f'form_{class_name}'):
-                    st.write(f"{class_name}: {count}")
-
-                    # Add buttons to increment and decrement the count
-                    col1, col2 = st.columns(2)
-
-                    with col1:
-                        if st.form_submit_button(label='+'):
-                            count += 1
-                    with col2:
-                        if st.form_submit_button(label='-'):
-                            if count > 0:
-                                count -= 1
-
-                    # Update the dataframe with the new count
-                    dfR.loc[index, 'Count'] = count
-
-            # Add a button to add new classes and their count to the class_counts dictionary
-            with st.form(key='add_class_form'):
-                new_class = st.text_input("New Class")
-                new_count = st.number_input("Count", value=0, min_value=0)
-                if st.form_submit_button(label='Add Class'):
-                    class_counts[new_class] = new_count
-
-            # Update the dataframe with the new class and count
-            dfR = pd.DataFrame(list(class_counts.items()), columns=['Class', 'Count'])
+                    if class_name in class_counts:
+                        class_counts[class_name] += count
+                    else:
+                        class_counts[class_name] = count
             
                         
         except IOError:
