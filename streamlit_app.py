@@ -37,16 +37,16 @@ if 'class_counts' not in st.session_state:
 
 st.sidebar.title('Diff Count:')
 
-if 'count' not in st.session_state:
+if 'class_count' not in st.session_state:
     st.session_state.last_updated = datetime.time(0,0)
 
 def increment_counter(increment_value=0):
     st.session_state.count += increment_value
-    st.session_state.last_updated = datetime.datetime.now().ctime()
+    st.session_state.last_updated = datetime.datetime.now()
 
 def decrement_counter(decrement_value=0):
     st.session_state.count -= decrement_value
-    st.session_state.last_updated = datetime.datetime.now().ctime()
+    st.session_state.last_updated = datetime.datetime.now()
 
 def SubmitedJSON():
     # Add the dataframe data to the class_counts dictionary
@@ -62,11 +62,11 @@ dfCount.columns = ['Cell', 'Count']
 # Define a function to increment a cell count by 1
 def increment_count(cell):
     st.session_state.class_counts[cell] += 1
-    st.session_state.last_updated = datetime.datetime.now().ctime()
+    st.session_state.last_updated = datetime.datetime.now()
 # Define a function to decrement a cell count by 1
 def decrement_count(cell):
     st.session_state.class_counts[cell] -= 1
-    st.session_state.last_updated = datetime.datetime.now().ctime()
+    st.session_state.last_updated = datetime.datetime.now()
 
 # Check if the class counts dictionary is empty
 if st.session_state.class_counts:
