@@ -298,7 +298,38 @@ if img_str is not None:  # Check if img_str is defined
             # Create a dataframe from the class counts dictionary
             dfR = pd.DataFrame(list(class_counts.items()), columns=['Class', 'Count'])
 
-            st.write(dfR)
+            # Iterate through the dataframe and create form buttons for each class
+            for index, row in dfR.iterrows():
+                class_name = row['Class']
+                count = row['Count']
+
+                # Create a form for each class
+                with st.form(key=f'form_{class_name}'):
+                    st.write(f"{class_name}: {count}")
+
+                    # Add buttons to increment and decrement the count
+                    col1, col2 = st.columns(2)
+
+                    with col1:
+                        if st.form_submit_button(label='+'):
+                            count += 1
+                    with col2:
+                        if st.form_submit_button(label='-'):
+                            if count > 0:
+                                count -= 1
+
+                    # Update the dataframe with the new count
+                    dfR.loc[index, 'Count'] = count
+
+            # Add a button to add new classes and their count to the class_counts dictionary
+            with st.form(key='add_class_form'):
+                new_class = st.text_input("New Class")
+                new_count = st.number_input("Count", value=0, min_value=0)
+                if st.form_submit_button(label='Add Class'):
+                    class_counts[new_class] = new_count
+
+            # Update the dataframe with the new class and count
+            dfR = pd.DataFrame(list(class_counts.items()), columns=['Class', 'Count'])
             
                         
         except IOError:
