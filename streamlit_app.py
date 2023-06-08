@@ -248,6 +248,9 @@ if img_str is not None:  # Check if img_str is defined
             draw = ImageDraw.Draw(image)
             font = ImageFont.load_default()
 
+            enlarged_image = image.resize((2*image.width, 2*image.height))
+
+
             for prediction in output_dict['predictions']:
                 color = "#4892EA"
                 x1 = prediction['x'] - prediction['width'] / 2
@@ -271,6 +274,8 @@ if img_str is not None:  # Check if img_str is defined
                     button_size = (button_width, button_height)
 
                     button_img = Image.new('RGBA', button_size, color)
+
+                    enlarged_image.paste(button_img, (int(2*x1), int(2*y1)))
                     # put text on button with 10px margins
                     button_draw = ImageDraw.Draw(button_img)
 
@@ -281,8 +286,8 @@ if img_str is not None:  # Check if img_str is defined
 
                     # put button on source image in position (0, 0)
                     image.paste(button_img, (int(x1), int(y1)))
-            st.image(image,
-                     use_column_width=True)
+            #st.image(image, use_column_width=True)
+            st.image(enlarged_image, use_column_width=True)
 
             ###
 
