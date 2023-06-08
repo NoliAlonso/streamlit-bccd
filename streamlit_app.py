@@ -116,7 +116,7 @@ else:
     st.sidebar.write('Inference an image to begin.');
 
 with st.sidebar.form(key='resetform'):
-    reset_button = st.sidebar.form_submit_button(label='Reset', on_click=ResetAll)
+    reset_button = st.form_submit_button(label='Reset', on_click=ResetAll)
 
 st.sidebar.divider()
 
