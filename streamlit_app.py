@@ -132,7 +132,7 @@ else:
 
         ## Pull in default image or user-selected image.
         if uploaded_file is None:
-            if st.checkbox("Try test images", value=True):
+            if st.checkbox("Try test images", value=False):
                 # Default image.
                 st.divider()
                 option = st.selectbox(
@@ -148,14 +148,17 @@ else:
             
                 response = requests.get(url)
                 image = Image.open(io.BytesIO(response.content))
+                # Convert to JPEG Buffer.
+                buffered = io.BytesIO()
+                image.save(buffered, format='JPEG')
+                img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
         else:
             # User-selected image.
             image = Image.open(uploaded_file)
-
-        # Convert to JPEG Buffer.
-        buffered = io.BytesIO()
-        image.save(buffered, format='JPEG')
-        img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
+            # Convert to JPEG Buffer.
+            buffered = io.BytesIO()
+            image.save(buffered, format='JPEG')
+            img_str = base64.b64encode(buffered.getvalue()).decode('ascii')        
 
     else:
         if page == 'Real-Time':
