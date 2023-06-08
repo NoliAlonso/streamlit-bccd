@@ -77,10 +77,6 @@ if st.session_state.class_counts:
         with col1:
             # Display the updated dataframe
             st.dataframe(dfCount, use_container_width=True, hide_index=True)
-        with col2:
-            st.write(':heavy_plus_sign:')
-        with col3:
-            st.write(':heavy_minus_sign:')
        
         # Loop through each row of the dataframe and add buttons
         for i in range(len(dfCount)):
