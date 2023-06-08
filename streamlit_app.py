@@ -132,7 +132,7 @@ else:
 
         ## Pull in default image or user-selected image.
         if uploaded_file is None:
-            if st.checkbox("Try test images", value=False):
+            if st.checkbox("Try a test image", value=False):
                 # Default image.
                 st.divider()
                 option = st.selectbox(
@@ -291,33 +291,19 @@ if img_str is not None:  # Check if img_str is defined
 
             ###
 
-            # Iterate through the predictions and count the occurrences of each class
-            for prediction in output_dict['predictions']:
-                class_name = prediction['class']
-                if class_name in class_counts:
-                    class_counts[class_name] += 1
-                else:
-                    class_counts[class_name] = 1
+            df = pd.json_normalize(output_dict)
 
-            # Create a dataframe from the JSON output
-            dfR = pd.DataFrame(output_dict['predictions'])
-            dfR = dfR.groupby('class').size().reset_index(name='Count')
-            st.write(dfR)
+            # Group by 'class' and get their counts
+            df_grouped = df.groupby('class').size().reset_index(name='counts')
 
-            # Add a button to add the dfR dataframe data to the class_counts dictionary
-            if st.button('Add results to the diff count.'):
-                for index, row in dfR.iterrows():
-                    class_name = row['class']
-                    count = row['Count']
+            # Display the dataframe
+            st.dataframe(df_grouped)
 
-                    if class_name in class_counts:
-                        class_counts[class_name] += count
-                    else:
-                        class_counts[class_name] = count
-            
-                # Display the updated class_counts dictionary in the sidebar
-                st.sidebar.write('### Class Counts')
-                st.sidebar.text(class_counts)
+            # Create a submit button
+            if st.button('Submit'):
+                # Add the dataframe data to the class_counts dictionary
+                for index, row in df_grouped.iterrows():
+                    class_counts[row['class']] += row['counts']
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
