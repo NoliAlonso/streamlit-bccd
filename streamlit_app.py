@@ -75,10 +75,10 @@ if st.session_state.class_counts:
 
     colu1, colu2 = st.sidebar.columns(2)
     with colu1:
-        st.write('Total = ')
+        st.write(' ')
     with colu2:
         # Display the total in the sidebar
-        st.write(DiffCountTotal)
+        st.write('Total = ', DiffCountTotal)
 
     # Loop through each row of the dataframe and add buttons
     for i in range(len(dfCount)):
