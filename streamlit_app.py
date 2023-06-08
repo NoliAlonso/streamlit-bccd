@@ -31,16 +31,6 @@ page = st.sidebar.radio('Choose image source', page_names)
 ##########
 st.sidebar.divider()
 
-confidence_threshold = 0.5
-overlap_threshold = 0.5
-
-with st.sidebar.expander("Adjust confidence and overlap:"):
-    confidence_threshold = st.sidebar.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
-    overlap_threshold = st.sidebar.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
-
-##########
-st.sidebar.divider()
-
 # Initialize the class_counts dictionary as an empty dictionary in the session state
 if 'class_counts' not in st.session_state:
     st.session_state.class_counts = {}
@@ -199,6 +189,9 @@ else:
                     mean_value = 0.0
 
 st.divider()
+
+confidence_threshold = st.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
+overlap_threshold = st.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
 
 if img_str is not None:  # Check if img_str is defined
 
