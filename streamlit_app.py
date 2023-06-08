@@ -267,7 +267,7 @@ if img_str is not None:  # Check if img_str is defined
 
                 if True:
                     text = prediction['class']
-                    text_size = font.getbbox(text)
+                    text_size = font.getlength(text)
 
                     # set button size + 10px margins
                     button_size = (text_size[0]+40, text_size[1]+40)
