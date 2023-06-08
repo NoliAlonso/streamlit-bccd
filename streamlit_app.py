@@ -267,14 +267,20 @@ if img_str is not None:  # Check if img_str is defined
 
                 if True:
                     text = prediction['class']
-                    text_size = font.getsize(text)
+                    # Get the bounding box of the text using the loaded font
+                    text_bbox = font.getbbox(text)
 
-                    # set button size + 10px margins
-                    button_size = (text_size[0]+40, text_size[1]+40)
+                    # Calculate the width and height of the text
+                    text_width = text_bbox[2] - text_bbox[0]
+                    text_height = text_bbox[3] - text_bbox[1]
+
+                    # Create a new button image with a larger size
+                    button_size = (text_width + 20, text_height + 20)
                     button_img = Image.new('RGBA', button_size, color)
-                    # put text on button with 10px margins
+
+                    # Create a new button_draw object with the larger font
                     button_draw = ImageDraw.Draw(button_img)
-                    button_draw.text((10, 10), text, font=font, fill=(255,255,255,255))
+                    button_draw.text((10, 10), text, font=font, fill=(255, 255, 255, 255))
 
                     # put button on source image in position (0, 0)
                     image.paste(button_img, (int(x1), int(y1)))
