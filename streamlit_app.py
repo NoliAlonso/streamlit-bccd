@@ -31,9 +31,9 @@ page = st.sidebar.radio('Choose image source', page_names)
 ##########
 st.sidebar.divider()
 
-## Add in sliders.
-confidence_threshold = st.sidebar.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
-overlap_threshold = st.sidebar.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
+with st.sidebar.expander("Adjust confidence and overlap:"):
+    confidence_threshold = st.sidebar.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
+    overlap_threshold = st.sidebar.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
 
 ##########
 st.sidebar.divider()
@@ -64,7 +64,6 @@ def SubmitedJSON():
 
 # Create a dataframe from the class counts dictionary
 dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
-#dfCount = dfCount.rename(columns={'class': 'Cell'})
 dfCount.columns = ['Cell', 'Count']
 
 # Check if the class counts dictionary is empty
@@ -297,6 +296,7 @@ if img_str is not None:  # Check if img_str is defined
 
            # Create a dataframe from the JSON output of the image inference
             df = pd.json_normalize(output_dict['predictions'])
+            df.columns = ['Cell', 'Count']
 
             # Group by 'class' and get their counts
             df_grouped = df.groupby('class').size().reset_index(name='count')
