@@ -222,8 +222,7 @@ if img_str is not None:  # Check if img_str is defined
             image.save(buffered, quality=90, format='JPEG')
 
             # Display image.
-            st.image(image,
-                     use_column_width=True)
+            #st.image(image, use_column_width=True)
 
             ## Construct the URL to retrieve JSON.
             upload_url = ''.join([
@@ -249,7 +248,7 @@ if img_str is not None:  # Check if img_str is defined
             #font = ImageFont.load_default()
 
             font_path = "Roboto-Bold.ttf"  # Replace with the path to your desired font file
-            font_size = 60  # Set the desired font size
+            font_size = 50  # Set the desired font size
 
             # Load the custom font with the desired size
             font = ImageFont.truetype(font_path, font_size)
@@ -266,7 +265,7 @@ if img_str is not None:  # Check if img_str is defined
                 ], outline=color, width=10)
 
                 if True:
-                    text = f"{prediction['class']} ({prediction['confidence']*100:.2f}%)"
+                    text = f"{prediction['class']} ({prediction['confidence']*100:.1f}%)"
                     # Get the bounding box of the text using the loaded font
                     text_bbox = font.getbbox(text)
 
@@ -297,32 +296,9 @@ if img_str is not None:  # Check if img_str is defined
                     class_counts[class_name] = 1
 
             # Create a dataframe from the class counts dictionary
-            df = pd.DataFrame(list(class_counts.items()), columns=['Class', 'Count'])
+            dfR = pd.DataFrame(list(class_counts.items()), columns=['Class', 'Count'])
 
-            # Iterate through the dataframe and create form buttons for each class
-            for index, row in df.iterrows():
-                class_name = row['Class']
-                count = row['Count']
-    
-                # Create a form for each class
-                with st.form(key=f'form_{class_name}'):
-                    st.write(f"{class_name}: {count}")
-        
-                    # Add buttons to increment and decrement the count
-                    col1, col2 = st.columns(2)
-        
-                    with col1:
-                        if st.form_submit_button(label='+'):
-                            count += 1
-                    with col2:
-                        if st.form_submit_button(label='-'):
-                            if count > 0:
-                                count -= 1
-        
-                    # Update the dataframe with the new count
-                    df.loc[index, 'Count'] = count
-    
-
+            st.write(dfR)
             
                         
         except IOError:
