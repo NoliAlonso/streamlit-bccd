@@ -72,7 +72,7 @@ def decrement_count(cell):
 if st.session_state.class_counts:
     with st.sidebar.container():
         
-        col1, col2, col3, col4 = st.sidebar.columns([0.6,0.2,0.2])
+        col1, col2, col3 = st.sidebar.columns([0.6,0.2,0.2])
 
         with col1:
             # Display the updated dataframe
