@@ -57,7 +57,7 @@ def decrement_counter(decrement_value=0):
 
 def SubmitedJSON():
     # Add the dataframe data to the class_counts dictionary
-    for row in df_grouped.iterrows():
+    for index, row in df_grouped.iterrows():
         # Use get method to handle cases where the class name is not already in the dictionary
         st.session_state.class_counts[row['class']] = st.session_state.class_counts.get(row['class'], 0) + row['count']
     st.session_state.last_updated = datetime.datetime.now().ctime()
