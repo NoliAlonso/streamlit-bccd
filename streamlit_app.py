@@ -19,7 +19,8 @@ import pandas as pd
 ##### Set up sidebar.
 ##########
 
-st.sidebar.write('# Doc Noli\'s WBC AI')
+st.sidebar.write('# Artificial Intelligence WBC Identifier')
+st.sidebar.write('Made by Dr. Alonso')
 
 st.sidebar.divider()
 
@@ -96,16 +97,13 @@ st.sidebar.divider()
 ########## Logos
 
 image = Image.open('./images/roboflow_logo.png')
-st.sidebar.image(image,
-                 use_column_width=True)
+st.sidebar.image(image, use_column_width=True)
 
 image = Image.open('./images/streamlit_logo.png')
-st.sidebar.image(image,
-                 use_column_width=True)
+st.sidebar.image(image, use_column_width=True)
 
 image = Image.open('./images/NoliAlonsoPathLabSystemsLogo.png')
-st.sidebar.image(image,
-                 use_column_width=True)
+st.sidebar.image(image, use_column_width=False, width=50)
 
 ##########
 ##### Set up main app.
