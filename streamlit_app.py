@@ -38,8 +38,9 @@ overlap_threshold = st.sidebar.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
 ##########
 st.sidebar.divider()
 
-# Create a dictionary to store class counts
-class_counts = {}
+# Initialize the class_counts dictionary as an empty dictionary in the session state
+if 'class_counts' not in st.session_state:
+    st.session_state.class_counts = {}
 
 st.sidebar.title('Diff Count:')
 
@@ -56,32 +57,26 @@ def decrement_counter(decrement_value=0):
 
 
 # Create a dataframe from the class counts dictionary
-dfCount = pd.DataFrame(list(class_counts.items()), columns=['class', 'count'])
+dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
 
 # Check if the class counts dictionary is empty
-if class_counts:
+if st.session_state.class_counts:
     # Display the updated dataframe
-    # Display the updated dataframe
-    st.sidebar.write(dfCount)
-
-
+    st.sidebar.dataframe(dfCount, use_container_width=True)
     # Define a function to increment a cell count by 1
     def increment_count(cell):
-        st.session_state.class_counts[cell] += 1
-        st.session_state.last_updated = datetime.datetime.now().ctime()
-
+       st.session_state.class_counts[cell] += 1
+       st.session_state.last_updated = datetime.datetime.now().ctime()
     # Define a function to decrement a cell count by 1
     def decrement_count(cell):
-        st.session_state.class_counts[cell] -= 1
+        t.session_state.class_counts[cell] -= 1
         st.session_state.last_updated = datetime.datetime.now().ctime()
-
     # Loop through each row of the dataframe and add buttons
     for i in range(len(dfCount)):
         cell = dfCount.iloc[i, 0] # Get the cell name
         st.sidebar.write(cell) # Display the cell name
         st.sidebar.button('+', on_click=increment_count, args=(cell,)) # Add an increment button
         st.sidebar.button('-', on_click=decrement_count, args=(cell,)) # Add a decrement button
-
     st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 else:
     st.sidebar.write('Not started.');
@@ -291,19 +286,21 @@ if img_str is not None:  # Check if img_str is defined
 
             ###
 
-            df = pd.json_normalize(output_dict)
+           # Create a dataframe from the JSON output of the image inference
+            df = pd.json_normalize(output_dict['predictions'])
 
             # Group by 'class' and get their counts
             df_grouped = df.groupby('class').size().reset_index(name='count')
 
             # Display the dataframe
-            st.dataframe(df_grouped)
+            st.dataframe(df_grouped, use_container_width=True)
 
             # Create a submit button
             if st.button('Submit'):
                 # Add the dataframe data to the class_counts dictionary
                 for index, row in df_grouped.iterrows():
-                    class_counts[row['class']] += row['count']
+                    # Use get method to handle cases where the class name is not already in the dictionary
+                    st.session_state.class_counts[row['class']] = st.session_state.class_counts.get(row['class'], 0) + row['count']
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
