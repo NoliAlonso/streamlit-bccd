@@ -156,12 +156,13 @@ if page == 'Take picture':
     img_file_buffer = st.camera_input("Take a picture:")
 
     if img_file_buffer is not None:
+
         # To read image file buffer with PIL:
-        image = Image.open(img_file_buffer)
+        image1 = Image.open(img_file_buffer)
 
         # Convert to JPEG Buffer.
         buffered = io.BytesIO()
-        image.save(buffered, format='JPEG')
+        image1.save(buffered, format='JPEG')
         img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
 
 else:
@@ -183,27 +184,27 @@ else:
                 ])
             
                 response = requests.get(url)
-                image = Image.open(io.BytesIO(response.content))
+                image2 = Image.open(io.BytesIO(response.content))
 
                 # Convert to JPEG Buffer.
                 buffered = io.BytesIO()
-                image.save(buffered, format='JPEG')
+                image2.save(buffered, format='JPEG')
                 img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
         else:
             # User-selected image.
-            image = Image.open(uploaded_file)
+            image2 = Image.open(uploaded_file)
 
             # Convert to JPEG Buffer.
             buffered = io.BytesIO()
-            image.save(buffered, format='JPEG')
+            image2.save(buffered, format='JPEG')
             img_str = base64.b64encode(buffered.getvalue()).decode('ascii')   
 
     else:
         if page == 'Real-Time':
-            image = camera_input_live()
+            image3 = camera_input_live()
 
-            if image is not None:
-                st.image(image)
+            if image3 is not None:
+                st.image(image3)
                 bytes_data = image.getvalue()
                 pil_image = Image.open(io.BytesIO(bytes_data)).convert("RGB")
                 cv2_img = np.array(pil_image)
@@ -264,14 +265,14 @@ if img_str is not None:  # Check if img_str is defined
 
     if r.ok:
         try:
-            image = Image.open(io.BytesIO(r.content))
+            image4 = Image.open(io.BytesIO(r.content))
 
             # Convert to JPEG Buffer.
             buffered = io.BytesIO()
-            image.save(buffered, quality=90, format='JPEG')
+            image4.save(buffered, quality=90, format='JPEG')
 
             # Display image.
-            #st.image(image, use_column_width=True)
+            #st.image(image4, use_column_width=True)
 
             ## Construct the URL to retrieve JSON.
             upload_url = ''.join([
