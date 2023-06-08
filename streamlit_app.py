@@ -41,18 +41,18 @@ st.sidebar.title('Diff Count:')
 
 def increment_counter(increment_value=0):
     st.session_state.count += increment_value
-    st.session_state.last_updated = datetime.datetime.now()
+    st.session_state.last_updated = datetime.datetime.now().ctime()
 
 def decrement_counter(decrement_value=0):
     st.session_state.count -= decrement_value
-    st.session_state.last_updated = datetime.datetime.now()
+    st.session_state.last_updated = datetime.datetime.now().ctime()
 
 def SubmitJSONdataframe():
     # Add the dataframe data to the class_counts dictionary
     for index, row in df_grouped.iterrows():
         # Use get method to handle cases where the class name is not already in the dictionary
         st.session_state.class_counts[row['class']] = st.session_state.class_counts.get(row['class'], 0) + row['count']
-    st.session_state.last_updated = datetime.datetime.now()
+    st.session_state.last_updated = datetime.datetime.now().ctime()
 
 # Create a dataframe from the class counts dictionary
 dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
@@ -61,11 +61,11 @@ dfCount.columns = ['Cell', 'Count']
 # Define a function to increment a cell count by 1
 def increment_count(cell):
     st.session_state.class_counts[cell] += 1
-    st.session_state.last_updated = datetime.datetime.now()
+    st.session_state.last_updated = datetime.datetime.now().ctime()
 # Define a function to decrement a cell count by 1
 def decrement_count(cell):
     st.session_state.class_counts[cell] -= 1
-    st.session_state.last_updated = datetime.datetime.now()
+    st.session_state.last_updated = datetime.datetime.now().ctime()
 
 # Check if the class counts dictionary is empty
 if st.session_state.class_counts:
