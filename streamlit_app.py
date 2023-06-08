@@ -246,16 +246,7 @@ if img_str is not None:  # Check if img_str is defined
             st.write(r.json())
 
             draw = ImageDraw.Draw(image)
-            #font = ImageFont.load_default()
-            font_size_in_pixels = 30  # Set the desired font size in pixels
-            dpi = 96  # Standard DPI for screen displays
-
-            # Convert font size from pixels to points
-            font_size_in_points = font_size_in_pixels * 72 / dpi
-
-            # Create a new font with the desired size
-            font = ImageFont.truetype("Roboto-Regular.ttf", int(font_size_in_points))
-
+            font = ImageFont.load_default()
 
             for prediction in output_dict['predictions']:
                 color = "#4892EA"
@@ -273,11 +264,20 @@ if img_str is not None:  # Check if img_str is defined
                     text_size = font.getbbox(text)
 
                     # set button size + 10px margins
-                    button_size = (text_size[0]+20, text_size[1]+20)
+                    #button_size = (text_size[0]+20, text_size[1]+20)
+                    button_width = text_size[0] + 40  # Increase the width of the button
+                    button_height = text_size[1] + 40  # Increase the height of the button
+
+                    button_size = (button_width, button_height)
+
                     button_img = Image.new('RGBA', button_size, color)
                     # put text on button with 10px margins
                     button_draw = ImageDraw.Draw(button_img)
-                    button_draw.text((10, 10), text, font=font, fill=(255,255,255,255))
+
+                    text_x = (button_width - text_size[0]) // 2  # Center the text horizontally within the button
+                    text_y = (button_height - text_size[1]) // 2  # Center the text vertically within the button
+                    button_draw.text((text_x, text_y), text, font=font, fill=(255, 255, 255, 255))
+                    #button_draw.text((10, 10), text, font=font, fill=(255,255,255,255))
 
                     # put button on source image in position (0, 0)
                     image.paste(button_img, (int(x1), int(y1)))
