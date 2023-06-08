@@ -311,7 +311,10 @@ if img_str is not None:  # Check if img_str is defined
                     else:
                         class_counts[class_name] = count
             
-                        
+                # Display the updated class_counts dictionary in the sidebar
+                st.sidebar.write('### Class Counts')
+                st.sidebar.text(class_counts)
+
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
     else:
