@@ -58,7 +58,8 @@ def decrement_counter(decrement_value=0):
 
 # Create a dataframe from the class counts dictionary
 dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
-dfCount = dfCount.rename(columns={'class': 'Cell'})
+#dfCount = dfCount.rename(columns={'class': 'Cell'})
+dfCount.columns = ['Cell', 'Count']
 
 # Check if the class counts dictionary is empty
 if st.session_state.class_counts:
@@ -295,7 +296,7 @@ if img_str is not None:  # Check if img_str is defined
             df_grouped = df.groupby('class').size().reset_index(name='count')
 
             # Display the dataframe
-            st.dataframe(df_grouped, use_container_width=True)
+            st.dataframe(df_grouped, use_container_width=True, hide_index=True)
 
             # Create a submit button
             if st.button('Submit'):
