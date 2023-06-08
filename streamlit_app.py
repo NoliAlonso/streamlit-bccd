@@ -57,10 +57,9 @@ def decrement_counter(decrement_value=0):
 
 def SubmitedJSON():
     # Add the dataframe data to the class_counts dictionary
-    for index, row in df_grouped.iterrows():
+    for row in df_grouped.iterrows():
         # Use get method to handle cases where the class name is not already in the dictionary
         st.session_state.class_counts[row['class']] = st.session_state.class_counts.get(row['class'], 0) + row['count']
-    st.success('Added to the diff count', icon="✅")
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
 # Create a dataframe from the class counts dictionary
@@ -305,16 +304,8 @@ if img_str is not None:  # Check if img_str is defined
             # Display the dataframe
             st.dataframe(df_grouped, use_container_width=True, hide_index=True)
 
-            # Create a submit button
-            if st.button('Submit'):
-                # Add the dataframe data to the class_counts dictionary
-                for index, row in df_grouped.iterrows():
-                    # Use get method to handle cases where the class name is not already in the dictionary
-                    st.session_state.class_counts[row['class']] = st.session_state.class_counts.get(row['class'], 0) + row['count']
-                st.success('Added to the diff count', icon="✅")
-
             with st.form(key='my_form'):
-                submit_button = st.form_submit_button(label='Submit', on_click=SubmitedJSON)
+                submit_button = st.form_submit_button(label='Add to diff count', on_click=SubmitedJSON)
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
