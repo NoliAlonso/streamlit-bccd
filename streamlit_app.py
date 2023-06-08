@@ -1,4 +1,4 @@
-import streamlit as st
+﻿import streamlit as st
 from streamlit_webrtc import webrtc_streamer
 from camera_input_live import camera_input_live
 import requests
@@ -242,7 +242,7 @@ if img_str is not None:  # Check if img_str is defined
 
             ## Display the JSON in main app.
             #st.write('### JSON Output')
-            st.write(r.json())
+            #st.write(r.json())
 
             draw = ImageDraw.Draw(image)
             #font = ImageFont.load_default()
@@ -302,6 +302,7 @@ if img_str is not None:  # Check if img_str is defined
                 for index, row in df_grouped.iterrows():
                     # Use get method to handle cases where the class name is not already in the dictionary
                     st.session_state.class_counts[row['class']] = st.session_state.class_counts.get(row['class'], 0) + row['count']
+                st.success('Added to the diff count', icon="✅")
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
