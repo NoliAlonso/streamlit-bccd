@@ -55,6 +55,8 @@ def decrement_counter(decrement_value=0):
     st.session_state.count -= decrement_value
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
+def SubmitedJSON():
+    st.session_state.last_updated = datetime.datetime.now().ctime()
 
 # Create a dataframe from the class counts dictionary
 dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
@@ -299,7 +301,7 @@ if img_str is not None:  # Check if img_str is defined
             st.dataframe(df_grouped, use_container_width=True, hide_index=True)
 
             # Create a submit button
-            if st.button('Submit'):
+            if st.button('Submit', SubmitedJSON):
                 # Add the dataframe data to the class_counts dictionary
                 for index, row in df_grouped.iterrows():
                     # Use get method to handle cases where the class name is not already in the dictionary
