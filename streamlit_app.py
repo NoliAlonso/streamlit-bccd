@@ -18,8 +18,8 @@ import pandas as pd
 ##########
 ##### Set up sidebar.
 ##########
-
-st.sidebar.write('# Artificial Intelligence WBC Identifier')
+titlemessage = '# WBC Identifier & Counter'
+st.sidebar.write(titlemessage)
 st.sidebar.write('Made by Dr. Alonso')
 
 st.sidebar.divider()
@@ -27,7 +27,7 @@ st.sidebar.divider()
 # Add in location to select image.
 page_names = ['Take picture', 'Upload picture', 'Real-Time']
 
-page = st.sidebar.radio('Choose image source', page_names)
+page = st.sidebar.radio('Select image source:', page_names)
 
 ##########
 st.sidebar.divider()
@@ -35,11 +35,9 @@ st.sidebar.divider()
 # Initialize the class_counts dictionary as an empty dictionary in the session state
 if 'class_counts' not in st.session_state:
     st.session_state.class_counts = {}
+    st.session_state.last_updated = datetime.time(0,0)
 
 st.sidebar.title('Diff Count:')
-
-if 'class_count' not in st.session_state:
-    st.session_state.last_updated = datetime.time(0,0)
 
 def increment_counter(increment_value=0):
     st.session_state.count += increment_value
@@ -49,7 +47,7 @@ def decrement_counter(decrement_value=0):
     st.session_state.count -= decrement_value
     st.session_state.last_updated = datetime.datetime.now()
 
-def SubmitedJSON():
+def SubmitJSONdataframe():
     # Add the dataframe data to the class_counts dictionary
     for index, row in df_grouped.iterrows():
         # Use get method to handle cases where the class name is not already in the dictionary
@@ -97,20 +95,20 @@ st.sidebar.divider()
 ########## Logos
 
 image = Image.open('./images/roboflow_logo.png')
-st.sidebar.image(image, use_column_width=True)
+st.sidebar.image(image, use_column_width=True, width=200)
 
 image = Image.open('./images/streamlit_logo.png')
-st.sidebar.image(image, use_column_width=True)
+st.sidebar.image(image, use_column_width=True, width=200)
 
 image = Image.open('./images/NoliAlonsoPathLabSystemsLogo.png')
-st.sidebar.image(image, use_column_width=False, width=50)
+st.sidebar.image(image, use_column_width=True, width=200)
 
 ##########
 ##### Set up main app.
 ##########
 
 ## Title.
-st.write('# AI WBC ID & Diff Count')
+st.write(titlemessage)
 
 st.divider()
 
@@ -305,7 +303,7 @@ if img_str is not None:  # Check if img_str is defined
             st.dataframe(df_grouped, use_container_width=True, hide_index=True)
 
             with st.form(key='my_form'):
-                submit_button = st.form_submit_button(label='Add to diff count', on_click=SubmitedJSON)
+                submit_button = st.form_submit_button(label='Add to diff count', on_click=SubmitJSONdataframe)
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
