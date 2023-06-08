@@ -54,7 +54,10 @@ def increment_counter(increment_value=0):
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
 def decrement_counter(decrement_value=0):
-    st.session_state.count -= decrement_value
+    if decrement_value >= st.session_state.count:
+        st.session_state.count = 0
+    else:
+        st.session_state.count -= decrement_value
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
 def SubmitJSONdataframe():
