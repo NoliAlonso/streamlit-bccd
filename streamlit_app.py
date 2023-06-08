@@ -342,7 +342,10 @@ if img_str is not None:  # Check if img_str is defined
             # Create a dataframe from the JSON output of the image inference
             df = pd.json_normalize(output_dict['predictions'])            
 
-            if not df.empty:
+            if df.empty:
+                st.write('# Nothing detected.')
+
+            else:
                 # Group by 'class' and get their counts
                 df_grouped = df.groupby('class').size().reset_index(name='count')
 
