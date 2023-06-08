@@ -75,8 +75,9 @@ if st.session_state.class_counts:
     for i in range(len(dfCount)):
         cell = dfCount.iloc[i, 0] # Get the cell name
         st.sidebar.write(cell) # Display the cell name
-        st.sidebar.button('+', on_click=increment_count, args=(cell,)) # Add an increment button
-        st.sidebar.button('-', on_click=decrement_count, args=(cell,)) # Add a decrement button
+        # Pass a unique key argument to each button widget
+        st.sidebar.button('+', on_click=increment_count, args=(cell,), key=f"increment_{i}") # Add an increment button
+        st.sidebar.button('-', on_click=decrement_count, args=(cell,), key=f"decrement_{i}") # Add a decrement button
     st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 else:
     st.sidebar.write('Not started.');
