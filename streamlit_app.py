@@ -20,7 +20,7 @@ import pandas as pd
 ##########
 titlemessage = '# WBC Identifier & Counter'
 st.sidebar.write(titlemessage)
-st.sidebar.write('Made by Dr. Alonso')
+st.sidebar.write('Developed by Dr. Alonso')
 
 st.sidebar.divider()
 
@@ -36,8 +36,6 @@ st.sidebar.divider()
 if 'class_counts' not in st.session_state:
     st.session_state.class_counts = {}
     st.session_state.last_updated = datetime.time(0,0)
-
-st.sidebar.title('Diff Count:')
 
 def increment_counter(increment_value=0):
     st.session_state.count += increment_value
@@ -71,6 +69,17 @@ def decrement_count(cell):
 if st.session_state.class_counts:
     # Display the updated dataframe
     st.sidebar.dataframe(dfCount, use_container_width=True, hide_index=True)
+    
+    # Compute the total of all counts
+    DiffCountTotal = dfCount['count'].sum()
+
+    colu1, colu2 = st.columns(2)
+    with colu1:
+        st.write('Total = ')
+    with colu2:
+        # Display the total in the sidebar
+        st.write(DiffCountTotal)
+
     # Loop through each row of the dataframe and add buttons
     for i in range(len(dfCount)):
         cell = dfCount.iloc[i, 0] # Get the cell name
@@ -86,7 +95,7 @@ if st.session_state.class_counts:
             with col3:
                 st.button(':heavy_minus_sign:', on_click=decrement_count, args=(cell,), key=f"decrement_{i}") # Add a decrement button
 
-    st.sidebar.write('Last Updated = ', st.session_state.last_updated)
+    st.sidebar.write('Count last updated at ', st.session_state.last_updated)
 else:
     st.sidebar.write('Inference an image to begin.');
 
