@@ -131,14 +131,14 @@ st.sidebar.divider()
 
 ########## Logos
 
-image = Image.open('./images/roboflow_logo.png')
-st.sidebar.image(image, use_column_width=True, width=200)
+imageLogo = Image.open('./images/roboflow_logo.png')
+st.sidebar.image(imageLogo, use_column_width=True, width=200)
 
-image = Image.open('./images/streamlit_logo.png')
-st.sidebar.image(image, use_column_width=True, width=200)
+imageLogo = Image.open('./images/streamlit_logo.png')
+st.sidebar.image(imageLogo, use_column_width=True, width=200)
 
-image = Image.open('./images/NoliAlonsoPathLabSystemsLogo.png')
-st.sidebar.image(image, use_column_width=True, width=200)
+imageLogo = Image.open('./images/NoliAlonsoPathLabSystemsLogo.png')
+st.sidebar.image(imageLogo, use_column_width=True, width=200)
 
 ##########
 ##### Set up main app.
@@ -205,7 +205,7 @@ else:
 
             if image3 is not None:
                 st.image(image3)
-                bytes_data = image.getvalue()
+                bytes_data = image3.getvalue()
                 pil_image = Image.open(io.BytesIO(bytes_data)).convert("RGB")
                 cv2_img = np.array(pil_image)
 
@@ -296,7 +296,7 @@ if img_str is not None:  # Check if img_str is defined
             #st.write('### JSON Output')
             #st.write(r.json())
 
-            draw = ImageDraw.Draw(image)
+            draw = ImageDraw.Draw(image4)
             #font = ImageFont.load_default()
 
             font_path = "Roboto-Bold.ttf"  # Replace with the path to your desired font file
@@ -334,8 +334,8 @@ if img_str is not None:  # Check if img_str is defined
                     button_draw.text((10, 10), text, font=font, fill=(255, 255, 255, 255))
 
                     # put button on source image in position (0, 0)
-                    image.paste(button_img, (int(x1), int(y1)))
-            st.image(image, use_column_width=True)
+                    image4.paste(button_img, (int(x1), int(y1)))
+            st.image(image4, use_column_width=True)
 
             ###
 
