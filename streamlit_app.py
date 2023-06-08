@@ -246,7 +246,7 @@ if img_str is not None:  # Check if img_str is defined
 
             ## Display the JSON in main app.
             #st.write('### JSON Output')
-            #st.write(r.json())
+            st.write(r.json())
 
             draw = ImageDraw.Draw(image)
             #font = ImageFont.load_default()
@@ -294,7 +294,7 @@ if img_str is not None:  # Check if img_str is defined
             df = pd.json_normalize(output_dict)
 
             # Group by 'class' and get their counts
-            df_grouped = df.groupby('class').size().reset_index(name='counts')
+            df_grouped = df.groupby('class').size().reset_index(name='count')
 
             # Display the dataframe
             st.dataframe(df_grouped)
@@ -303,7 +303,7 @@ if img_str is not None:  # Check if img_str is defined
             if st.button('Submit'):
                 # Add the dataframe data to the class_counts dictionary
                 for index, row in df_grouped.iterrows():
-                    class_counts[row['class']] += row['counts']
+                    class_counts[row['class']] += row['count']
 
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
