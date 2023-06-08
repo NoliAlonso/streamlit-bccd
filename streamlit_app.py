@@ -73,7 +73,7 @@ if st.session_state.class_counts:
     # Compute the total of all counts
     DiffCountTotal = dfCount['Count'].sum()
 
-    colu1, colu2 = st.columns(2)
+    colu1, colu2 = st.sidebar.columns(2)
     with colu1:
         st.write('Total = ')
     with colu2:
