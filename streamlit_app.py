@@ -76,10 +76,11 @@ if st.session_state.class_counts:
     for i in range(len(dfCount)):
         cell = dfCount.iloc[i, 0] # Get the cell name
         # Pass a unique key argument to each button widget
-        st.sidebar.write(cell) # Display the cell name
-        # Pass a unique key argument to each button widget
-        st.sidebar.button(':heavy_plus_sign:', on_click=increment_count, args=(cell,), key=f"increment_{i}") # Add an increment button
-        st.sidebar.button(':heavy_minus_sign:', on_click=decrement_count, args=(cell,), key=f"decrement_{i}") # Add a decrement button
+        with st.sidebar.container():
+            st.sidebar.write(cell) # Display the cell name
+            # Pass a unique key argument to each button widget
+            st.sidebar.button(':heavy_plus_sign:', on_click=increment_count, args=(cell,), key=f"increment_{i}") # Add an increment button
+            st.sidebar.button(':heavy_minus_sign:', on_click=decrement_count, args=(cell,), key=f"decrement_{i}") # Add a decrement button
 
     st.sidebar.write('Last Updated = ', st.session_state.last_updated)
 else:
