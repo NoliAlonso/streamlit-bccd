@@ -288,11 +288,11 @@ if img_str is not None:  # Check if img_str is defined
                 st.sidebar.dataframe(dfCount, use_container_width=True)
                 # Define a function to increment a cell count by 1
                 def increment_count(cell):
-                   st.session_state.class_counts[cell] += 1
-                   st.session_state.last_updated = datetime.datetime.now().ctime()
+                    st.session_state.class_counts[cell] += 1
+                    st.session_state.last_updated = datetime.datetime.now().ctime()
                 # Define a function to decrement a cell count by 1
                 def decrement_count(cell):
-                    t.session_state.class_counts[cell] -= 1
+                    st.session_state.class_counts[cell] -= 1
                     st.session_state.last_updated = datetime.datetime.now().ctime()
                 # Loop through each row of the dataframe and add buttons
                 for i in range(len(dfCount)):
@@ -302,6 +302,7 @@ if img_str is not None:  # Check if img_str is defined
                     st.sidebar.button('+', on_click=increment_count, args=(cell,), key=f"increment_{i}") # Add an increment button
                     st.sidebar.button('-', on_click=decrement_count, args=(cell,), key=f"decrement_{i}") # Add a decrement button
                 st.sidebar.write('Last Updated = ', st.session_state.last_updated)
+                st.session_state.last_updated = datetime.datetime.now().ctime()
             else:
                 st.sidebar.write('Not started.');
 
