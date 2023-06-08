@@ -53,7 +53,7 @@ def SubmitedJSON():
     for index, row in df_grouped.iterrows():
         # Use get method to handle cases where the class name is not already in the dictionary
         st.session_state.class_counts[row['class']] = st.session_state.class_counts.get(row['class'], 0) + row['count']
-    st.session_state.last_updated = datetime.datetime.now().ctime()
+    st.session_state.last_updated = datetime.datetime.now()
 
 # Create a dataframe from the class counts dictionary
 dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
