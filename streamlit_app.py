@@ -58,6 +58,7 @@ def decrement_counter(decrement_value=0):
 
 # Create a dataframe from the class counts dictionary
 dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
+dfCount = dfCount.rename(columns={'class': 'Cell'})
 
 # Check if the class counts dictionary is empty
 if st.session_state.class_counts:
