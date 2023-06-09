@@ -163,7 +163,16 @@ if page == 'Take picture':
         # To read image file buffer with PIL:
         image1 = Image.open(img_file_buffer)
 
-        # Convert to JPEG Buffer.
+        # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
+        image1size = np.array(image1)
+        height, width, channels = image1size.shape
+
+        scale = ROBOFLOW_SIZE / max(height, width)
+        image1 = cv2.resize(image1size, (round(scale * width), round(scale * height)))
+
+        # Convert numpy array to PIL.Image
+        image1 = Image.fromarray(image1)
+        # Save image as JPEG buffer
         buffered = io.BytesIO()
         image1.save(buffered, format='JPEG')
         img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
@@ -188,8 +197,7 @@ else:
             
                 response = requests.get(url)
                 image2 = Image.open(io.BytesIO(response.content))
-
-                #---
+                
                 # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
                 image2size = np.array(image2)
                 height, width, channels = image2size.shape
@@ -206,20 +214,24 @@ else:
 
                 # Or use cv2.imencode to encode image as base64 string
                 #img_str = base64.b64encode(cv2.imencode('.jpg', image2)[1]).decode('ascii')
-                #---
-
-                # Convert to JPEG Buffer.
-                #buffered = io.BytesIO()
-                #image2.save(buffered, format='JPEG')
-                #img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
+                
         else:
             # User-selected image.
             image2 = Image.open(uploaded_file)
 
-            # Convert to JPEG Buffer.
+            # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
+            image2size = np.array(image2)
+            height, width, channels = image2size.shape
+
+            scale = ROBOFLOW_SIZE / max(height, width)
+            image2 = cv2.resize(image2size, (round(scale * width), round(scale * height)))
+
+            # Convert numpy array to PIL.Image
+            image2 = Image.fromarray(image2)
+            # Save image as JPEG buffer
             buffered = io.BytesIO()
             image2.save(buffered, format='JPEG')
-            img_str = base64.b64encode(buffered.getvalue()).decode('ascii')   
+            img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
 
     else:
         if page == 'Real-Time':
@@ -356,7 +368,7 @@ if img_str is not None:  # Check if img_str is defined
                     button_draw.text((1, 1), text, font=font, fill=(255, 255, 255, 255))
 
                     # put button on source image in position (0, 0)
-                    image4.paste(button_img, (int(x1 - 10), int(y1 - 10)))
+                    image4.paste(button_img, (int(x1 - 10), int(y1 - 20)))
             st.image(image4, use_column_width=True)
 
             ###
