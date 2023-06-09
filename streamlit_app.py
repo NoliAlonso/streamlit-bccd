@@ -274,8 +274,8 @@ if img_str is not None:  # Check if img_str is defined
         '&format=image',
         f'&overlap={overlap_threshold * 100}',
         f'&confidence={confidence_threshold * 100}',
-        '&stroke=2',
-        '&labels=True'
+        '&stroke=0',
+        '&labels=False'
     ])
     
     ## POST to the API.
