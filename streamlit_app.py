@@ -191,22 +191,27 @@ else:
 
                 #---
                 # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
-                #image2size = np.array(image2)
-                #height, width, channels = image2size.shape
+                image2size = np.array(image2)
+                height, width, channels = image2size.shape
 
-                #scale = ROBOFLOW_SIZE / max(height, width)
-                #image2 = cv2.resize(image2size, (round(scale * width), round(scale * height)))
+                scale = ROBOFLOW_SIZE / max(height, width)
+                image2 = cv2.resize(image2size, (round(scale * width), round(scale * height)))
 
-                # Encode image to base64 string
-                #retval, buffer = cv2.imencode('.jpg', image2)
-                #img_str = base64.b64encode(buffer).decode('ascii')
-
-                #---
-
-                # Convert to JPEG Buffer.
+                # Convert numpy array to PIL.Image
+                image2 = Image.fromarray(image2)
+                # Save image as JPEG buffer
                 buffered = io.BytesIO()
                 image2.save(buffered, format='JPEG')
                 img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
+
+                # Or use cv2.imencode to encode image as base64 string
+                #img_str = base64.b64encode(cv2.imencode('.jpg', image2)[1]).decode('ascii')
+                #---
+
+                # Convert to JPEG Buffer.
+                #buffered = io.BytesIO()
+                #image2.save(buffered, format='JPEG')
+                #img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
         else:
             # User-selected image.
             image2 = Image.open(uploaded_file)
