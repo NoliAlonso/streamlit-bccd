@@ -322,7 +322,7 @@ if img_str is not None:  # Check if img_str is defined
             #font = ImageFont.load_default()
 
             font_path = "Roboto-Regular.ttf"  # Replace with the path to your desired font file
-            font_size = 30  # Set the desired font size
+            font_size = 20  # Set the desired font size
 
             # Load the custom font with the desired size
             font = ImageFont.truetype(font_path, font_size)
@@ -348,7 +348,7 @@ if img_str is not None:  # Check if img_str is defined
                     text_height = text_bbox[3] - text_bbox[1]
 
                     # Create a new button image with a larger size
-                    button_size = (text_width + 10, text_height + 5)
+                    button_size = (text_width + 5, text_height + 5)
                     button_img = Image.new('RGBA', button_size, color)
 
                     # Create a new button_draw object with the larger font
