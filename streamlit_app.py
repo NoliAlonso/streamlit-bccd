@@ -87,10 +87,17 @@ def decrement_count(cell):
     st.session_state.class_counts[cell] -= 1
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
+###
+
+video = cv2.VideoCapture(0)
+# Initialize a flag to track page change
+page_changed = False
+
 # Takes an httpx.AsyncClient as a parameter
 async def infer(requests2):
     # Get the current image from the webcam
-    ret, img = camera_input_live()
+    #ret, img = camera_input_live()
+    ret, img = video.read()
 
     # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
     height, width, channels = img.shape
@@ -113,9 +120,6 @@ async def infer(requests2):
     return image
 
 ###
-
-# Initialize a flag to track page change
-page_changed = False
 
 # Main loop; infers at FRAMERATE frames per second until you press "q"
 async def realTimeLoop():
