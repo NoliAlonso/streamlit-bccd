@@ -353,7 +353,7 @@ if img_str is not None:  # Check if img_str is defined
 
                     # Create a new button_draw object with the larger font
                     button_draw = ImageDraw.Draw(button_img)
-                    button_draw.text((10, 10), text, font=font, fill=(255, 255, 255, 255))
+                    button_draw.text((5, 5), text, font=font, fill=(255, 255, 255, 255))
 
                     # put button on source image in position (0, 0)
                     image4.paste(button_img, (int(x1), int(y1)))
