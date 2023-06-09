@@ -26,6 +26,9 @@ import av
 import cv2
 import datetime
 import pandas as pd
+import asyncio
+import httpx
+import time
 
 ##########
 ##### Set up sidebar.
@@ -83,6 +86,69 @@ def increment_count(cell):
 def decrement_count(cell):
     st.session_state.class_counts[cell] -= 1
     st.session_state.last_updated = datetime.datetime.now().ctime()
+
+# Takes an httpx.AsyncClient as a parameter
+async def infer(requests):
+    # Get the current image from the webcam
+    ret, img = camera_input_live()
+
+    # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
+    height, width, channels = img.shape
+    scale = ROBOFLOW_SIZE / max(height, width)
+    img = cv2.resize(img, (round(scale * width), round(scale * height)))
+
+    # Encode image to base64 string
+    retval, buffer = cv2.imencode('.jpg', img)
+    img_str = base64.b64encode(buffer)
+
+    # Get prediction from Roboflow Infer API
+    resp = await requests.post(upload_url, data=img_str, headers={
+        "Content-Type": "application/x-www-form-urlencoded"
+    })
+
+    # Parse result image
+    image = np.asarray(bytearray(resp.content), dtype="uint8")
+    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+
+    return image
+
+###
+
+# Main loop; infers at FRAMERATE frames per second until you press "q"
+async def realTimeLoop():
+    # Initialize
+    last_frame = time.time()
+
+    # Initialize a buffer of images
+    futures = []
+
+    async with httpx.AsyncClient() as requests:
+        while 1:
+            # On "q" keypress, exit
+            if(cv2.waitKey(1) == ord('q')):
+                break
+
+            # Throttle to FRAMERATE fps and print actual frames per second achieved
+            elapsed = time.time() - last_frame
+            await asyncio.sleep(max(0, 1/FRAMERATE - elapsed))
+            print((1/(time.time()-last_frame)), " fps")
+            last_frame = time.time()
+
+            # Enqueue the inference request and safe it to our buffer
+            task = asyncio.create_task(infer(requests))
+            futures.append(task)
+
+            # Wait until our buffer is big enough before we start displaying results
+            if len(futures) < BUFFER * FRAMERATE:
+                continue
+
+            # Remove the first image from our buffer
+            # wait for it to finish loading (if necessary)
+            image = await futures.pop(0)
+            # And display the inference results
+            st.write(cv2.imshow('image', image))
+
+###
 
 # Check if the class counts dictionary is empty
 if st.session_state.class_counts:
@@ -154,6 +220,8 @@ st.divider()
 
 img_str = None  # Initialize img_str variable
 mean_value = 0.0
+
+#########
 
 if page == 'Take picture':
     img_file_buffer = st.camera_input("Take a picture:")
@@ -229,42 +297,6 @@ else:
             image2.save(buffered, format='JPEG')
             img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
 
-    else:
-        if page == 'Real-Time':
-            image3 = camera_input_live()
-
-            if image3 is not None:
-                st.image(image3)
-                bytes_data = image3.getvalue()
-
-                pil_image = Image.open(io.BytesIO(bytes_data)).convert("RGB")
-                cv2_img = np.array(pil_image)
-                height, width, channels = cv2_img.shape
-                scale = ROBOFLOW_SIZE / max(height, width)
-                imageR = cv2.resize(cv2_img, (round(scale * width), round(scale * height)))
-
-                if imageR.size > 0:  # Check if the image is not empty
-                    # Display the "Infer" button
-                    if st.button("Capture a still image:"):
-                        # Perform calculations or operations on imageR
-                        mean_value = np.mean(imageR)
-
-                        if np.isnan(mean_value):  # Check if the mean value is NaN (invalid)
-                            # Handle the case of invalid value
-                            mean_value = 0.0  # Set a default value or perform a different action
-
-                        else:
-                            # Convert to JPEG Buffer.
-                            buffered = io.BytesIO()
-                            imageR.save(buffered, format='JPEG')
-                            img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
-                            # Further processing with img_str and mean_value if needed
-                            ...
-                        
-                else:
-                    # Handle the case of an empty image
-                    img_str = None
-                    mean_value = 0.0
 
 st.divider()
 
@@ -393,3 +425,47 @@ if img_str is not None:  # Check if img_str is defined
             st.write("Error: Failed to open the image from the API response.")
     else:
         st.write("Error: API request failed.")
+
+else:
+        if page == 'Real-Time':
+            """image3 = camera_input_live()
+
+            if image3 is not None:
+                st.image(image3)
+                bytes_data = image3.getvalue()
+
+                pil_image = Image.open(io.BytesIO(bytes_data)).convert("RGB")
+                cv2_img = np.array(pil_image)
+                height, width, channels = cv2_img.shape
+                scale = ROBOFLOW_SIZE / max(height, width)
+                imageR = cv2.resize(cv2_img, (round(scale * width), round(scale * height)))
+
+                if imageR.size > 0:  # Check if the image is not empty
+                    # Display the "Infer" button
+                    if st.button("Capture a still image:"):
+                        # Perform calculations or operations on imageR
+                        mean_value = np.mean(imageR)
+
+                        if np.isnan(mean_value):  # Check if the mean value is NaN (invalid)
+                            # Handle the case of invalid value
+                            mean_value = 0.0  # Set a default value or perform a different action
+
+                        else:
+                            # Convert to JPEG Buffer.
+                            buffered = io.BytesIO()
+                            imageR.save(buffered, format='JPEG')
+                            img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
+                            # Further processing with img_str and mean_value if needed
+                            ...
+                        
+                else:
+                    # Handle the case of an empty image
+                    img_str = None
+                    mean_value = 0.0
+            """
+            
+            # Run our main loop
+            asyncio.run(realTimeLoop())
+
+            # Release resources when finished
+            cv2.destroyAllWindows()
