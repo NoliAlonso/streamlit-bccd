@@ -44,6 +44,9 @@ page_names = ['Take picture', 'Upload picture', 'Real-Time']
 
 page = st.sidebar.radio('Select image source:', page_names)
 
+confidence_threshold = 0.5
+overlap_threshold = 0.5
+
 ##########
 st.sidebar.divider()
 
