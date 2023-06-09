@@ -190,7 +190,9 @@ else:
                 image2 = Image.open(io.BytesIO(response.content))
 
                 # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
+                image2size = np.array(image2)
                 height, width, channels = image2.shape
+
                 scale = ROBOFLOW_SIZE / max(height, width)
                 image2 = cv2.resize(image2, (round(scale * width), round(scale * height)))
 
