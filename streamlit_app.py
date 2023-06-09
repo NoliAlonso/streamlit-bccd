@@ -155,9 +155,6 @@ def handle_page_change(new_page):
     global page_changed
     if new_page != 'Real-Time':
         page_changed = True
-
-# Register the page change handler
-st.sidebar.add_callback(handle_page_change, page)
 ###
 
 # Check if the class counts dictionary is empty
