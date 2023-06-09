@@ -266,7 +266,7 @@ if img_str is not None:  # Check if img_str is defined
         '&format=image',
         f'&overlap={overlap_threshold * 100}',
         f'&confidence={confidence_threshold * 100}',
-        '&stroke=10',
+        '&stroke=5',
         '&labels=True'
     ])
     
@@ -283,7 +283,7 @@ if img_str is not None:  # Check if img_str is defined
 
             # Convert to JPEG Buffer.
             buffered = io.BytesIO()
-            image4.save(buffered, quality=90, format='JPEG')
+            image4.save(buffered, quality=95, format='JPEG')
 
             # Display image.
             #st.image(image4, use_column_width=True)
@@ -314,7 +314,7 @@ if img_str is not None:  # Check if img_str is defined
             #font = ImageFont.load_default()
 
             font_path = "Roboto-Bold.ttf"  # Replace with the path to your desired font file
-            font_size = 20  # Set the desired font size
+            font_size = 30  # Set the desired font size
 
             # Load the custom font with the desired size
             font = ImageFont.truetype(font_path, font_size)
