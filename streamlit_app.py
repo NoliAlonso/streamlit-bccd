@@ -88,7 +88,7 @@ def decrement_count(cell):
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
 # Takes an httpx.AsyncClient as a parameter
-async def infer(requests):
+async def infer(requests2):
     # Get the current image from the webcam
     ret, img = camera_input_live()
 
@@ -102,7 +102,7 @@ async def infer(requests):
     img_str = base64.b64encode(buffer)
 
     # Get prediction from Roboflow Infer API
-    resp = await requests.post(upload_url, data=img_str, headers={
+    resp = await requests2.post(upload_url, data=img_str, headers={
         "Content-Type": "application/x-www-form-urlencoded"
     })
 
@@ -114,6 +114,9 @@ async def infer(requests):
 
 ###
 
+# Initialize a flag to track page change
+page_changed = False
+
 # Main loop; infers at FRAMERATE frames per second until you press "q"
 async def realTimeLoop():
     # Initialize
@@ -122,11 +125,8 @@ async def realTimeLoop():
     # Initialize a buffer of images
     futures = []
 
-    async with httpx.AsyncClient() as requests:
-        while 1:
-            # On "q" keypress, exit
-            if(cv2.waitKey(1) == ord('q')):
-                break
+    async with httpx.AsyncClient() as requests1:
+        while not page_changed:
 
             # Throttle to FRAMERATE fps and print actual frames per second achieved
             elapsed = time.time() - last_frame
@@ -135,7 +135,7 @@ async def realTimeLoop():
             last_frame = time.time()
 
             # Enqueue the inference request and safe it to our buffer
-            task = asyncio.create_task(infer(requests))
+            task = asyncio.create_task(infer(requests1))
             futures.append(task)
 
             # Wait until our buffer is big enough before we start displaying results
@@ -146,8 +146,18 @@ async def realTimeLoop():
             # wait for it to finish loading (if necessary)
             image = await futures.pop(0)
             # And display the inference results
-            st.write(cv2.imshow('image', image))
+            cv2.imshow('image', image)
+    # Clean up and exit the loop
+    cv2.destroyAllWindows()
 
+# Function to handle page changes
+def handle_page_change(new_page):
+    global page_changed
+    if new_page != 'Real-Time':
+        page_changed = True
+
+# Register the page change handler
+st.sidebar.add_callback(handle_page_change, page)
 ###
 
 # Check if the class counts dictionary is empty
@@ -466,6 +476,3 @@ else:
             
             # Run our main loop
             asyncio.run(realTimeLoop())
-
-            # Release resources when finished
-            cv2.destroyAllWindows()
