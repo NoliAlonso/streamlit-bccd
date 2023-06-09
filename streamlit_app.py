@@ -96,28 +96,35 @@ page_changed = False
 # Takes an httpx.AsyncClient as a parameter
 async def infer(requests2):
     # Get the current image from the webcam
-    #ret, img = camera_input_live()
-    ret, img = video.read()
+    img1 = camera_input_live()
 
-    # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
-    height, width, channels = img.shape
-    scale = ROBOFLOW_SIZE / max(height, width)
-    img = cv2.resize(img, (round(scale * width), round(scale * height)))
+    if img1 is not None:
+        # To read image file buffer with PIL:
+        image1 = Image.open(img1)
 
-    # Encode image to base64 string
-    retval, buffer = cv2.imencode('.jpg', img)
-    img_strRT = base64.b64encode(buffer)
+        # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
+        image1size = np.array(image1)
+        height, width, channels = image1size.shape
+        scale = ROBOFLOW_SIZE / max(height, width)
+        image1 = cv2.resize(image1size, (round(scale * width), round(scale * height)))
 
-    # Get prediction from Roboflow Infer API
-    resp = await requests2.post(upload_url, data=img_strRT, headers={
-        "Content-Type": "application/x-www-form-urlencoded"
-    })
+        # Convert numpy array to PIL.Image
+        image1 = Image.fromarray(image1)
+        # Save image as JPEG buffer
+        buffered = io.BytesIO()
+        image1.save(buffered, format='JPEG')
+        img_strRT = base64.b64encode(buffered.getvalue()).decode('ascii')
+        
+        # Get prediction from Roboflow Infer API
+        resp = await requests2.post(upload_url, data=img_strRT, headers={
+            "Content-Type": "application/x-www-form-urlencoded"
+        })
 
-    # Parse result image
-    imageResult = np.asarray(bytearray(resp.content), dtype="uint8")
-    imageResult = cv2.imdecode(imageResult, cv2.IMREAD_COLOR)
+        # Parse result image
+        imageResult = np.asarray(bytearray(resp.content), dtype="uint8")
+        imageResult = cv2.imdecode(imageResult, cv2.IMREAD_COLOR)
 
-    return imageResult
+        return imageResult
 
 ###
 
