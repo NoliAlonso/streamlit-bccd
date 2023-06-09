@@ -172,7 +172,7 @@ async def realTimeLoop():
             # wait for it to finish loading (if necessary)
             imageResult1 = await futures.pop(0)
             # And display the inference results
-            cv2.imshow('image', imageResult1)
+            st.image(imageResult1, use_column_width=True)
 
     # Clean up and exit the loop
     cv2.destroyAllWindows()
@@ -485,38 +485,4 @@ else:
         # Run our main loop
         #asyncio.run(realTimeLoop())
 
-        """image3 = camera_input_live()
-
-            if image3 is not None:
-                st.image(image3)
-                bytes_data = image3.getvalue()
-
-                pil_image = Image.open(io.BytesIO(bytes_data)).convert("RGB")
-                cv2_img = np.array(pil_image)
-                height, width, channels = cv2_img.shape
-                scale = ROBOFLOW_SIZE / max(height, width)
-                imageR = cv2.resize(cv2_img, (round(scale * width), round(scale * height)))
-
-                if imageR.size > 0:  # Check if the image is not empty
-                    # Display the "Infer" button
-                    if st.button("Capture a still image:"):
-                        # Perform calculations or operations on imageR
-                        mean_value = np.mean(imageR)
-
-                        if np.isnan(mean_value):  # Check if the mean value is NaN (invalid)
-                            # Handle the case of invalid value
-                            mean_value = 0.0  # Set a default value or perform a different action
-
-                        else:
-                            # Convert to JPEG Buffer.
-                            buffered = io.BytesIO()
-                            imageR.save(buffered, format='JPEG')
-                            img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
-                            # Further processing with img_str and mean_value if needed
-                            ...
-                        
-                else:
-                    # Handle the case of an empty image
-                    img_str = None
-                    mean_value = 0.0
-            """
+        
