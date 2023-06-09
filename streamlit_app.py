@@ -236,11 +236,12 @@ else:
             if image3 is not None:
                 st.image(image3)
                 bytes_data = image3.getvalue()
+
                 pil_image = Image.open(io.BytesIO(bytes_data)).convert("RGB")
                 cv2_img = np.array(pil_image)
                 height, width, channels = cv2_img.shape
                 scale = ROBOFLOW_SIZE / max(height, width)
-                cv2_img = cv2.resize(pil_image, (round(scale * width), round(scale * height)))
+                cv2_img = cv2.resize(cv2_img, (round(scale * width), round(scale * height)))
 
                 if cv2_img.size > 0:  # Check if the image is not empty
                     # Display the "Infer" button
