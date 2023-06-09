@@ -89,14 +89,13 @@ def decrement_count(cell):
 
 #########
 
-video = cv2.VideoCapture(0)
 # Initialize a flag to track page change
 page_changed = False
 
 # Takes an httpx.AsyncClient as a parameter
-async def infer(requests2):
+async def infer(requests2, keyWID):
     # Get the current image from the webcam
-    img1 = camera_input_live()
+    img1 = camera_input_live(keyWID)
 
     if img1 is not None:
         # To read image file buffer with PIL:
@@ -135,6 +134,7 @@ async def realTimeLoop():
 
     # Initialize a buffer of images
     futures = []
+    widget_id = (id for id in range(1, 100_00))
 
     async with httpx.AsyncClient() as requests1:
         while not page_changed:
@@ -146,7 +146,7 @@ async def realTimeLoop():
             last_frame = time.time()
 
             # Enqueue the inference request and safe it to our buffer
-            task = asyncio.create_task(infer(requests1))
+            task = asyncio.create_task(infer(requests1, key=next(widget_id)))
             futures.append(task)
 
             # Wait until our buffer is big enough before we start displaying results
