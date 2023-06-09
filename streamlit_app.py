@@ -198,7 +198,7 @@ else:
 
                 # Encode image to base64 string
                 retval, buffer = cv2.imencode('.jpg', image2)
-                img_str = base64.b64encode(buffer.getvalue()).decode('ascii')
+                img_str = base64.b64encode(buffer).decode('ascii')
 
                 # Convert to JPEG Buffer.
                 #buffered = io.BytesIO()
