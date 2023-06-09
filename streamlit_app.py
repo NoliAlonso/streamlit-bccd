@@ -194,7 +194,7 @@ else:
                 height, width, channels = image2size.shape
 
                 scale = ROBOFLOW_SIZE / max(height, width)
-                image2 = cv2.resize(image2, (round(scale * width), round(scale * height)))
+                image2 = cv2.resize(image2size, (round(scale * width), round(scale * height)))
 
                 # Encode image to base64 string
                 retval, buffer = cv2.imencode('.jpg', image2)
