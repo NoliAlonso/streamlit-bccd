@@ -356,7 +356,7 @@ if img_str is not None:  # Check if img_str is defined
                     button_draw.text((1, 1), text, font=font, fill=(255, 255, 255, 255))
 
                     # put button on source image in position (0, 0)
-                    image4.paste(button_img, (int(x1), int(y1)))
+                    image4.paste(button_img, (int(x1 - 10), int(y1 - 10)))
             st.image(image4, use_column_width=True)
 
             ###
