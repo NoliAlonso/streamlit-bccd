@@ -115,6 +115,20 @@ async def infer(requests2, keyWID):
         buffered = io.BytesIO()
         image1.save(buffered, format='JPEG')
         img_strRT = base64.b64encode(buffered.getvalue()).decode('ascii')
+
+        ## Construct the URL to retrieve image.
+        # (if running locally replace https://detect.roboflow.com/ with eg http://127.0.0.1:9001/)
+        upload_url = ''.join([
+            'https://detect.roboflow.com/',
+            ROBOFLOW_MODEL,
+            '?api_key=',
+            ROBOFLOW_API_KEY,
+            '&format=image',
+            f'&overlap={overlap_threshold * 100}',
+            f'&confidence={confidence_threshold * 100}',
+            '&stroke=0',
+            '&labels=False'
+        ])
         
         # Get prediction from Roboflow Infer API
         resp = await requests2.post(upload_url, data=img_strRT, headers={
@@ -144,7 +158,7 @@ async def realTimeLoop():
             # Throttle to FRAMERATE fps and print actual frames per second achieved
             elapsed = time.time() - last_frame
             await asyncio.sleep(max(0, 1/FRAMERATE - elapsed))
-            print((1/(time.time()-last_frame)), " fps")
+            st.write((1/(time.time()-last_frame)), " fps")
             last_frame = time.time()
 
             # Enqueue the inference request and safe it to our buffer
@@ -229,6 +243,8 @@ st.sidebar.image(imageLogo, use_column_width=True, width=200)
 
 imageLogo = Image.open('./images/NoliAlonsoPathLabSystemsLogo.png')
 st.sidebar.image(imageLogo, use_column_width=True, width=200)
+
+st.sidebar.write('Disclaimer, as is, for research purposes only.')
 
 ##########
 ##### Set up main app.
