@@ -146,7 +146,7 @@ async def realTimeLoop():
             last_frame = time.time()
 
             # Enqueue the inference request and safe it to our buffer
-            task = asyncio.create_task(infer(requests1, key=next(widget_id)))
+            task = asyncio.create_task(infer(requests1, keyWID=next(widget_id)))
             futures.append(task)
 
             # Wait until our buffer is big enough before we start displaying results
