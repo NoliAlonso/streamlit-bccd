@@ -1,4 +1,5 @@
 ﻿# load config
+from ctypes.wintypes import RGB
 import json
 with open('Roboflow_config.json') as f:
     config = json.load(f)
@@ -109,6 +110,7 @@ async def infer(requests2, keyWID):
 
         # Convert numpy array to PIL.Image
         image1 = Image.fromarray(image1)
+        image1 = image1.convert('RGB')
         # Save image as JPEG buffer
         buffered = io.BytesIO()
         image1.save(buffered, format='JPEG')
