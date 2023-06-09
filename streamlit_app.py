@@ -1,5 +1,4 @@
 ﻿# load config
-from ctypes.wintypes import RGB
 import json
 with open('Roboflow_config.json') as f:
     config = json.load(f)
@@ -30,6 +29,9 @@ import pandas as pd
 import asyncio
 import httpx
 import time
+from multiprocessing import Process
+import os
+import signal
 
 ##########
 ##### Set up sidebar.
@@ -465,8 +467,34 @@ if img_str is not None:  # Check if img_str is defined
 
 else:
     if page == 'Real-Time':
+
+        # Create two buttons for starting and stopping
+        start = st.button("Start")
+        stop = st.button("Stop")
+
+        # Get or create the session state object
+        state = st.session_state.get(pid=None)
+
+        # Define your main loop function
+        def realTimeLoop():
+            # Do something here
+            pass
+
+        if start:
+            # Start a new process and store its ID in the session state
+            p = Process(target=realTimeLoop)
+            p.start()
+            state.pid = p.pid
+            st.write("Started process with pid:", state.pid)
+
+        if stop:
+            # Kill the process using its ID from the session state
+            os.kill(state.pid, signal.SIGKILL)
+            st.write("Stopped process with pid:", state.pid)
+            state.pid = None
+
         # Run our main loop
-        asyncio.run(realTimeLoop())
+        #asyncio.run(realTimeLoop())
 
         """image3 = camera_input_live()
 
