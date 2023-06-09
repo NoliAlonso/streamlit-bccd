@@ -241,13 +241,13 @@ else:
                 cv2_img = np.array(pil_image)
                 height, width, channels = cv2_img.shape
                 scale = ROBOFLOW_SIZE / max(height, width)
-                cv2_img = cv2.resize(cv2_img, (round(scale * width), round(scale * height)))
+                imageR = cv2.resize(cv2_img, (round(scale * width), round(scale * height)))
 
-                if cv2_img.size > 0:  # Check if the image is not empty
+                if imageR.size > 0:  # Check if the image is not empty
                     # Display the "Infer" button
                     if st.button("Capture a still image:"):
-                        # Perform calculations or operations on cv2_img
-                        mean_value = np.mean(cv2_img)
+                        # Perform calculations or operations on imageR
+                        mean_value = np.mean(imageR)
 
                         if np.isnan(mean_value):  # Check if the mean value is NaN (invalid)
                             # Handle the case of invalid value
@@ -256,7 +256,7 @@ else:
                         else:
                             # Convert to JPEG Buffer.
                             buffered = io.BytesIO()
-                            cv2_img.save(buffered, format='JPEG')
+                            imageR.save(buffered, format='JPEG')
                             img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
                             # Further processing with img_str and mean_value if needed
                             ...
