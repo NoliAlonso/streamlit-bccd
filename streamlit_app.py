@@ -156,7 +156,6 @@ async def realTimeLoop():
 
     async with httpx.AsyncClient() as requests1:
         while not page_changed:
-
             # Throttle to FRAMERATE fps and print actual frames per second achieved
             elapsed = time.time() - last_frame
             await asyncio.sleep(max(0, 1/FRAMERATE - elapsed))
@@ -175,7 +174,10 @@ async def realTimeLoop():
             # wait for it to finish loading (if necessary)
             imageResult1 = await futures.pop(0)
             # And display the inference results
-            st.image(imageResult1, use_column_width=True)
+            if imageResult1 is not None:
+                st.image(imageResult1, use_column_width=True)
+            else:
+                st.write("No image result available")
 
     # Clean up and exit the loop
     cv2.destroyAllWindows()
