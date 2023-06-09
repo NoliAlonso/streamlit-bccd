@@ -159,14 +159,12 @@ if page == 'Take picture':
     img_file_buffer = st.camera_input("Take a picture:")
 
     if img_file_buffer is not None:
-
         # To read image file buffer with PIL:
         image1 = Image.open(img_file_buffer)
 
         # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
         image1size = np.array(image1)
         height, width, channels = image1size.shape
-
         scale = ROBOFLOW_SIZE / max(height, width)
         image1 = cv2.resize(image1size, (round(scale * width), round(scale * height)))
 
@@ -201,7 +199,6 @@ else:
                 # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
                 image2size = np.array(image2)
                 height, width, channels = image2size.shape
-
                 scale = ROBOFLOW_SIZE / max(height, width)
                 image2 = cv2.resize(image2size, (round(scale * width), round(scale * height)))
 
@@ -222,7 +219,6 @@ else:
             # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
             image2size = np.array(image2)
             height, width, channels = image2size.shape
-
             scale = ROBOFLOW_SIZE / max(height, width)
             image2 = cv2.resize(image2size, (round(scale * width), round(scale * height)))
 
@@ -242,10 +238,13 @@ else:
                 bytes_data = image3.getvalue()
                 pil_image = Image.open(io.BytesIO(bytes_data)).convert("RGB")
                 cv2_img = np.array(pil_image)
+                height, width, channels = cv2_img.shape
+                scale = ROBOFLOW_SIZE / max(height, width)
+                cv2_img = cv2.resize(pil_image, (round(scale * width), round(scale * height)))
 
                 if cv2_img.size > 0:  # Check if the image is not empty
                     # Display the "Infer" button
-                    if st.button("Infer"):
+                    if st.button("Capture a still image:"):
                         # Perform calculations or operations on cv2_img
                         mean_value = np.mean(cv2_img)
 
@@ -256,7 +255,7 @@ else:
                         else:
                             # Convert to JPEG Buffer.
                             buffered = io.BytesIO()
-                            pil_image.save(buffered, format='JPEG')
+                            cv2_img.save(buffered, format='JPEG')
                             img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
                             # Further processing with img_str and mean_value if needed
                             ...
