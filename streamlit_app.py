@@ -87,7 +87,7 @@ def decrement_count(cell):
     st.session_state.class_counts[cell] -= 1
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
-###
+#########
 
 video = cv2.VideoCapture(0)
 # Initialize a flag to track page change
@@ -106,18 +106,18 @@ async def infer(requests2):
 
     # Encode image to base64 string
     retval, buffer = cv2.imencode('.jpg', img)
-    img_str = base64.b64encode(buffer)
+    img_strRT = base64.b64encode(buffer)
 
     # Get prediction from Roboflow Infer API
-    resp = await requests2.post(upload_url, data=img_str, headers={
+    resp = await requests2.post(upload_url, data=img_strRT, headers={
         "Content-Type": "application/x-www-form-urlencoded"
     })
 
     # Parse result image
-    image = np.asarray(bytearray(resp.content), dtype="uint8")
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    imageResult = np.asarray(bytearray(resp.content), dtype="uint8")
+    imageResult = cv2.imdecode(imageResult, cv2.IMREAD_COLOR)
 
-    return image
+    return imageResult
 
 ###
 
@@ -148,9 +148,10 @@ async def realTimeLoop():
 
             # Remove the first image from our buffer
             # wait for it to finish loading (if necessary)
-            image = await futures.pop(0)
+            imageResult1 = await futures.pop(0)
             # And display the inference results
-            cv2.imshow('image', image)
+            cv2.imshow('image', imageResult1)
+
     # Clean up and exit the loop
     cv2.destroyAllWindows()
 
@@ -438,8 +439,11 @@ if img_str is not None:  # Check if img_str is defined
         st.write("Error: API request failed.")
 
 else:
-        if page == 'Real-Time':
-            """image3 = camera_input_live()
+    if page == 'Real-Time':
+        # Run our main loop
+        asyncio.run(realTimeLoop())
+
+        """image3 = camera_input_live()
 
             if image3 is not None:
                 st.image(image3)
@@ -474,6 +478,3 @@ else:
                     img_str = None
                     mean_value = 0.0
             """
-            
-            # Run our main loop
-            asyncio.run(realTimeLoop())
