@@ -340,7 +340,7 @@ if img_str is not None:  # Check if img_str is defined
                     text_height = text_bbox[3] - text_bbox[1]
 
                     # Create a new button image with a larger size
-                    button_size = (text_width + 10, text_height + 10)
+                    button_size = (text_width + 10, text_height + 5)
                     button_img = Image.new('RGBA', button_size, color)
 
                     # Create a new button_draw object with the larger font
