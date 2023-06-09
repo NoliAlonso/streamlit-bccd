@@ -189,10 +189,19 @@ else:
                 response = requests.get(url)
                 image2 = Image.open(io.BytesIO(response.content))
 
+                # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
+                height, width, channels = image2.shape
+                scale = ROBOFLOW_SIZE / max(height, width)
+                image2 = cv2.resize(image2, (round(scale * width), round(scale * height)))
+
+                # Encode image to base64 string
+                retval, buffer = cv2.imencode('.jpg', image2)
+                img_str = base64.b64encode(buffer)
+
                 # Convert to JPEG Buffer.
-                buffered = io.BytesIO()
-                image2.save(buffered, format='JPEG')
-                img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
+                #buffered = io.BytesIO()
+                #image2.save(buffered, format='JPEG')
+                #img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
         else:
             # User-selected image.
             image2 = Image.open(uploaded_file)
@@ -303,7 +312,7 @@ if img_str is not None:  # Check if img_str is defined
             #font = ImageFont.load_default()
 
             font_path = "Roboto-Bold.ttf"  # Replace with the path to your desired font file
-            font_size = 50  # Set the desired font size
+            font_size = 20  # Set the desired font size
 
             # Load the custom font with the desired size
             font = ImageFont.truetype(font_path, font_size)
