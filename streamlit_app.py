@@ -29,9 +29,6 @@ import pandas as pd
 import asyncio
 import httpx
 import time
-from multiprocessing import Process
-import os
-import signal
 
 ##########
 ##### Set up sidebar.
@@ -342,6 +339,13 @@ st.divider()
 confidence_threshold = st.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
 overlap_threshold = st.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
 
+# Create a start/stop button
+start_stop_button = st.button("Start/Stop")
+
+# Use a boolean variable to track the execution status
+is_running = False
+
+
 if img_str is not None:  # Check if img_str is defined
 
     ## Subtitle.
@@ -467,31 +471,16 @@ if img_str is not None:  # Check if img_str is defined
 
 else:
     if page == 'Real-Time':
+        if start_stop_button:
+            # Toggle the execution status when the button is clicked
+            is_running = not is_running
 
-        # Create two buttons for starting and stopping
-        start = st.button("Start")
-        stop = st.button("Stop")
-
-        # Get or create the session state object
-        state = st.session_state.get(pid=None)
-
-        # Define your main loop function
-        def realTimeLoop():
-            # Do something here
-            pass
-
-        if start:
-            # Start a new process and store its ID in the session state
-            p = Process(target=realTimeLoop)
-            p.start()
-            state.pid = p.pid
-            st.write("Started process with pid:", state.pid)
-
-        if stop:
-            # Kill the process using its ID from the session state
-            os.kill(state.pid, signal.SIGKILL)
-            st.write("Stopped process with pid:", state.pid)
-            state.pid = None
+        # Start or stop the real-time loop based on the execution status
+        if is_running:
+            st.write("Started real-time loop")
+            asyncio.run(realTimeLoop())
+        else:
+            st.write("Stopped real-time loop")
 
         # Run our main loop
         #asyncio.run(realTimeLoop())
