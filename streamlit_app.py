@@ -69,7 +69,7 @@ def SubmitJSONdataframe():
     for index, row in df_grouped.iterrows():
         # Use get method to handle cases where the class name is not already in the dictionary
         st.session_state.class_counts[row['class']] = st.session_state.class_counts.get(row['class'], 0) + row['count']
-    st.session_state.last_updated = datetime.time(0,0)
+    st.session_state.last_updated = datetime.datetime.now().ctime()
     
 # Define a function to increment a cell count by 1
 def increment_count(cell):
@@ -135,7 +135,7 @@ for cell_name in cell_names:
         # Check if the button is clicked
         if cell_name not in st.session_state.class_counts:
             # Add the cell name to the session state dictionary
-            st.session_state.class_counts[cell_name] = 0
+            st.session_state.class_counts.contat(cell_name)
 
 st.sidebar.divider()
 
