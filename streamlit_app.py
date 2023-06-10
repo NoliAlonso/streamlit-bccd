@@ -44,14 +44,14 @@ page = st.sidebar.radio('Select image source:', page_names)
 ##########
 st.sidebar.divider()
 
-# Create a dataframe from the class counts dictionary
-dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
-dfCount.columns = ['Cell', 'Count']
-
 # Initialize the class_counts dictionary as an empty dictionary in the session state
 if 'class_counts' not in st.session_state:
     st.session_state.class_counts = {}
     st.session_state.last_updated = datetime.time(0,0)
+
+# Create a dataframe from the class counts dictionary
+dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
+dfCount.columns = ['Cell', 'Count']
 
 def increment_counter(increment_value=0):
     st.session_state.count += increment_value
@@ -134,8 +134,12 @@ for cell_name in cell_names:
     if st.sidebar.button(cell_name):
         # Check if the button is clicked
         if cell_name not in st.session_state.class_counts:
-            # Add the cell name to the session state dictionary
-            st.session_state.class_counts.contat(cell_name)
+            # Add the cell name to the session state dictionary with a count of 1
+            st.session_state.class_counts[cell_name] = 1
+        else:
+            # Increment the count of the cell name by 1
+            st.session_state.class_counts[cell_name] += 1
+
 
 st.sidebar.divider()
 
