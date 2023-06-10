@@ -153,7 +153,7 @@ st.sidebar.write('Disclaimer, as is, for research purposes only.')
 st.write(titlemessage)
 
 with st.container():
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         # Add in location to select image.
@@ -161,7 +161,8 @@ with st.container():
 
         page = st.radio('Select image source:', page_names)
     with col2:
-        confidence_threshold = st.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
+        confidence_threshold = st.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)        
+    with col3:
         overlap_threshold = st.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
 
 st.divider()
