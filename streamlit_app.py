@@ -125,7 +125,7 @@ cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 
 
 # Loop through each cell name and create a button
 for cell_name in cell_names:
-    if st.sidebar.button(label=cell_name, onclick=decrement_count(cell_name)):
+    if st.sidebar.button(label=cell_name, onclick=decrement_count, args=(cell_name,)):
         # Check if the button is clicked
         if cell_name not in st.session_state.class_counts:
             # Add the cell name to the session state dictionary with a count of 1
