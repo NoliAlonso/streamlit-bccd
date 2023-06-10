@@ -1,7 +1,5 @@
 ﻿# load config
-from cProfile import label
 import json
-from turtle import onclick
 with open('Roboflow_config.json') as f:
     config = json.load(f)
 
