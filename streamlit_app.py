@@ -136,9 +136,6 @@ for cell_name in cell_names:
         if cell_name not in st.session_state.class_counts:
             # Add the cell name to the session state dictionary with a count of 1
             st.session_state.class_counts[cell_name] = 1
-        else:
-            # Increment the count of the cell name by 1
-            st.session_state.class_counts[cell_name] += 1
 
 
 st.sidebar.divider()
