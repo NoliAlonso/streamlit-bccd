@@ -1,5 +1,7 @@
 ﻿# load config
+from cProfile import label
 import json
+from turtle import onclick
 with open('Roboflow_config.json') as f:
     config = json.load(f)
 
@@ -125,12 +127,11 @@ cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 
 
 # Loop through each cell name and create a button
 for cell_name in cell_names:
-    if st.sidebar.button(cell_name):
+    if st.sidebar.button(label=cell_name, onclick=decrement_count(cell_name)):
         # Check if the button is clicked
         if cell_name not in st.session_state.class_counts:
             # Add the cell name to the session state dictionary with a count of 1
-            st.session_state.class_counts[cell_name] = 1
-        decrement_count(cell_name)
+            st.session_state.class_counts[cell_name] = 1        
 
 
 st.sidebar.divider()
