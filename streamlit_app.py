@@ -73,6 +73,9 @@ def ResetAll():
     st.session_state.class_counts = {}
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
+def Refresh():
+    st.session_state.last_updated = datetime.datetime.now().ctime()
+
 #########
 
 # Create a dataframe from the class counts dictionary
@@ -124,7 +127,7 @@ cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 
 
 # Loop through each cell name and create a button
 for cell_name in cell_names:
-    if st.sidebar.button(label=cell_name, on_click=decrement_count, args=(cell_name,)):
+    if st.sidebar.button(label=cell_name, on_click=Refresh):
         # Check if the button is clicked
         if cell_name not in st.session_state.class_counts:
             # Add the cell name to the session state dictionary with a count of 1
