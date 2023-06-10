@@ -155,7 +155,7 @@ st.write(titlemessage)
 # Add in location to select image.
 page_names = ['Take picture', 'Upload picture']
 
-page = st.sidebar.radio('Select image source:', page_names)
+page = st.radio('Select image source:', page_names)
 
 st.divider()
 
