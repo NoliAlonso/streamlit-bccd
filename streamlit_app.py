@@ -34,13 +34,6 @@ titlemessage = '# WBC Identifier & Counter'
 st.sidebar.write(titlemessage)
 st.sidebar.write('Developed by Dr. Alonso')
 
-st.sidebar.divider()
-
-# Add in location to select image.
-page_names = ['Take picture', 'Upload picture']
-
-page = st.sidebar.radio('Select image source:', page_names)
-
 ##########
 st.sidebar.divider()
 
@@ -158,6 +151,11 @@ st.sidebar.write('Disclaimer, as is, for research purposes only.')
 
 ## Title.
 st.write(titlemessage)
+
+# Add in location to select image.
+page_names = ['Take picture', 'Upload picture']
+
+page = st.sidebar.radio('Select image source:', page_names)
 
 st.divider()
 
