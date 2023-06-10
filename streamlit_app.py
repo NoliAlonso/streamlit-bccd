@@ -49,10 +49,6 @@ if 'class_counts' not in st.session_state:
     st.session_state.class_counts = {}
     st.session_state.last_updated = datetime.time(0,0)
 
-# Create a dataframe from the class counts dictionary
-dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
-dfCount.columns = ['Cell', 'Count']
-
 def SubmitJSONdataframe():
     # Add the dataframe data to the class_counts dictionary
     for index, row in df_grouped.iterrows():
@@ -79,6 +75,10 @@ def ResetAll():
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
 #########
+
+# Create a dataframe from the class counts dictionary
+dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
+dfCount.columns = ['Cell', 'Count']
 
 # Check if the class counts dictionary is empty
 if st.session_state.class_counts:
