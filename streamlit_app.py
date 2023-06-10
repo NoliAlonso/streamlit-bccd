@@ -75,9 +75,14 @@ def SubmitJSONdataframe():
 def increment_count(cell):
     st.session_state.class_counts[cell] += 1
     st.session_state.last_updated = datetime.datetime.now().ctime()
+
 # Define a function to decrement a cell count by 1
 def decrement_count(cell):
-    st.session_state.class_counts[cell] -= 1
+     # Check if the cell count is greater than zero
+    if st.session_state.class_counts[cell] > 0:
+        # Decrement the count by 1
+        st.session_state.class_counts[cell] -= 1
+
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
 def ResetAll():
