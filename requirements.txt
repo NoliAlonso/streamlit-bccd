@@ -6,4 +6,3 @@ requests
 pillow
 numpy
 matplotlib
-httpx

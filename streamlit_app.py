@@ -26,9 +26,6 @@ import av
 import cv2
 import datetime
 import pandas as pd
-import asyncio
-import httpx
-import time
 
 ##########
 ##### Set up sidebar.
@@ -40,12 +37,10 @@ st.sidebar.write('Developed by Dr. Alonso')
 st.sidebar.divider()
 
 # Add in location to select image.
-page_names = ['Take picture', 'Upload picture', 'Real-Time']
+page_names = ['Take picture', 'Upload picture']
 
 page = st.sidebar.radio('Select image source:', page_names)
 
-confidence_threshold = 0.5
-overlap_threshold = 0.5
 
 ##########
 st.sidebar.divider()
@@ -91,103 +86,6 @@ def decrement_count(cell):
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
 #########
-
-# Initialize a flag to track page change
-page_changed = False
-
-# Takes an httpx.AsyncClient as a parameter
-async def infer(requests2, keyWID):
-    # Get the current image from the webcam
-    img1 = camera_input_live(keyWID)
-
-    if img1 is not None:
-        # To read image file buffer with PIL:
-        image1 = Image.open(img1)
-
-        # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
-        image1size = np.array(image1)
-        height, width, channels = image1size.shape
-        scale = ROBOFLOW_SIZE / max(height, width)
-        image1 = cv2.resize(image1size, (round(scale * width), round(scale * height)))
-
-        # Convert numpy array to PIL.Image
-        image1 = Image.fromarray(image1)
-        image1 = image1.convert('RGB')
-        # Save image as JPEG buffer
-        buffered = io.BytesIO()
-        image1.save(buffered, format='JPEG')
-        img_strRT = base64.b64encode(buffered.getvalue()).decode('ascii')
-
-        ## Construct the URL to retrieve image.
-        # (if running locally replace https://detect.roboflow.com/ with eg http://127.0.0.1:9001/)
-        upload_url = ''.join([
-            'https://detect.roboflow.com/',
-            ROBOFLOW_MODEL,
-            '?api_key=',
-            ROBOFLOW_API_KEY,
-            '&format=image',
-            f'&overlap={overlap_threshold * 100}',
-            f'&confidence={confidence_threshold * 100}',
-            '&stroke=0',
-            '&labels=False'
-        ])
-        
-        # Get prediction from Roboflow Infer API
-        resp = await requests2.post(upload_url, data=img_strRT, headers={
-            "Content-Type": "application/x-www-form-urlencoded"
-        })
-
-        # Parse result image
-        imageResult = np.asarray(bytearray(resp.content), dtype="uint8")
-        imageResult = cv2.imdecode(imageResult, cv2.IMREAD_COLOR)
-
-        return imageResult
-
-###
-
-# Main loop; infers at FRAMERATE frames per second until you press "q"
-async def realTimeLoop():
-    # Initialize
-    last_frame = time.time()
-
-    # Initialize a buffer of images
-    futures = []
-    widget_id = (id for id in range(1, 100_00))
-
-    async with httpx.AsyncClient() as requests1:
-        while not page_changed:
-            # Throttle to FRAMERATE fps and print actual frames per second achieved
-            elapsed = time.time() - last_frame
-            await asyncio.sleep(max(0, 1/FRAMERATE - elapsed))
-            st.write((1/(time.time()-last_frame)), " fps")
-            last_frame = time.time()
-
-            # Enqueue the inference request and safe it to our buffer
-            task = asyncio.create_task(infer(requests1, keyWID=next(widget_id)))
-            futures.append(task)
-
-            # Wait until our buffer is big enough before we start displaying results
-            if len(futures) < BUFFER * FRAMERATE:
-                continue
-
-            # Remove the first image from our buffer
-            # wait for it to finish loading (if necessary)
-            imageResult1 = await futures.pop(0)
-            # And display the inference results
-            if imageResult1 is not None:
-                st.image(imageResult1, use_column_width=True)
-            else:
-                st.write("No image result available")
-
-    # Clean up and exit the loop
-    cv2.destroyAllWindows()
-
-# Function to handle page changes
-def handle_page_change(new_page):
-    global page_changed
-    if new_page != 'Real-Time':
-        page_changed = True
-###
 
 # Check if the class counts dictionary is empty
 if st.session_state.class_counts:
@@ -271,6 +169,8 @@ if page == 'Take picture':
         # To read image file buffer with PIL:
         image1 = Image.open(img_file_buffer)
 
+        #crop edges
+
         # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
         image1size = np.array(image1)
         height, width, channels = image1size.shape
@@ -343,12 +243,6 @@ st.divider()
 
 confidence_threshold = st.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
 overlap_threshold = st.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
-
-# Create a start/stop button
-start_stop_button = st.button("Start/Stop")
-
-# Use a boolean variable to track the execution status
-is_running = False
 
 
 if img_str is not None:  # Check if img_str is defined
@@ -474,20 +368,5 @@ if img_str is not None:  # Check if img_str is defined
     else:
         st.write("Error: API request failed.")
 
-else:
-    if page == 'Real-Time':
-        if start_stop_button:
-            # Toggle the execution status when the button is clicked
-            is_running = not is_running
-
-        # Start or stop the real-time loop based on the execution status
-        if is_running:
-            st.write("Started real-time loop")
-            asyncio.run(realTimeLoop())
-        else:
-            st.write("Stopped real-time loop")
-
-        # Run our main loop
-        #asyncio.run(realTimeLoop())
 
         
