@@ -114,7 +114,7 @@ st.sidebar.divider()
 st.sidebar.write('Add cell to count:')
 #add classes, classname - button that adds 1 
 
-cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'Blast']
+cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'NRBC', 'ImmatureGranulocyte','Blast']
 
 # Loop through each cell name and create a button
 for cell_name in cell_names:
@@ -152,10 +152,17 @@ st.sidebar.write('Disclaimer, as is, for research purposes only.')
 ## Title.
 st.write(titlemessage)
 
-# Add in location to select image.
-page_names = ['Take picture', 'Upload picture']
+with st.container():
+    col1, col2 = st.columns(2)
 
-page = st.radio('Select image source:', page_names)
+    with col1:
+        # Add in location to select image.
+        page_names = ['Take picture', 'Upload picture']
+
+        page = st.radio('Select image source:', page_names)
+    with col2:
+        confidence_threshold = st.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
+        overlap_threshold = st.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
 
 st.divider()
 
@@ -242,10 +249,6 @@ else:
 
 
 st.divider()
-
-confidence_threshold = st.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)
-overlap_threshold = st.slider('Overlap threshold:', 0.0, 1.0, 0.5, 0.01)
-
 
 if img_str is not None:  # Check if img_str is defined
 
@@ -369,6 +372,3 @@ if img_str is not None:  # Check if img_str is defined
             st.write("Error: Failed to open the image from the API response.")
     else:
         st.write("Error: API request failed.")
-
-
-        
