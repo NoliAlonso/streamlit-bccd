@@ -125,14 +125,14 @@ if st.session_state.class_counts:
 
     st.sidebar.write('Count last updated at ', st.session_state.last_updated)
 else:
-    st.sidebar.write('Inference an image to begin.');
+    st.sidebar.write('Add cell types or inference an image to begin.');
 
 st.sidebar.divider()
 
 st.sidebar.write('Add cell to count:')
 #add classes, classname - button that adds 1 
 
-cell_names = {'Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'Blast'}
+cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'Blast']
 
 # Loop through each cell name and create a button
 for cell_name in cell_names:
