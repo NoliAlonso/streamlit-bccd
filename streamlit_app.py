@@ -131,12 +131,11 @@ cell_names = {'Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 
 
 # Loop through each cell name and create a button
 for cell_name in cell_names:
-    if st.button(cell_name):
+    if st.sidebar.button(cell_name):
         # Check if the button is clicked
-        if cell_name not in dfCount['Cell'].values:
-            # Add the cell name to the dataframe
-            new_row = pd.DataFrame({'Cell': [cell_name], 'Count': [0]})
-            dfCount = pd.concat([dfCount, new_row], ignore_index=True)
+        if cell_name not in st.session_state.class_counts:
+            # Add the cell name to the session state dictionary
+            st.session_state.class_counts[cell_name] = 0
 
 st.sidebar.divider()
 
