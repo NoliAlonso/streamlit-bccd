@@ -41,9 +41,12 @@ page_names = ['Take picture', 'Upload picture']
 
 page = st.sidebar.radio('Select image source:', page_names)
 
-
 ##########
 st.sidebar.divider()
+
+# Create a dataframe from the class counts dictionary
+dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
+dfCount.columns = ['Cell', 'Count']
 
 # Initialize the class_counts dictionary as an empty dictionary in the session state
 if 'class_counts' not in st.session_state:
@@ -67,15 +70,7 @@ def SubmitJSONdataframe():
         # Use get method to handle cases where the class name is not already in the dictionary
         st.session_state.class_counts[row['class']] = st.session_state.class_counts.get(row['class'], 0) + row['count']
     st.session_state.last_updated = datetime.time(0,0)
-
-def ResetAll():
-    st.session_state.class_counts = {}
-    st.session_state.last_updated = datetime.datetime.now().ctime()
-
-# Create a dataframe from the class counts dictionary
-dfCount = pd.DataFrame(list(st.session_state.class_counts.items()), columns=['class', 'count'])
-dfCount.columns = ['Cell', 'Count']
-
+    
 # Define a function to increment a cell count by 1
 def increment_count(cell):
     st.session_state.class_counts[cell] += 1
@@ -83,6 +78,10 @@ def increment_count(cell):
 # Define a function to decrement a cell count by 1
 def decrement_count(cell):
     st.session_state.class_counts[cell] -= 1
+    st.session_state.last_updated = datetime.datetime.now().ctime()
+
+def ResetAll():
+    st.session_state.class_counts = {}
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
 #########
@@ -127,6 +126,16 @@ st.sidebar.divider()
 
 st.sidebar.write('Add cell to count:')
 #add classes, classname - button that adds 1 
+
+cell_names = {'Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'Blast'}
+
+# Loop through each cell name and create a button
+for cell_name in cell_names:
+    if st.sidebar.button(cell_name):
+        # Check if the button is clicked
+        if cell_name not in dfCount['Cell'].values:
+            # Add the cell name to the dataframe
+            dfCount = dfCount.append({'Cell': cell_name, 'Count': 0}, ignore_index=True)
 
 st.sidebar.divider()
 
