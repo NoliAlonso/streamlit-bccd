@@ -406,7 +406,7 @@ if img_str is not None:  # Check if img_str is defined
 else:
     st.divider()
 
-st.sidebar.write('Add cell to count:')
+st.write('Add a cell to the count:')
 #add classes, classname - button that adds 1 
 
 colc1, colc2, colc3, colc4, colc5, = st.columns(5)
