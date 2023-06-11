@@ -123,7 +123,7 @@ if st.session_state.class_counts:
     DiffCountTotal = dfCount['Count'].sum()
     NRBC_count = 0
 
-    colu1, colu2 = st.sidebar.columns([0.4, 0.6])
+    colu1, colu2 = st.sidebar.columns([0.2, 0.8])
     with colu1:
         st.write(' ')
     with colu2:
@@ -138,7 +138,7 @@ if st.session_state.class_counts:
             st.write('NRBCs = ', NRBC_count)
             DiffCountTotal -= NRBC_count
 
-        st.write('WBC count = ', DiffCountTotal)
+        st.write('WBCs = ', DiffCountTotal)        
 
     # Loop through each row of the dataframe and add buttons
     for i in range(len(dfCount)):
@@ -162,8 +162,6 @@ else:
 with st.sidebar.form(key='resetform'):
     reset_button = st.form_submit_button(label='Reset', on_click=ResetAll)
 
-st.sidebar.divider()
-
 ########## Logos
 
 imageLogo = Image.open('./images/roboflow_logo.png')
@@ -175,7 +173,7 @@ st.sidebar.image(imageLogo, use_column_width=True)
 imageLogo = Image.open('./images/NoliAlonsoPathLabSystemsLogo.png')
 st.sidebar.image(imageLogo, use_column_width=True)
 
-st.sidebar.write('Disclaimer, as is, for research purposes only.')
+st.sidebar.write('Disclaimer: As is, for research purposes only.')
 
 ##########
 ##### Set up main app.
