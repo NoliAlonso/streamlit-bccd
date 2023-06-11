@@ -208,7 +208,7 @@ if st.session_state.class_counts:
     DiffCountTotal = dfCount['Count'].sum()
     NRBC_count = 0
 
-    colu1, colu2 = st.sidebar.columns([0.2, 0.8])
+    colu1, colu2 = st.sidebar.columns([0.1, 0.9])
     with colu1:
         st.write(' ')
     with colu2:
@@ -224,11 +224,12 @@ if st.session_state.class_counts:
             DiffCountTotal -= NRBC_count
 
             if DiffCountTotal >= 100:
-                uncorrected_wbc_count = st.number_input('Uncorrected WBC Count (e.g. 12.3', min_value=0.0, value=0.0, step=0.001)
+                uncorrected_wbc_count = st.number_input('Raw WBC Count (e.g. 12.3)', min_value=0.0, value=0.0, step=0.001)
                 submit_button = st.button('Submit')
 
                 if submit_button:
-                    corrected_wbc_count = uncorrected_wbc_count * 100 / (NRBC_count + 100)
+                    #Corrected WBC = WBC Count (Hemocytometer or Automated Hematology Analyzer) x [100 ÷ (Number of NRBCs per 100 WBCs + 100)]
+                    corrected_wbc_count = uncorrected_wbc_count * (100 / ((NRBC_count * 100 / DiffCountTotal) + 100))
                     st.write('Corrected WBC Count = ', corrected_wbc_count)
 
 
