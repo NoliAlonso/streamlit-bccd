@@ -77,6 +77,22 @@ def AddLymphocyte():
         # Add the cell name to the session state dictionary with a count of 1
         st.session_state.class_counts['Lymphocyte'] = 1 
 
+def AddMonocyte():
+    # Check if the button is clicked
+    if 'Monocyte' not in st.session_state.class_counts:
+        # Add the cell name to the session state dictionary with a count of 1
+        st.session_state.class_counts['Monocyte'] = 1 
+
+def AddEosinophil():
+    if 'Eosinophil' not in st.session_state.class_counts:
+        # Add the cell name to the session state dictionary with a count of 1
+        st.session_state.class_counts['Eosinophil'] = 1 
+
+def AddBasophil():
+    if 'Basophil' not in st.session_state.class_counts:
+        # Add the cell name to the session state dictionary with a count of 1
+        st.session_state.class_counts['Basophil'] = 1 
+
 def ResetAll():
     st.session_state.class_counts = {}
     st.session_state.last_updated = datetime.datetime.now().ctime()
@@ -131,30 +147,31 @@ st.sidebar.write('Add cell to count:')
 
 cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'NRBC','Blast']
 
-imageLogo = Image.open('./images/Monocyte.png')
-st.image(imageLogo)
-
-imageLogo = Image.open('./images/Eosinophil.png')
-st.image(imageLogo)
-
-imageLogo = Image.open('./images/Basophil.png')
-st.image(imageLogo)
-
 coladd1, coladd2 = st.sidebar.columns([0.2, 0.8])
 with coladd1:
-    imageLogo = Image.open('./images/Neutrophil.png')
+    
+
+    
+
+    imageLogo = Image.open('./images/Monocyte.png')
     st.image(imageLogo)
 
-    imageLogo = Image.open('./images/Lymphocyte.png')
+    imageLogo = Image.open('./images/Eosinophil.png')
+    st.image(imageLogo)
+
+    imageLogo = Image.open('./images/Basophil.png')
     st.image(imageLogo)
 
 with coladd2:
-        
-    st.button(label='Neutrophil', on_click=AddNeutrophil)
-        
+    imageLogo = Image.open('./images/Neutrophil.png')
+    st.image(imageLogo)    
+    st.button(label='Neutrophil', on_click=AddNeutrophil)  
+    imageLogo = Image.open('./images/Lymphocyte.png')
+    st.image(imageLogo)
     st.button(label='Lymphocyte', on_click=AddLymphocyte)
-
-
+    st.button(label='Monocyte', on_click=AddMonocyte)
+    st.button(label='Eosinophil', on_click=AddEosinophil)
+    st.button(label='Basophil', on_click=AddBasophil)
         
 
 
