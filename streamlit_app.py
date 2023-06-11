@@ -66,6 +66,17 @@ def decrement_count(cell):
 def UpdateTheTime():
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
+def AddNeutrophil():
+    if 'Neutrophil' not in st.session_state.class_counts:
+        # Add the cell name to the session state dictionary with a count of 1
+        st.session_state.class_counts['Neutrophil'] = 1 
+
+def AddLymphocyte():
+    # Check if the button is clicked
+    if 'Lymphocyte' not in st.session_state.class_counts:
+        # Add the cell name to the session state dictionary with a count of 1
+        st.session_state.class_counts['Lymphocyte'] = 1 
+
 def ResetAll():
     st.session_state.class_counts = {}
     st.session_state.last_updated = datetime.datetime.now().ctime()
@@ -120,8 +131,6 @@ st.sidebar.write('Add cell to count:')
 
 cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'NRBC','Blast']
 
-
-
 imageLogo = Image.open('./images/Monocyte.png')
 st.image(imageLogo)
 
@@ -131,24 +140,22 @@ st.image(imageLogo)
 imageLogo = Image.open('./images/Basophil.png')
 st.image(imageLogo)
 
-with st.sidebar.form(key='UpdateTheTime'):
-    if st.form_submit_button(label='Neutrophil', on_click=UpdateTheTime):
-        imageLogo = Image.open('./images/Neutrophil.png')
-        st.image(imageLogo)
+coladd1, coladd2 = st.sidebar.columns([0.2, 0.8])
+with coladd1:
+    imageLogo = Image.open('./images/Neutrophil.png')
+    st.image(imageLogo)
 
-        # Check if the button is clicked
-        if 'Neutrophil' not in st.session_state.class_counts:
-            # Add the cell name to the session state dictionary with a count of 1
-            st.session_state.class_counts['Neutrophil'] = 1 
+    imageLogo = Image.open('./images/Lymphocyte.png')
+    st.image(imageLogo)
 
-    if st.form_submit_button(label='Lymphocyte', on_click=UpdateTheTime):
-        imageLogo = Image.open('./images/Lymphocyte.png')
-        st.image(imageLogo)
+with coladd2:
+        
+    st.form_submit_button(label='Neutrophil', on_click=AddNeutrophil)
+        
+    st.form_submit_button(label='Lymphocyte', on_click=UpdateTheTime)
 
-        # Check if the button is clicked
-        if 'Lymphocyte' not in st.session_state.class_counts:
-            # Add the cell name to the session state dictionary with a count of 1
-            st.session_state.class_counts['Lymphocyte'] = 1 
+
+        
 
 
 st.sidebar.divider()
