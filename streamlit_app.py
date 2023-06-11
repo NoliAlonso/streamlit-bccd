@@ -109,15 +109,47 @@ def ResetAll():
 
 #########
 
-def process_image(image):
+#def process_image(image):
     # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
-    image_size = np.array(image)
-    height, width, channels = image_size.shape
-    scale = ROBOFLOW_SIZE / max(height, width)
-    resized_image = cv2.resize(image_size, (round(scale * width), round(scale * height)))
+    #image_size = np.array(image)
+    #height, width, channels = image_size.shape
+    #scale = ROBOFLOW_SIZE / max(height, width)
+    #resized_image = cv2.resize(image_size, (round(scale * width), round(scale * height)))
 
-    # Convert numpy array to PIL.Image
+    ## Convert numpy array to PIL.Image
+    #processed_image = Image.fromarray(resized_image)
+    #return processed_image
+
+def process_image(image):
+    # Convert PIL image to OpenCV format (numpy array)
+    cv_image = np.array(image)
+
+    # Convert image to grayscale
+    gray_image = cv2.cvtColor(cv_image, cv2.COLOR_RGB2GRAY)
+
+    # Threshold the grayscale image to obtain a binary image
+    _, binary_image = cv2.threshold(gray_image, 1, 255, cv2.THRESH_BINARY)
+
+    # Find contours of the binary image
+    contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Find the largest contour (assuming it's the main object)
+    largest_contour = max(contours, key=cv2.contourArea)
+
+    # Get the bounding rectangle of the largest contour
+    x, y, w, h = cv2.boundingRect(largest_contour)
+
+    # Crop the image using the bounding rectangle coordinates
+    cropped_image = cv_image[y:y+h, x:x+w]
+
+    # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
+    height, width, _ = cropped_image.shape
+    scale = ROBOFLOW_SIZE / max(height, width)
+    resized_image = cv2.resize(cropped_image, (round(scale * width), round(scale * height)))
+
+    # Convert OpenCV image to PIL format
     processed_image = Image.fromarray(resized_image)
+
     return processed_image
 
 def encode_image(image):
