@@ -132,7 +132,7 @@ imageLogo = Image.open('./images/Basophil.png')
 st.image(imageLogo)
 
 with st.sidebar.form(key='UpdateTheTime'):
-    if st.sidebar.button(label='Neutrophil', on_click=UpdateTheTime):
+    if st.form_submit_button(label='Neutrophil', on_click=UpdateTheTime):
         imageLogo = Image.open('./images/Neutrophil.png')
         st.image(imageLogo)
 
@@ -141,7 +141,7 @@ with st.sidebar.form(key='UpdateTheTime'):
             # Add the cell name to the session state dictionary with a count of 1
             st.session_state.class_counts['Neutrophil'] = 1 
 
-    if st.sidebar.button(label='Lymphocyte', on_click=UpdateTheTime):
+    if st.form_submit_button(label='Lymphocyte', on_click=UpdateTheTime):
         imageLogo = Image.open('./images/Lymphocyte.png')
         st.image(imageLogo)
 
