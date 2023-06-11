@@ -147,32 +147,21 @@ st.sidebar.write('Add cell to count:')
 
 cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'NRBC','Blast']
 
-coladd1, coladd2 = st.sidebar.columns([0.2, 0.8])
-with coladd1:
-    
-
-    
-
-    imageLogo = Image.open('./images/Monocyte.png')
-    st.image(imageLogo)
-
-    imageLogo = Image.open('./images/Eosinophil.png')
-    st.image(imageLogo)
-
-    imageLogo = Image.open('./images/Basophil.png')
-    st.image(imageLogo)
-
-with coladd2:
-    imageLogo = Image.open('./images/Neutrophil.png')
-    st.image(imageLogo)    
-    st.button(label='Neutrophil', on_click=AddNeutrophil)  
-    imageLogo = Image.open('./images/Lymphocyte.png')
-    st.image(imageLogo)
-    st.button(label='Lymphocyte', on_click=AddLymphocyte)
-    st.button(label='Monocyte', on_click=AddMonocyte)
-    st.button(label='Eosinophil', on_click=AddEosinophil)
-    st.button(label='Basophil', on_click=AddBasophil)
-        
+imageLogo = Image.open('./images/Neutrophil.png')
+st.sidebar.image(imageLogo)    
+st.sidebar.button(label='Neutrophil', on_click=AddNeutrophil)  
+imageLogo = Image.open('./images/Lymphocyte.png')
+st.sidebar.image(imageLogo)
+st.sidebar.button(label='Lymphocyte', on_click=AddLymphocyte)
+imageLogo = Image.open('./images/Monocyte.png')
+st.sidebar.image(imageLogo)
+st.sidebar.button(label='Monocyte', on_click=AddMonocyte)
+imageLogo = Image.open('./images/Eosinophil.png')
+st.sidebar.image(imageLogo)
+st.sidebar.button(label='Eosinophil', on_click=AddEosinophil)
+imageLogo = Image.open('./images/Basophil.png')
+st.sidebar.image(imageLogo)
+st.sidebar.button(label='Basophil', on_click=AddBasophil)
 
 
 st.sidebar.divider()
