@@ -128,7 +128,7 @@ def process_image(image):
     gray_image = cv2.cvtColor(cv_image, cv2.COLOR_RGB2GRAY)
 
     # Threshold the grayscale image to obtain a binary image
-    _, binary_image = cv2.threshold(gray_image, 1, 255, cv2.THRESH_TRUNC)
+    _, binary_image = cv2.threshold(gray_image, 1, 255, cv2.THRESH_BINARY)
 
     # Find contours of the binary image
     contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -182,7 +182,7 @@ def upload_picture():
     if st.checkbox("Use test images", value=False):
         option = st.selectbox(
             'Select a sample image:',
-            ('im_0000_20230601_124318.jpg', 'im_0001_20230601_124844.jpg', 'im_0002_20230601_124933.jpg', 'im_0003_20230601_125012.jpg', 'im_0004_20230601_125124.jpg', 'IMG_20200723_072121.jpg', 'IMG_20200206_062929.jpg')
+            ('im_0000_20230601_124318.jpg', 'im_0001_20230601_124844.jpg', 'im_0002_20230601_124933.jpg', 'im_0003_20230601_125012.jpg', 'im_0004_20230601_125124.jpg', 'IMG_20200206_062929.jpg')
         )
 
         # Construct the URL 
