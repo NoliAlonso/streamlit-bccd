@@ -33,7 +33,6 @@ import pandas as pd
 ##########
 titlemessage = '# WBC Identifier & Counter'
 st.sidebar.write(titlemessage)
-st.sidebar.write('Developed by Dr. Alonso')
 
 ##########
 st.sidebar.divider()
@@ -224,9 +223,14 @@ if st.session_state.class_counts:
             st.write('NRBCs = ', NRBC_count)
             DiffCountTotal -= NRBC_count
 
-            #if diffcountotal >= 100 show input of wbc count, and form to submit, then calculate the corrected wbc count of #rbcs/100wbcs
-            # uncorrect wbc count x 100 divided by
-            # number of rbcs per 100 wbcs (value should be 100+nrbcs, or fraction of if greater than 100 wbcs counted)
+            if DiffCountTotal >= 100:
+                st.write('Please enter uncorrected WBC Count:')
+                uncorrected_wbc_count = st.number_input('Uncorrected WBC Count', min_value=0)
+                submit_button = st.button('Submit')
+
+                if submit_button:
+                    corrected_wbc_count = uncorrected_wbc_count / (NRBC_count / 100)
+                    st.write('Corrected WBC Count = ', corrected_wbc_count)
 
 
         st.write('WBCs = ', DiffCountTotal)        
