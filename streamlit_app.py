@@ -128,7 +128,7 @@ def process_image(image):
     gray_image = cv2.cvtColor(cv_image, cv2.COLOR_RGB2GRAY)
 
     # Threshold the grayscale image to obtain a binary image
-    _, binary_image = cv2.threshold(gray_image, 1, 255, cv2.THRESH_BINARY)
+    _, binary_image = cv2.threshold(gray_image, 1, 255, cv2.THRESH_BINARY_INV)
 
     # Find contours of the binary image
     contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
