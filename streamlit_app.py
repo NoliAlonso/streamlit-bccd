@@ -120,7 +120,7 @@ st.sidebar.write('Add cell to count:')
 
 cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'NRBC','Blast']
 
-col_cn1, col_cn2 = st.sidebar.columns(2)
+col_cn1, col_cn2 = st.sidebar.columns([0.2, 0.8])
 
 with col_cn1:
     imageLogo = Image.open('./images/Neutrophil.png')
