@@ -93,6 +93,16 @@ def AddBasophil():
         # Add the cell name to the session state dictionary with a count of 1
         st.session_state.class_counts['Basophil'] = 1 
 
+def AddNRBC():
+    if 'NRBC' not in st.session_state.class_counts:
+        # Add the cell name to the session state dictionary with a count of 1
+        st.session_state.class_counts['NRBC'] = 1 
+
+def AddBlast():
+    if 'Blast' not in st.session_state.class_counts:
+        # Add the cell name to the session state dictionary with a count of 1
+        st.session_state.class_counts['Blast'] = 1 
+
 def ResetAll():
     st.session_state.class_counts = {}
     st.session_state.last_updated = datetime.datetime.now().ctime()
@@ -134,8 +144,6 @@ if st.session_state.class_counts:
             with col3:
                 st.button(':heavy_minus_sign:', on_click=decrement_count, args=(cell,), key=f"decrement_{i}") # Add a decrement button
 
-    st.sidebar.divider()
-
     st.sidebar.write('Count last updated at ', st.session_state.last_updated)
 else:
     st.sidebar.write('Add cell types or inference an image to begin.');
@@ -150,18 +158,30 @@ cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 
 imageLogo = Image.open('./images/Neutrophil.png')
 st.sidebar.image(imageLogo)    
 st.sidebar.button(label='Neutrophil', on_click=AddNeutrophil)  
+
 imageLogo = Image.open('./images/Lymphocyte.png')
 st.sidebar.image(imageLogo)
 st.sidebar.button(label='Lymphocyte', on_click=AddLymphocyte)
+
 imageLogo = Image.open('./images/Monocyte.png')
 st.sidebar.image(imageLogo)
 st.sidebar.button(label='Monocyte', on_click=AddMonocyte)
+
 imageLogo = Image.open('./images/Eosinophil.png')
 st.sidebar.image(imageLogo)
 st.sidebar.button(label='Eosinophil', on_click=AddEosinophil)
+
 imageLogo = Image.open('./images/Basophil.png')
 st.sidebar.image(imageLogo)
 st.sidebar.button(label='Basophil', on_click=AddBasophil)
+
+imageLogo = Image.open('./images/NRBC.png')
+st.sidebar.image(imageLogo)
+st.sidebar.button(label='NRBC', on_click=AddNRBC)
+
+imageLogo = Image.open('./images/Blast.png')
+st.sidebar.image(imageLogo)
+st.sidebar.button(label='Blast', on_click=AddBlast)
 
 
 st.sidebar.divider()
