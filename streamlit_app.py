@@ -125,29 +125,22 @@ col_cn1, col_cn2 = st.sidebar.columns([0.2, 0.8])
 with col_cn1:
     imageLogo = Image.open('./images/Neutrophil.png')
     st.image(imageLogo)
-
     imageLogo = Image.open('./images/Lymphocyte.png')
     st.image(imageLogo)
-
     imageLogo = Image.open('./images/Monocyte.png')
     st.image(imageLogo)
 
+with col_cn2:
     imageLogo = Image.open('./images/Eosinophil.png')
     st.image(imageLogo)
-
     imageLogo = Image.open('./images/Basophil.png')
     st.image(imageLogo)
 
-
-with col_cn2:
-    with st.sidebar.form(key='UpdateTheTime'):
-    # Loop through each cell name and create a button
-        for cell_name in cell_names:
-            if st.sidebar.button(label=cell_name):
-                # Check if the button is clicked
-                if cell_name not in st.session_state.class_counts:
-                    # Add the cell name to the session state dictionary with a count of 1
-                    st.session_state.class_counts[cell_name] = 1 
+with st.sidebar:
+    for cell_name in cell_names:
+        if st.button(cell_name):
+            if cell_name not in st.session_state.class_counts:
+                st.session_state.class_counts[cell_name] = 1
 
 st.sidebar.divider()
 
