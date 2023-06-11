@@ -107,6 +107,60 @@ def ResetAll():
     st.session_state.class_counts = {}
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
+#########
+
+def process_image(image):
+    # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
+    image_size = np.array(image)
+    height, width, channels = image_size.shape
+    scale = ROBOFLOW_SIZE / max(height, width)
+    resized_image = cv2.resize(image_size, (round(scale * width), round(scale * height)))
+
+    # Convert numpy array to PIL.Image
+    processed_image = Image.fromarray(resized_image)
+    return processed_image
+
+def encode_image(image):
+    # Save image as JPEG buffer
+    buffered = io.BytesIO()
+    image.save(buffered, format='JPEG')
+    img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
+    return img_str
+
+def take_picture():
+    img_file_buffer = st.camera_input("Take a picture:")
+
+    if img_file_buffer is not None:
+        # To read image file buffer with PIL:
+        image = Image.open(img_file_buffer)
+        processed_image = process_image(image)
+        img_str = encode_image(processed_image)
+        return img_str
+
+def upload_picture():
+    uploaded_file = st.file_uploader('Select an image:', type=['png', 'jpg', 'jpeg'], accept_multiple_files=False)
+
+    if uploaded_file is not None:
+        # User-selected image.
+        image = Image.open(uploaded_file)
+        processed_image = process_image(image)
+        img_str = encode_image(processed_image)
+        return img_str
+
+    if st.checkbox("Use test images", value=False):
+        option = st.selectbox(
+            'Select a sample image:',
+            ('im_0000_20230601_124318.jpg', 'im_0001_20230601_124844.jpg', 'im_0002_20230601_124933.jpg', 'im_0003_20230601_125012.jpg', 'im_0004_20230601_125124.jpg')
+        )
+
+        # Construct the URL 
+        url = f'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/{option}?raw=true'
+        response = requests.get(url)
+        image = Image.open(io.BytesIO(response.content))
+        processed_image = process_image(image)
+        img_str = encode_image(processed_image)
+        return img_str
+
 
 #########
 
@@ -202,81 +256,9 @@ mean_value = 0.0
 #########
 
 if page == 'Take picture':
-    img_file_buffer = st.camera_input("Take a picture:")
-
-    if img_file_buffer is not None:
-        # To read image file buffer with PIL:
-        image1 = Image.open(img_file_buffer)
-
-        #crop edges
-
-        # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
-        image1size = np.array(image1)
-        height, width, channels = image1size.shape
-        scale = ROBOFLOW_SIZE / max(height, width)
-        image1 = cv2.resize(image1size, (round(scale * width), round(scale * height)))
-
-        # Convert numpy array to PIL.Image
-        image1 = Image.fromarray(image1)
-        # Save image as JPEG buffer
-        buffered = io.BytesIO()
-        image1.save(buffered, format='JPEG')
-        img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
-
-else:
-    if page == 'Upload picture':
-        uploaded_file = st.file_uploader('Select an image:', type=['png', 'jpg', 'jpeg'], accept_multiple_files=False)
-
-        ## Pull in default image or user-selected image.
-        if uploaded_file is None:
-            if st.checkbox("Use test images", value=False):
-                option = st.selectbox(
-                    'Select an image:',
-                    ('im_0000_20230601_124318.jpg', 'im_0001_20230601_124844.jpg', 'im_0002_20230601_124933.jpg', 'im_0003_20230601_125012.jpg', 'im_0004_20230601_125124.jpg'))
-
-                ## Construct the URL 
-                url = ''.join([
-                    'https://github.com/NoliAlonso/streamlit-bccd/blob/master/BCCD_sample_images/',
-                    option,
-                    '?raw=true'
-                ])
-            
-                response = requests.get(url)
-                image2 = Image.open(io.BytesIO(response.content))
-                
-                # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
-                image2size = np.array(image2)
-                height, width, channels = image2size.shape
-                scale = ROBOFLOW_SIZE / max(height, width)
-                image2 = cv2.resize(image2size, (round(scale * width), round(scale * height)))
-
-                # Convert numpy array to PIL.Image
-                image2 = Image.fromarray(image2)
-                # Save image as JPEG buffer
-                buffered = io.BytesIO()
-                image2.save(buffered, format='JPEG')
-                img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
-
-                # Or use cv2.imencode to encode image as base64 string
-                #img_str = base64.b64encode(cv2.imencode('.jpg', image2)[1]).decode('ascii')
-                
-        else:
-            # User-selected image.
-            image2 = Image.open(uploaded_file)
-
-            # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
-            image2size = np.array(image2)
-            height, width, channels = image2size.shape
-            scale = ROBOFLOW_SIZE / max(height, width)
-            image2 = cv2.resize(image2size, (round(scale * width), round(scale * height)))
-
-            # Convert numpy array to PIL.Image
-            image2 = Image.fromarray(image2)
-            # Save image as JPEG buffer
-            buffered = io.BytesIO()
-            image2.save(buffered, format='JPEG')
-            img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
-
+    img_str = take_picture()
+elif page == 'Upload picture':
+    img_str = upload_picture()
 
 if img_str is not None:  # Check if img_str is defined
 
@@ -396,6 +378,8 @@ if img_str is not None:  # Check if img_str is defined
                 with st.form(key='my_form'):
                     submit_button = st.form_submit_button(label='Add to diff count', on_click=SubmitJSONdataframe)
 
+                st.divider()
+
         except IOError:
             st.write("Error: Failed to open the image from the API response.")
     else:
@@ -404,7 +388,7 @@ if img_str is not None:  # Check if img_str is defined
 else:
     st.divider()
 
-st.write('Add a cell to the count:')
+st.write('Add a cell to the list:')
 #add classes, classname - button that adds 1 
 
 colc1, colc2, colc3, colc4, colc5, = st.columns(5)
