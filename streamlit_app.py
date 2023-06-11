@@ -159,44 +159,6 @@ if st.session_state.class_counts:
 else:
     st.sidebar.write('Add cell types or inference an image to begin.');
 
-st.sidebar.divider()
-
-st.sidebar.write('Add cell to count:')
-#add classes, classname - button that adds 1 
-
-cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'NRBC','Blast']
-
-imageLogo = Image.open('./images/Neutrophil.png')
-st.sidebar.image(imageLogo)    
-st.sidebar.button(label='Neutrophil', on_click=AddNeutrophil)  
-
-imageLogo = Image.open('./images/Lymphocyte.png')
-st.sidebar.image(imageLogo)
-st.sidebar.button(label='Lymphocyte', on_click=AddLymphocyte)
-
-imageLogo = Image.open('./images/Monocyte.png')
-st.sidebar.image(imageLogo)
-st.sidebar.button(label='Monocyte', on_click=AddMonocyte)
-
-imageLogo = Image.open('./images/Eosinophil.png')
-st.sidebar.image(imageLogo)
-st.sidebar.button(label='Eosinophil', on_click=AddEosinophil)
-
-imageLogo = Image.open('./images/Basophil.png')
-st.sidebar.image(imageLogo)
-st.sidebar.button(label='Basophil', on_click=AddBasophil)
-
-imageLogo = Image.open('./images/NRBC.png')
-st.sidebar.image(imageLogo)
-st.sidebar.button(label='NRBC', on_click=AddNRBC)
-
-imageLogo = Image.open('./images/Blast.png')
-st.sidebar.image(imageLogo)
-st.sidebar.button(label='Blast', on_click=AddBlast)
-
-
-st.sidebar.divider()
-
 with st.sidebar.form(key='resetform'):
     reset_button = st.form_submit_button(label='Reset', on_click=ResetAll)
 
@@ -442,3 +404,45 @@ if img_str is not None:  # Check if img_str is defined
             st.write("Error: Failed to open the image from the API response.")
     else:
         st.write("Error: API request failed.")
+
+st.divider()
+
+st.sidebar.write('Add cell to count:')
+#add classes, classname - button that adds 1 
+
+colc1, colc2, colc3, colc4, colc5, colc6, colc7 = st.columns(7)
+
+with colc1:
+    imageLogo = Image.open('./images/Neutrophil.png')
+    st.image(imageLogo)    
+    st.button(label='Neutrophil', on_click=AddNeutrophil)  
+
+with colc2:
+    imageLogo = Image.open('./images/Lymphocyte.png')
+    st.image(imageLogo)
+    st.button(label='Lymphocyte', on_click=AddLymphocyte)
+
+with colc3:
+    imageLogo = Image.open('./images/Monocyte.png')
+    st.image(imageLogo)
+    st.button(label='Monocyte', on_click=AddMonocyte)
+
+with colc4:
+    imageLogo = Image.open('./images/Eosinophil.png')
+    st.image(imageLogo)
+    st.button(label='Eosinophil', on_click=AddEosinophil)
+
+with colc5:
+    imageLogo = Image.open('./images/Basophil.png')
+    st.image(imageLogo)
+    st.button(label='Basophil', on_click=AddBasophil)
+
+with colc6:
+    imageLogo = Image.open('./images/NRBC.png')
+    st.image(imageLogo)
+    st.button(label='NRBC', on_click=AddNRBC)
+
+with colc7:
+    imageLogo = Image.open('./images/Blast.png')
+    st.image(imageLogo)
+    st.button(label='Blast', on_click=AddBlast)
