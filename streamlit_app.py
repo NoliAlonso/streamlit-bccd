@@ -224,8 +224,7 @@ if st.session_state.class_counts:
             DiffCountTotal -= NRBC_count
 
             if DiffCountTotal >= 100:
-                st.write('Please enter uncorrected WBC Count:')
-                uncorrected_wbc_count = st.number_input('Uncorrected WBC Count', min_value=0)
+                uncorrected_wbc_count = st.number_input('Uncorrected WBC Count', min_value=0, step=0.01)
                 submit_button = st.button('Submit')
 
                 if submit_button:
