@@ -120,34 +120,36 @@ st.sidebar.write('Add cell to count:')
 
 cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'NRBC','Blast']
 
-col_cn1, col_cn2 = st.sidebar.columns([0.2, 0.8])
-
-with col_cn1:
-    imageLogo = Image.open('./images/Neutrophil.png')
-    st.image(imageLogo)
-
-    imageLogo = Image.open('./images/Lymphocyte.png')
-    st.image(imageLogo)
-
-    imageLogo = Image.open('./images/Monocyte.png')
-    st.image(imageLogo)
-
-    imageLogo = Image.open('./images/Eosinophil.png')
-    st.image(imageLogo)
-
-    imageLogo = Image.open('./images/Basophil.png')
-    st.image(imageLogo)
 
 
-with col_cn2:
-    with st.sidebar.form(key='UpdateTheTime'):
-    # Loop through each cell name and create a button
-        for cell_name in cell_names:
-            if st.sidebar.button(label=cell_name, on_click=UpdateTheTime):
-                # Check if the button is clicked
-                if cell_name not in st.session_state.class_counts:
-                    # Add the cell name to the session state dictionary with a count of 1
-                    st.session_state.class_counts[cell_name] = 1 
+imageLogo = Image.open('./images/Monocyte.png')
+st.image(imageLogo)
+
+imageLogo = Image.open('./images/Eosinophil.png')
+st.image(imageLogo)
+
+imageLogo = Image.open('./images/Basophil.png')
+st.image(imageLogo)
+
+with st.sidebar.form(key='UpdateTheTime'):
+    if st.sidebar.button(label='Neutrophil', on_click=UpdateTheTime):
+        imageLogo = Image.open('./images/Neutrophil.png')
+        st.image(imageLogo)
+
+        # Check if the button is clicked
+        if 'Neutrophil' not in st.session_state.class_counts:
+            # Add the cell name to the session state dictionary with a count of 1
+            st.session_state.class_counts['Neutrophil'] = 1 
+
+    if st.sidebar.button(label='Lymphocyte', on_click=UpdateTheTime):
+        imageLogo = Image.open('./images/Lymphocyte.png')
+        st.image(imageLogo)
+
+        # Check if the button is clicked
+        if 'Lymphocyte' not in st.session_state.class_counts:
+            # Add the cell name to the session state dictionary with a count of 1
+            st.session_state.class_counts['Lymphocyte'] = 1 
+
 
 st.sidebar.divider()
 
