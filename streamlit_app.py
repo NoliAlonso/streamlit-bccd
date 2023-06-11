@@ -121,10 +121,6 @@ if st.session_state.class_counts:
     
     # Compute the total of all counts
     DiffCountTotal = dfCount['Count'].sum()
-    
-    # Subtract the count of 'NRBC' from the total count
-    if 'NRBC' in dfCount['Cell'].values:
-        NRBC_count = dfCount.loc[dfCount['Cell'] == 'NRBC', 'Count'].values[0]
 
     colu1, colu2 = st.sidebar.columns([0.7, 0.3])
     with colu1:
@@ -132,6 +128,11 @@ if st.session_state.class_counts:
     with colu2:
         # Display the total in the sidebar
         st.write('Total Cells = ', DiffCountTotal)
+
+        # Subtract the count of 'NRBC' from the total count
+        if 'NRBC' in dfCount['Cell'].values:
+            NRBC_count = dfCount.loc[dfCount['Cell'] == 'NRBC', 'Count'].values[0]
+
         if NRBC_count > 0:
             st.write('NRBCs', NRBC_count)
             DiffCountTotal -= NRBC_count
