@@ -182,7 +182,7 @@ def upload_picture():
     if st.checkbox("Use test images", value=False):
         option = st.selectbox(
             'Select a sample image:',
-            ('im_0000_20230601_124318.jpg', 'im_0001_20230601_124844.jpg', 'im_0002_20230601_124933.jpg', 'im_0003_20230601_125012.jpg', 'im_0004_20230601_125124.jpg')
+            ('im_0000_20230601_124318.jpg', 'im_0001_20230601_124844.jpg', 'im_0002_20230601_124933.jpg', 'im_0003_20230601_125012.jpg', 'im_0004_20230601_125124.jpg', 'IMG_20200723_072121.jpg')
         )
 
         # Construct the URL 
@@ -223,6 +223,11 @@ if st.session_state.class_counts:
         if NRBC_count > 0:
             st.write('NRBCs = ', NRBC_count)
             DiffCountTotal -= NRBC_count
+
+            #if diffcountotal >= 100 show input of wbc count, and form to submit, then calculate the corrected wbc count of #rbcs/100wbcs
+            # uncorrect wbc count x 100 divided by
+            # number of rbcs per 100 wbcs (value should be 100+nrbcs, or fraction of if greater than 100 wbcs counted)
+
 
         st.write('WBCs = ', DiffCountTotal)        
 
