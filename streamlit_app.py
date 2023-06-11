@@ -150,9 +150,9 @@ with coladd1:
 
 with coladd2:
         
-    st.form_submit_button(label='Neutrophil', on_click=AddNeutrophil)
+    st.button(label='Neutrophil', on_click=AddNeutrophil)
         
-    st.form_submit_button(label='Lymphocyte', on_click=UpdateTheTime)
+    st.button(label='Lymphocyte', on_click=AddLymphocyte)
 
 
         
