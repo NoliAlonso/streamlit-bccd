@@ -1,4 +1,5 @@
 ﻿# load config
+from curses.ascii import SI
 import json
 with open('Roboflow_config.json') as f:
     config = json.load(f)
@@ -62,6 +63,9 @@ def decrement_count(cell):
         st.session_state.class_counts[cell] -= 1
     st.session_state.last_updated = datetime.datetime.now().ctime()
 
+def UpdateTheTime():
+    st.session_state.last_updated = datetime.datetime.now().ctime()
+
 def ResetAll():
     st.session_state.class_counts = {}
     st.session_state.last_updated = datetime.datetime.now().ctime()
@@ -114,16 +118,36 @@ st.sidebar.divider()
 st.sidebar.write('Add cell to count:')
 #add classes, classname - button that adds 1 
 
-cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'NRBC', 'ImmatureGranulocyte','Blast']
+cell_names = ['Neutrophil', 'Lymphocyte', 'Monocyte', 'Eosinophil', 'Basophil', 'NRBC','Blast']
 
-# Loop through each cell name and create a button
-for cell_name in cell_names:
-    if st.sidebar.button(label=cell_name):
-        # Check if the button is clicked
-        if cell_name not in st.session_state.class_counts:
-            # Add the cell name to the session state dictionary with a count of 1
-            st.session_state.class_counts[cell_name] = 1        
-            st.experimental_rerun()
+col_cn1, col_cn2 = st.sidebar.columns(2)
+
+with col_cn1:
+    imageLogo = Image.open('./images/Neutrophil.png')
+    st.image(imageLogo, use_column_width=True)
+
+    imageLogo = Image.open('./images/Lymphocyte.png')
+    st.image(imageLogo, use_column_width=True)
+
+    imageLogo = Image.open('./images/Monocyte.png')
+    st.image(imageLogo, use_column_width=True)
+
+    imageLogo = Image.open('./images/Eosinophil.png')
+    st.image(imageLogo, use_column_width=True)
+
+    imageLogo = Image.open('./images/Basophil.png')
+    st.image(imageLogo, use_column_width=True)
+
+
+with col_cn2:
+    with st.sidebar.form(key='UpdateTheTime'):
+    # Loop through each cell name and create a button
+        for cell_name in cell_names:
+            if st.sidebar.button(label=cell_name):
+                # Check if the button is clicked
+                if cell_name not in st.session_state.class_counts:
+                    # Add the cell name to the session state dictionary with a count of 1
+                    st.session_state.class_counts[cell_name] = 1 
 
 st.sidebar.divider()
 
@@ -135,13 +159,13 @@ st.sidebar.divider()
 ########## Logos
 
 imageLogo = Image.open('./images/roboflow_logo.png')
-st.sidebar.image(imageLogo, use_column_width=True, width=200)
+st.sidebar.image(imageLogo, use_column_width=True, height=50)
 
 imageLogo = Image.open('./images/streamlit_logo.png')
-st.sidebar.image(imageLogo, use_column_width=True, width=200)
+st.sidebar.image(imageLogo, use_column_width=True, height=50)
 
 imageLogo = Image.open('./images/NoliAlonsoPathLabSystemsLogo.png')
-st.sidebar.image(imageLogo, use_column_width=True, width=200)
+st.sidebar.image(imageLogo, use_column_width=True, height=50)
 
 st.sidebar.write('Disclaimer, as is, for research purposes only.')
 
@@ -158,7 +182,6 @@ with st.container():
     with col1:
         # Add in location to select image.
         page_names = ['Take picture', 'Upload picture']
-
         page = st.radio('Select image source:', page_names)
     with col2:
         confidence_threshold = st.slider('Confidence threshold:', 0.0, 1.0, 0.5, 0.01)        
