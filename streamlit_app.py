@@ -124,19 +124,19 @@ col_cn1, col_cn2 = st.sidebar.columns(2)
 
 with col_cn1:
     imageLogo = Image.open('./images/Neutrophil.png')
-    st.image(imageLogo, use_column_width=True)
+    st.image(imageLogo)
 
     imageLogo = Image.open('./images/Lymphocyte.png')
-    st.image(imageLogo, use_column_width=True)
+    st.image(imageLogo)
 
     imageLogo = Image.open('./images/Monocyte.png')
-    st.image(imageLogo, use_column_width=True)
+    st.image(imageLogo)
 
     imageLogo = Image.open('./images/Eosinophil.png')
-    st.image(imageLogo, use_column_width=True)
+    st.image(imageLogo)
 
     imageLogo = Image.open('./images/Basophil.png')
-    st.image(imageLogo, use_column_width=True)
+    st.image(imageLogo)
 
 
 with col_cn2:
@@ -159,13 +159,13 @@ st.sidebar.divider()
 ########## Logos
 
 imageLogo = Image.open('./images/roboflow_logo.png')
-st.sidebar.image(imageLogo, use_column_width=True, height=50)
+st.sidebar.image(imageLogo, use_column_width=True)
 
 imageLogo = Image.open('./images/streamlit_logo.png')
-st.sidebar.image(imageLogo, use_column_width=True, height=50)
+st.sidebar.image(imageLogo, use_column_width=True)
 
 imageLogo = Image.open('./images/NoliAlonsoPathLabSystemsLogo.png')
-st.sidebar.image(imageLogo, use_column_width=True, height=50)
+st.sidebar.image(imageLogo, use_column_width=True)
 
 st.sidebar.write('Disclaimer, as is, for research purposes only.')
 
