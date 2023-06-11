@@ -280,8 +280,6 @@ else:
             img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
 
 
-st.divider()
-
 if img_str is not None:  # Check if img_str is defined
 
     ## Subtitle.
@@ -405,12 +403,13 @@ if img_str is not None:  # Check if img_str is defined
     else:
         st.write("Error: API request failed.")
 
-st.divider()
+else:
+    st.divider()
 
 st.sidebar.write('Add cell to count:')
 #add classes, classname - button that adds 1 
 
-colc1, colc2, colc3, colc4, colc5, colc6, colc7 = st.columns(7)
+colc1, colc2, colc3, colc4, colc5, = st.columns(5)
 
 with colc1:
     imageLogo = Image.open('./images/Neutrophil.png')
@@ -436,6 +435,8 @@ with colc5:
     imageLogo = Image.open('./images/Basophil.png')
     st.image(imageLogo)
     st.button(label='Basophil', on_click=AddBasophil)
+
+colc6, colc7 = st.columns(2)
 
 with colc6:
     imageLogo = Image.open('./images/NRBC.png')
