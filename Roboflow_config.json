@@ -1,6 +1,6 @@
 {
   "ROBOFLOW_API_KEY": "oDkrH1XmBTgm5SIRerW7",
-  "ROBOFLOW_MODEL": "peripheralbloodsmear/12",
+  "ROBOFLOW_MODEL": "peripheralbloodsmear/13",
   "ROBOFLOW_SIZE": 640,
 
   "FRAMERATE": 24,
