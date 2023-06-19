@@ -2,9 +2,10 @@ streamlit
 streamlit-webrtc
 streamlit-camera-input-live
 opencv-python-headless
-opencv-contrib-python
 requests
 pillow
 numpy
 matplotlib
 ffmpeg
+opencv-contrib-python
+libgl1-mesa-glx
