@@ -6,6 +6,3 @@ requests
 pillow
 numpy
 matplotlib
-ffmpeg
-opencv-contrib-python
-mesa-utils
