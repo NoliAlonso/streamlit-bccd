@@ -147,7 +147,7 @@ def process_image(image):
     resized_image = cv2.resize(cropped_image, (round(scale * width), round(scale * height)))
 
     # Apply white balance using SimpleWB algorithm
-    wb = cv.xphoto.createSimpleWB()
+    wb = cv2.xphoto.createSimpleWB()
     balanced_image = wb.balanceWhite(resized_image)
 
     # Convert OpenCV image to PIL format
