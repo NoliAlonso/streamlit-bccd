@@ -6,4 +6,6 @@ requests
 pillow
 numpy
 matplotlib
-ffmpeg libsm6 libxext6
+ffmpeg
+libsm6
+libxext6
