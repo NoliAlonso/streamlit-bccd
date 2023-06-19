@@ -2,8 +2,8 @@ streamlit
 streamlit-webrtc
 streamlit-camera-input-live
 opencv-python-headless
-opencv-python
 requests
 pillow
 numpy
 matplotlib
+ffmpeg libsm6 libxext6
