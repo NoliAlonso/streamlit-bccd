@@ -7,5 +7,3 @@ pillow
 numpy
 matplotlib
 ffmpeg
-libsm6
-libxext6
