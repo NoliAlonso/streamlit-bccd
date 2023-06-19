@@ -8,4 +8,4 @@ numpy
 matplotlib
 ffmpeg
 opencv-contrib-python
-libgl1-mesa-glx
+mesa-utils
