@@ -158,12 +158,14 @@ def process_image(image):
     scale_r = avg_g / avg_r
     scale_b = avg_g / avg_b
 
+    # Convert the scaling factors to numpy arrays
+    scale_r = np.array(scale_r)
+    scale_b = np.array(scale_b)
+
     # Apply the scaling factors to balance the image
-    balanced_image = cv2.merge([
-        cv_image[:, :, 0] * scale_r,
-        cv_image[:, :, 1],
-        cv_image[:, :, 2] * scale_b
-    ])
+    balanced_image = cv_image.copy()
+    balanced_image[:, :, 0] *= scale_r
+    balanced_image[:, :, 2] *= scale_b
 
     # Convert OpenCV image to PIL format
     processed_image = Image.fromarray(balanced_image.astype(np.uint8))
