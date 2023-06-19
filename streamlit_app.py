@@ -146,8 +146,12 @@ def process_image(image):
     scale = ROBOFLOW_SIZE / max(height, width)
     resized_image = cv2.resize(cropped_image, (round(scale * width), round(scale * height)))
 
+    # Apply white balance using SimpleWB algorithm
+    wb = cv.xphoto.createSimpleWB()
+    balanced_image = wb.balanceWhite(resized_image)
+
     # Convert OpenCV image to PIL format
-    processed_image = Image.fromarray(resized_image)
+    processed_image = Image.fromarray(balanced_image)
 
     return processed_image
 
