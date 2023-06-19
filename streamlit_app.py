@@ -146,12 +146,27 @@ def process_image(image):
     scale = ROBOFLOW_SIZE / max(height, width)
     resized_image = cv2.resize(cropped_image, (round(scale * width), round(scale * height)))
 
-    # Apply white balance using SimpleWB algorithm
-    wb = cv2.xphoto.createSimpleWB()
-    balanced_image = wb.balanceWhite(resized_image)
+    # Convert PIL image to OpenCV format (numpy array)
+    cv_image = np.array(image)
+
+    # Calculate average pixel values for each color channel
+    avg_r = np.mean(cv_image[:, :, 0])
+    avg_g = np.mean(cv_image[:, :, 1])
+    avg_b = np.mean(cv_image[:, :, 2])
+
+    # Calculate the scaling factors for each channel
+    scale_r = avg_g / avg_r
+    scale_b = avg_g / avg_b
+
+    # Apply the scaling factors to balance the image
+    balanced_image = cv2.merge([
+        cv_image[:, :, 0] * scale_r,
+        cv_image[:, :, 1],
+        cv_image[:, :, 2] * scale_b
+    ])
 
     # Convert OpenCV image to PIL format
-    processed_image = Image.fromarray(balanced_image)
+    processed_image = Image.fromarray(balanced_image.astype(np.uint8))
 
     return processed_image
 
