@@ -147,7 +147,7 @@ def process_image(image):
     resized_image = cv2.resize(cropped_image, (round(scale * width), round(scale * height)))
 
     # Convert PIL image to OpenCV format (numpy array)
-    cv_image = np.array(image)
+    cv_image = np.array(resized_image)
 
     # Calculate average pixel values for each color channel
     avg_r = np.mean(cv_image[:, :, 0])
@@ -158,17 +158,19 @@ def process_image(image):
     scale_r = avg_g / avg_r
     scale_b = avg_g / avg_b
 
-    # Convert the scaling factors to numpy arrays
-    scale_r = np.array(scale_r)
-    scale_b = np.array(scale_b)
-
     # Apply the scaling factors to balance the image
-    balanced_image = cv_image.copy()
+    balanced_image = cv_image.astype(float)
     balanced_image[:, :, 0] *= scale_r
     balanced_image[:, :, 2] *= scale_b
 
+    # Clip pixel values to the valid range
+    balanced_image = np.clip(balanced_image, 0, 255)
+
+    # Convert the image array back to the uint8 data type
+    balanced_image = balanced_image.astype(np.uint8)
+
     # Convert OpenCV image to PIL format
-    processed_image = Image.fromarray(balanced_image.astype(np.uint8))
+    processed_image = Image.fromarray(balanced_image)
 
     return processed_image
 
