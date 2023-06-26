@@ -142,6 +142,8 @@ def process_image(image):
     cropped_image = cv_image[y:y+h, x:x+w]
 
     # Resize (while maintaining the aspect ratio) to improve speed and save bandwidth
+    # to add -- if larger than 640x640 resize, if smaller than 640 x 640 don't resize
+    
     height, width, _ = cropped_image.shape
     scale = ROBOFLOW_SIZE / max(height, width)
     resized_image = cv2.resize(cropped_image, (round(scale * width), round(scale * height)))
