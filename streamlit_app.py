@@ -206,7 +206,7 @@ def upload_picture():
     if st.checkbox("Use test images", value=False):
         option = st.selectbox(
             'Select a sample image:',
-            ('im_0000_20230601_124318.jpg', 'im_0001_20230601_124844.jpg', 'im_0002_20230601_124933.jpg', 'im_0003_20230601_125012.jpg', 'im_0004_20230601_125124.jpg', 'IMG_20200206_062929.jpg')
+            ('im_0000_20230601_124318.jpg', 'im_0001_20230601_124844.jpg', 'im_0002_20230601_124933.jpg', 'im_0003_20230601_125012.jpg', 'im_0004_20230601_125124.jpg', 'IMG_20200206_062929.jpg', 'test1.jpg')
         )
 
         # Construct the URL 
